@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: quay.io/globex/activity-tracking-service
-  pullPolicy: IfNotExists
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
@@ -39,8 +39,8 @@ route:
 
 resources:
   limits:
-    cpu: 250m
-    memory: 500Mi
+    cpu: 100m
+    memory: 250Mi
   requests:
     cpu: 100m
     memory: 128Mi
@@ -68,4 +68,3 @@ kafka:
   saslMechanism: ""
   userId: ""
   password: ""
-  
