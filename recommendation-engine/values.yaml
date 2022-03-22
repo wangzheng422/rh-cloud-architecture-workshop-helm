@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/globex/recommendation-engine
+  repository: quay.io/globex-recommendation/recommendation-engine
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "d7cbdd4"
 
 nameOverride: ""
 fullnameOverride: ""
