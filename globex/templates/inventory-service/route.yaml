@@ -1,0 +1,21 @@
+{{- if .Values.inventoryService.route.enabled -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.inventoryService.name }}
+spec:
+  {{ if .Values.inventoryService.route.host }}
+  host: {{ .Values.inventoryService.route.host }}
+  {{ end }}
+  port:
+    targetPort: {{ .Values.inventoryService.service.portName }}
+  to:
+    kind: Service
+    name: {{ .Values.inventoryService.name }}
+    weight: 100
+  wildcardPolicy: None
+  {{- if .Values.inventoryService.route.tlsEnabled }}
+  tls:
+    {{- toYaml .Values.inventoryService.route.tls | nindent 4 }}
+  {{ end }}
+{{ end }}
