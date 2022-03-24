@@ -25,24 +25,24 @@ spec:
         app.kubernetes.io/part-of: app-catalog
     spec:
       containers:
-      - image:  {{ .Values.catalogService.image }}
-        imagePullPolicy: {{ .Values.catalogService.imagePullPolicy }}
-        name: {{ .Values.catalogService.name }}
-        ports:
-          - name: {{ .Values.catalogService.ports.httpPortName }}
-            containerPort: {{ .Values.catalogService.ports.httpPort }}
-            protocol: TCP
-        resources: {}
-        env:
-          - name: JAVA_OPTIONS
-            value: -Dspring.profiles.active=openshift
-          - name: SPRING_DATASOURCE_URL
-            value: jdbc:postgresql://{{ .Values.catalogDb.name }}:5432/{{ .Values.catalogDb.pgsqlDatabase }}
-          - name: SPRING_DATASOURCE_USERNAME
-            value: {{ .Values.catalogDb.pgsqlUser }}
-          - name: SPRING_DATASOURCE_PASSWORD
-            value: {{ .Values.catalogDb.pgsqlPassword }}
-          - name: INVENTORY_URL
-            value: {{ .Values.inventoryService.name }}:8080
+        - image:  {{ .Values.catalogService.image }}
+          imagePullPolicy: {{ .Values.catalogService.imagePullPolicy }}
+          name: {{ .Values.catalogService.name }}
+          ports:
+            - name: {{ .Values.catalogService.ports.httpPortName }}
+              containerPort: {{ .Values.catalogService.ports.httpPort }}
+              protocol: TCP
+          resources: {}
+          env:
+            - name: JAVA_OPTIONS
+              value: -Dspring.profiles.active=openshift
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://{{ .Values.catalogDb.name }}:5432/{{ .Values.catalogDb.pgsqlDatabase }}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.catalogDb.pgsqlUser }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: {{ .Values.catalogDb.pgsqlPassword }}
+            - name: INVENTORY_URL
+              value: {{ .Values.inventoryService.name }}:8080
       serviceAccountName: {{ .Values.catalogService.serviceAccount }}
       serviceAccount: {{ .Values.catalogService.serviceAccount }}

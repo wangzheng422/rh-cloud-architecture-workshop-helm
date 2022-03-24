@@ -23,20 +23,20 @@ spec:
         name: {{ .Values.inventoryDb.name }}
     spec:
       containers:
-      - image: {{ .Values.inventoryDb.image }}
-        imagePullPolicy: {{ .Values.inventoryDb.imagePullPolicy }}
-        name: {{ .Values.inventoryDb.name }}
-        ports:
-          - name: postgresql
-            containerPort: 5432
-            protocol: TCP
-        resources: {}
-        env:
-          - name: POSTGRESQL_USER
-            value: {{ .Values.inventoryDb.pgsqlUser }}
-          - name: POSTGRESQL_PASSWORD
-            value: {{ .Values.inventoryDb.pgsqlPassword }}
-          - name: POSTGRESQL_DATABASE
-            value: {{ .Values.inventoryDb.pgsqlDatabase }}
+        - image: {{ .Values.inventoryDb.image }}
+          imagePullPolicy: {{ .Values.inventoryDb.imagePullPolicy }}
+          name: {{ .Values.inventoryDb.name }}
+          ports:
+            - name: postgresql
+              containerPort: 5432
+              protocol: TCP
+          resources: {}
+          env:
+            - name: POSTGRESQL_USER
+              value: {{ .Values.inventoryDb.pgsqlUser }}
+            - name: POSTGRESQL_PASSWORD
+              value: {{ .Values.inventoryDb.pgsqlPassword }}
+            - name: POSTGRESQL_DATABASE
+              value: {{ .Values.inventoryDb.pgsqlDatabase }}
       serviceAccountName: {{ .Values.inventoryDb.serviceAccount }}
       serviceAccount: {{ .Values.inventoryDb.serviceAccount }}

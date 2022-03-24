@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: {{ .Values.globexUi.name }}
+    app.kubernetes.io/part-of: app-ui
+    app.openshift.io/runtime: nodejs
+  name: {{ .Values.globexUi.name }}
+spec:
+  replicas: {{ .Values.globexUi.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.globexUi.name }}
+      app.kubernetes.io/part-of: app-ui
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ .Values.globexUi.name }}
+        app.kubernetes.io/part-of: app-ui
+    spec:
+      containers:
+        - image:  {{ .Values.globexUi.image }}
+          imagePullPolicy: {{ .Values.globexUi.imagePullPolicy }}
+          name: {{ .Values.globexUi.name }}
+          ports:
+            - name: {{ .Values.globexUi.ports.httpPortName }}
+              containerPort: {{ .Values.globexUi.ports.httpPort }}
+              protocol: TCP
+          resources: {}
+          env:
+            - name: NODE_ENV
+              value: {{ .Values.globexUi.env.nodeEnv }}
+            - name: PORT
+              value: '{{ .Values.globexUi.ports.httpPort }}'
+            - name: API_TRACK_USERACTIVITY
+              value: {{ .Values.globexUi.env.trackActivityService.url }}{{ .Values.globexUi.env.trackActivityService.postActivityPath }}
+            - name: API_GET_PAGINATED_PRODUCTS
+              value: {{ .Values.globexUi.env.catalogService.url }}{{ .Values.globexUi.env.catalogService.getProductsPath }}
+            - name: API_GET_PRODUCT_DETAILS_BY_IDS
+              value: {{ .Values.globexUi.env.catalogService.url }}{{ .Values.globexUi.env.catalogService.getProductListPath }}
+            - name: API_CATALOG_RECOMMENDED_PRODUCT_IDS
+              value: {{ .Values.globexUi.env.recommendationEngine.url }}{{ .Values.globexUi.env.recommendationEngine.getRecommendedProductsPath }}
+      serviceAccountName: {{ .Values.globexUi.serviceAccount }}
+      serviceAccount: {{ .Values.globexUi.serviceAccount }}

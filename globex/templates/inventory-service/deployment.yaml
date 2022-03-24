@@ -22,20 +22,20 @@ spec:
         app.kubernetes.io/part-of: app-inventory
     spec:
       containers:
-      - image: {{ .Values.inventoryService.image }}
-        imagePullPolicy: {{ .Values.inventoryService.imagePullPolicy }}
-        name: {{ .Values.inventoryService.name }}
-        ports:
-          - name: {{ .Values.inventoryService.ports.httpPortName }}
-            containerPort: {{ .Values.inventoryService.ports.httpPort }}
-            protocol: TCP
-        resources: {}
-        env:
-          - name: QUARKUS_DATASOURCE_USERNAME
-            value: {{ .Values.inventoryDb.pgsqlUser }}
-          - name: QUARKUS_DATASOURCE_PASSWORD
-            value: {{ .Values.inventoryDb.pgsqlPassword }}
-          - name: QUARKUS_DATASOURCE_JDBC_URL
-            value: jdbc:postgresql://{{ .Values.inventoryDb.name }}:5432/{{ .Values.inventoryDb.pgsqlDatabase }}
+        - image: {{ .Values.inventoryService.image }}
+          imagePullPolicy: {{ .Values.inventoryService.imagePullPolicy }}
+          name: {{ .Values.inventoryService.name }}
+          ports:
+            - name: {{ .Values.inventoryService.ports.httpPortName }}
+              containerPort: {{ .Values.inventoryService.ports.httpPort }}
+              protocol: TCP
+          resources: {}
+          env:
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: {{ .Values.inventoryDb.pgsqlUser }}
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              value: {{ .Values.inventoryDb.pgsqlPassword }}
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: jdbc:postgresql://{{ .Values.inventoryDb.name }}:5432/{{ .Values.inventoryDb.pgsqlDatabase }}
       serviceAccountName: {{ .Values.inventoryService.serviceAccount }}
       serviceAccount: {{ .Values.inventoryService.serviceAccount }}

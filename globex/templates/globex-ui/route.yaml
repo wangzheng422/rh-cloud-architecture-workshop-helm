@@ -1,0 +1,19 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.globexUi.name }}
+spec:
+  {{ if .Values.globexUi.route.host }}
+  host: {{ .Values.globexUi.route.host }}
+  {{ end }}
+  port:
+    targetPort: {{ .Values.globexUi.service.portName }}
+  to:
+    kind: Service
+    name: {{ .Values.globexUi.name }}
+    weight: 100
+  wildcardPolicy: None
+  {{- if .Values.globexUi.route.tlsEnabled }}
+  tls:
+    {{- toYaml .Values.globexUi.route.tls | nindent 4 }}
+  {{ end }}
