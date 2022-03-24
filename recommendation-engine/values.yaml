@@ -77,5 +77,6 @@ kafka:
   streams:
     topics: globex.tracking
     replicationFactor: 3
+    commitIntervalMs: 10000
   topics:
     trackingEvent: globex.tracking
