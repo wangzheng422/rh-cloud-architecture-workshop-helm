@@ -78,5 +78,6 @@ kafka:
     topics: globex.tracking
     replicationFactor: 3
     commitIntervalMs: 10000
+    applicationId: globex.recommendation
   topics:
     trackingEvent: globex.tracking

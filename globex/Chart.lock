@@ -1,0 +1,18 @@
+dependencies:
+- name: inventory
+  repository: file://inventory
+  version: 0.1.0
+- name: catalog
+  repository: file://catalog
+  version: 0.1.0
+- name: globex-ui
+  repository: file://globex-ui
+  version: 0.1.0
+- name: recommendation-engine
+  repository: file://recommendation-engine
+  version: 0.1.0
+- name: activity-tracking
+  repository: file://activity-tracking
+  version: 0.1.0
+digest: sha256:bc8d4b991ab14d9527a3d68d8a7843645b959657dd86125c0cae7d254261caa7
+generated: "2022-03-25T19:43:39.904335852+01:00"

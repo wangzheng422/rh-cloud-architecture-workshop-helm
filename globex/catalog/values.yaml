@@ -1,0 +1,32 @@
+catalogDb:
+  name: catalog-database
+  replicas: 1
+  image: quay.io/globex-recommendation/catalog-database:0f2bc23
+  imagePullPolicy: IfNotPresent
+  pgsqlUser: sa
+  pgsqlPassword: sa
+  pgsqlDatabase: catalog
+  serviceAccount: default
+
+catalogService:
+  name: catalog
+  replicas: 1
+  image: quay.io/globex-recommendation/catalog:78efd5b
+  imagePullPolicy: IfNotPresent
+  serviceAccount: default
+  route:
+    enabled: false
+    host:
+    tlsEnabled: true
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  ports:
+    httpPortName: http
+    httpPort: 8080
+  service:
+    portName: http
+    port: 8080
+
+inventoryService:
+  name: inventory

@@ -1,1 +1,1 @@
-Helm charts for Globex recommendation services.
+Helm charts for Globex application.

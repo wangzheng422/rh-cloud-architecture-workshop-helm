@@ -1,92 +1,46 @@
-catalogDb:
-  name: catalog-database
-  replicas: 1
-  image: quay.io/globex-recommendation/catalog-database:0f2bc23
-  imagePullPolicy: IfNotPresent
-  pgsqlUser: sa
-  pgsqlPassword: sa
-  pgsqlDatabase: catalog
-  serviceAccount: default
+inventory:
+  inventoryService:
+    name: inventory  
 
-catalogService:
-  name: catalog
-  replicas: 1
-  image: quay.io/globex-recommendation/catalog:78efd5b
-  imagePullPolicy: IfNotPresent
-  serviceAccount: default
+catalog:
+  catalogService:
+    route:
+      enabled: true
+  inventoryService:
+    name: inventory
+
+globex-ui:
+  globexUi:
+    route:
+      enabled: true
+    env:
+      trackActivityService:
+        url: http://activity-tracking:8080
+        postActivityPath: /track
+      catalogService:
+        url: http://catalog:8080
+        getProductsPath: /services/products
+        getProductListPath: /services/product/list/
+      recommendationEngine:
+        url: http://recommendation-engine:8080
+        getRecommendedProductsPath: /score/product
+
+recommendation-engine:
   route:
-    enabled: false
-    host:
-    tlsEnabled: true
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
-  ports:
-    httpPortName: http
-    httpPort: 8080
-  service:
-    portName: http
-    port: 8080
+    enabled: true
+  kafka:
+    bootstrapServer: localhost:9092
+    securityProtocol: ""
+    saslMechanism: ""
+    userId: ""
+    password: ""
 
-inventoryService:
-  name: inventory
-  replicas: 1
-  image: quay.io/globex-recommendation/inventory:3f38c2f
-  imagePullPolicy: IfNotPresent
-  serviceAccount: default
-  ports:
-    httpPortName: http
-    httpPort: 8080
-  service:
-    portName: http
-    port: 8080
+activity-tracking:
   route:
-    enabled: false
-    host:
-    tlsEnabled: true
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
-
-inventoryDb:
-  name: inventory-database
-  replicas: 1
-  image: quay.io/globex-recommendation/inventory-database:0f2bc23
-  imagePullPolicy: IfNotPresent 
-  pgsqlUser: sa
-  pgsqlPassword: sa
-  pgsqlDatabase: inventory
-  serviceAccount: default
-
-globexUi:
-  name: globex-ui
-  replicas: 1
-  image: quay.io/globex-recommendation/globex-recommendation-ui:91c32a0
-  imagePullPolicy: IfNotPresent
-  serviceAccount: default
-  ports:
-    httpPortName: http
-    httpPort: 8080
-  service:
-    portName: http
-    port: 8080
-  route:
-    enabled: false
-    host:
-    tlsEnabled: true
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
-  env:
-    nodeEnv: prod
-    trackActivityService:
-      url: 
-      postActivityPath: /track
-    catalogService:
-      url: 
-      getProductsPath: /services/products
-      getProductListPath: /services/product/list/
-    recommendationEngine:
-      url: 
-      getRecommendedProductsPath: /score/product
-  
+    enabled: true
+  kafka:
+    bootstrapServer: localhost:9092
+    securityProtocol: ""
+    saslMechanism: ""
+    userId: ""
+    password: ""
