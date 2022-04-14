@@ -29,9 +29,9 @@ recommendation-engine:
   route:
     enabled: true
   kafka:
-    bootstrapServer: localhost:9092
-    securityProtocol: ""
-    saslMechanism: ""
+    bootstrapServer: ""
+    securityProtocol: SASL_SSL
+    saslMechanism: PLAIN
     userId: ""
     password: ""
 
@@ -39,8 +39,8 @@ activity-tracking:
   route:
     enabled: true
   kafka:
-    bootstrapServer: localhost:9092
-    securityProtocol: ""
-    saslMechanism: ""
+    bootstrapServer: ""
+    securityProtocol: SASL_SSL
+    saslMechanism: PLAIN
     userId: ""
     password: ""

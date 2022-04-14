@@ -62,7 +62,7 @@ readinessProbe:
   timeoutSeconds: 3
 
 kafka:
-  bootstrapServer: localhost:9092
+  bootstrapServer: ""
   trackingEventTopic: globex.tracking
   securityProtocol: ""
   saslMechanism: ""
