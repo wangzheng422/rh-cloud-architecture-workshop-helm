@@ -1,6 +1,6 @@
 apiVersion: v2
 name: activity-tracking
-description: A Helm chart for Kubernetes
+description: A Helm chart for the deployment of the Globex Activity Tracking application
 
 # A chart can be either an 'application' or a 'library' chart.
 #
