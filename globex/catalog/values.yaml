@@ -3,8 +3,8 @@ catalogDb:
   replicas: 1
   image: quay.io/globex-recommendation/catalog-database:0f2bc23
   imagePullPolicy: IfNotPresent
-  pgsqlUser: sa
-  pgsqlPassword: sa
+  pgsqlUser: catalog
+  pgsqlPassword: catalog
   pgsqlDatabase: catalog
   serviceAccount: default
 
