@@ -3,12 +3,12 @@ entries:
   activity-tracking:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-04-14T10:35:09.250115195+02:00"
+    created: "2022-04-14T10:49:33.48049396+02:00"
     description: A Helm chart for the deployment of the Globex Activity Tracking application
     digest: 0e95f1a0f21eb0a3ca3f0e9d1fb703f93841a0c32ad4bc5118f75b38e22b8add
     name: activity-tracking
     type: application
     urls:
-    - https://github.com/globex-recommendation/globex-recommendation-helm/charts/activity-tracking-0.1.0.tgz
+    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/activity-tracking-0.1.0.tgz
     version: 0.1.0
-generated: "2022-04-14T10:35:09.249512352+02:00"
+generated: "2022-04-14T10:49:33.47990755+02:00"
