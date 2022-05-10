@@ -76,7 +76,7 @@ kafka:
   password: ""
   streams:
     topics: globex.tracking
-    replicationFactor: 3
+    replicationFactor: 1
     commitIntervalMs: 10000
     applicationId: globex.recommendation
   topics:
