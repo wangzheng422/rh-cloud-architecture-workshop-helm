@@ -8,7 +8,7 @@ image:
   repository: quay.io/globex-recommendation/activity-tracking-service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "527047f"
+  tag: "86e6b56"
 
 nameOverride: ""
 fullnameOverride: ""

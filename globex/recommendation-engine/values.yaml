@@ -8,7 +8,7 @@ image:
   repository: quay.io/globex-recommendation/recommendation-engine
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "9e69e08"
+  tag: "3ee6286"
 
 nameOverride: ""
 fullnameOverride: ""

@@ -11,7 +11,7 @@ catalogDb:
 catalogService:
   name: catalog
   replicas: 1
-  image: quay.io/globex-recommendation/catalog:fe09dd4
+  image: quay.io/globex-recommendation/catalog:c434beb
   imagePullPolicy: IfNotPresent
   serviceAccount: default
   route:
