@@ -45,4 +45,6 @@ spec:
               value: {{ .Values.catalogService.url }}{{ .Values.catalogService.getProductListPath }}
             - name: API_CATALOG_RECOMMENDED_PRODUCT_IDS
               value: {{ .Values.recommendationEngine.url }}{{ .Values.recommendationEngine.getRecommendedProductsPath }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
       serviceAccountName: {{ include "globex-ui.serviceAccountName" . }}

@@ -34,6 +34,15 @@ inventoryDb:
   secret:
     name: inventory-database
 
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

@@ -37,6 +37,8 @@ spec:
           volumeMounts:
             - mountPath: /deployments/config
               name: config
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
       volumes:
         - name: config
           secret:

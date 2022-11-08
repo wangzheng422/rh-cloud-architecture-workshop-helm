@@ -48,5 +48,7 @@ spec:
                 secretKeyRef:
                   key: database-name
                   name: {{ .Values.catalogDb.secret.name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
       serviceAccountName: {{ include "catalog-app.serviceAccountName" . }}
       serviceAccount: {{ include "catalog-app.serviceAccountName" . }}

@@ -46,5 +46,7 @@ spec:
                 secretKeyRef:
                   key: database-name
                   name: {{ .Values.inventoryDb.secret.name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
       serviceAccountName: {{ include "inventory-app.serviceAccountName" . }}
       serviceAccount: {{ include "inventory-app.serviceAccountName" . }}

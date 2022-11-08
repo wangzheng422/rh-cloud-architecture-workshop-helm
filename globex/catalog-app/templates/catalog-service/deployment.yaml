@@ -55,5 +55,7 @@ spec:
                   key: database-password
             - name: INVENTORY_URL
               value: {{ .Values.inventoryService.name }}:8080
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
       serviceAccountName: {{ include "catalog-app.serviceAccountName" . }}
       serviceAccount: {{ include "catalog-app.serviceAccountName" . }}

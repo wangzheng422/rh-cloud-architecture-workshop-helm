@@ -30,6 +30,15 @@ route:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
 
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
 nodeEnv: prod
 activityTrackingService:
   name: activity-tracking

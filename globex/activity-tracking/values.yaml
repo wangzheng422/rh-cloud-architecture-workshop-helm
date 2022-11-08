@@ -61,6 +61,15 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 3
 
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
 kafka:
   bootstrapServer: ""
   trackingEventTopic: globex.tracking
