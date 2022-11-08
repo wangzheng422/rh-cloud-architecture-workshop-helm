@@ -2,10 +2,9 @@ inventory:
   inventoryService:
     name: inventory  
 
-catalog:
-  catalogService:
-    route:
-      enabled: true
+catalog-service:
+  route:
+    enabled: true
   inventoryService:
     name: inventory
 

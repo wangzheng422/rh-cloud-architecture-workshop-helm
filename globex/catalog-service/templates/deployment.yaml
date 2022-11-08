@@ -6,33 +6,41 @@ metadata:
     app.openshift.io/connects-to: |
       [{"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.inventoryService.name }}"},{"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.catalogDb.name }}"}]
   labels:
-    app.kubernetes.io/name: {{ .Values.catalogService.name }}
+    {{- include "catalog-service.labels" . | nindent 4 }}
     app.openshift.io/runtime: spring
-    {{- include "catalog-app.selectorLabels" . | nindent 4 }}
-  name: {{ .Values.catalogService.name }}
+  name: {{ include "catalog-service.name" . }}
 spec:
-  replicas: {{ .Values.catalogService.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.catalogService.name }}
-      {{- include "catalog-app.selectorLabels" . | nindent 6 }}
-  strategy: {}
+      {{- include "catalog-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      creationTimestamp: null
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
-        app.kubernetes.io/name: {{ .Values.catalogService.name }}
-      {{- include "catalog-app.selectorLabels" . | nindent 8 }}
+        {{- include "catalog-service.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - image:  "{{ .Values.catalogService.image.repository }}:{{ .Values.catalogService.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.catalogService.image.pullPolicy }}
-          name: {{ .Values.catalogService.name }}
+        - name: {{ .Chart.Name }}
+          image:  "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: {{ .Values.catalogService.ports.httpPortName }}
-              containerPort: {{ .Values.catalogService.ports.httpPort }}
+            - name: {{ .Values.ports.httpPortName }}
+              containerPort: {{ .Values.ports.httpPort }}
               protocol: TCP
-          resources: {}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          {{- end }}          
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: JAVA_OPTIONS
               value: -Dspring.profiles.active=openshift
@@ -57,5 +65,4 @@ spec:
               value: {{ .Values.inventoryService.name }}:8080
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-      serviceAccountName: {{ include "catalog-app.serviceAccountName" . }}
-      serviceAccount: {{ include "catalog-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "catalog-service.serviceAccountName" . }}
