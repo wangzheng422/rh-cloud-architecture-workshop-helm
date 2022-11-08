@@ -1,6 +1,9 @@
 dependencies:
-- name: inventory-app
-  repository: file://inventory-app
+- name: inventory-service
+  repository: file://inventory-service
+  version: 0.1.0
+- name: inventory-db
+  repository: file://inventory-db
   version: 0.1.0
 - name: catalog-service
   repository: file://catalog-service
@@ -17,5 +20,5 @@ dependencies:
 - name: activity-tracking
   repository: file://activity-tracking
   version: 0.1.0
-digest: sha256:5b1f493de4bcd44b54f21f9dc9b084a0acb416d997410fa55aae8820d2fea85f
-generated: "2022-11-08T17:44:15.954613809+01:00"
+digest: sha256:edf82371900355553e10b88685567267d02f04a2c996e22b276a02b510c17a97
+generated: "2022-11-08T20:34:45.20895859+01:00"

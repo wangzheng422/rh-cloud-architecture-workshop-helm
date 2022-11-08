@@ -1,0 +1,49 @@
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+
+image:
+  repository: quay.io/globex-recommendation/inventory-database
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0f2bc23"
+
+ports:
+  pqsqlPortName: postgresql
+  pgsqlPort: 5432
+
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop:
+      - ALL
+
+podAnnotations: {}
+
+resources: {}
+
+livenessProbe: {}
+
+readinessProbe: {}
+
+service:
+  portName: postgresql
+  port: 5432
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+pgsql:
+  user: inventory
+  password: inventory
+  database: inventory
