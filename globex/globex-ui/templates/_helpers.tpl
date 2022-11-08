@@ -55,7 +55,7 @@ Create the name of the service account to use
 */}}
 {{- define "globex-ui.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "globex-ui.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "globex-ui.name" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

@@ -3,6 +3,9 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: {{ .Values.catalogService.name }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.catalogService.name }}
+    {{- include "catalog-app.selectorLabels" . | nindent 4 }}
 spec:
   {{ if .Values.catalogService.route.host }}
   host: {{ .Values.catalogService.route.host }}

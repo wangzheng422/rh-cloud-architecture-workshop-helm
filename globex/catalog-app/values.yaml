@@ -1,0 +1,47 @@
+catalogDb:
+  name: catalog-database
+  replicaCount: 1
+  image: 
+    repository: quay.io/globex-recommendation/catalog-database
+    pullPolicy: IfNotPresent
+    tag: "0f2bc23"
+  pgsqlUser: catalog
+  pgsqlPassword: catalog
+  pgsqlDatabase: catalog
+  secret:
+    name: catalog-database
+
+catalogService:
+  name: catalog
+  replicaCount: 1
+  image:
+    repository: quay.io/globex-recommendation/catalog
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "c434beb"
+
+  route:
+    enabled: false
+    host:
+    tlsEnabled: true
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  ports:
+    httpPortName: http
+    httpPort: 8080
+  service:
+    portName: http
+    port: 8080
+
+inventoryService:
+  name: inventory
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""

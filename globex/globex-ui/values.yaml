@@ -1,32 +1,51 @@
-globexUi:
-  name: globex-ui
-  replicas: 1
-  image: quay.io/globex-recommendation/globex-recommendation-ui:9fedc9b
-  imagePullPolicy: IfNotPresent
-  serviceAccount: default
-  ports:
-    httpPortName: http
-    httpPort: 8080
-  service:
-    portName: http
-    port: 8080
-  route:
-    enabled: false
-    host:
-    tlsEnabled: true
-    tls:
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
-  env:
-    nodeEnv: prod
-    trackActivityService:
-      url:
-      postActivityPath:
-    catalogService:
-      url: 
-      getProductsPath: 
-      getProductListPath: 
-    recommendationEngine:
-      url: 
-      getRecommendedProductsPath: 
+replicaCount: 1
+
+image:
+  repository: quay.io/globex-recommendation/globex-recommendation-ui
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "9fedc9b"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+ports:
+  httpPortName: http
+  httpPort: 8080
+
+service:
+  type: ClusterIP
+  portName: http
+  port: 8080
+
+route:
+  enabled: true
+  host:
+  tlsEnabled: true
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+
+nodeEnv: prod
+activityTrackingService:
+  name: activity-tracking
+  url: http://activity-tracking:8080
+  postActivityPath: /track
+catalogService:
+  name: catalog
+  url: http://catalog:8080
+  getProductsPath: /services/products
+  getProductListPath: /services/product/list/
+recommendationEngine:
+  name: recommendation-engine
+  url: http://recommendation-engine:8080
+  getRecommendedProductsPath: /score/product 
+orderPlacementService:
+  name: order-placement
+  url: http://order-placement:8080
+  postOrderPath: /placeorder
   

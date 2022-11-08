@@ -1,10 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
   labels:
     app.kubernetes.io/name: {{ .Values.inventoryService.name }}
-    app.kubernetes.io/part-of: app-inventory
+    {{- include "inventory-app.labels" . | nindent 4 }}
   name: {{ .Values.inventoryService.name }}
 spec:
   ports:
@@ -14,4 +13,4 @@ spec:
     targetPort: {{ .Values.inventoryService.ports.httpPortName }}
   selector:
     app.kubernetes.io/name: {{ .Values.inventoryService.name }}
-
+    {{- include "inventory-app.selectorLabels" . | nindent 4 }}

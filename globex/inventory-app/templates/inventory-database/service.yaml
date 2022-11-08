@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.inventoryDb.name }}
-    app.kubernetes.io/part-of: app-inventory
+    {{- include "inventory-app.labels" . | nindent 4 }}
   name: {{ .Values.inventoryDb.name }}
 spec:
   ports:
@@ -13,3 +13,4 @@ spec:
       targetPort: 5432
   selector:
     app.kubernetes.io/name: {{ .Values.inventoryDb.name }}
+    {{- include "inventory-app.selectorLabels" . | nindent 4 }}

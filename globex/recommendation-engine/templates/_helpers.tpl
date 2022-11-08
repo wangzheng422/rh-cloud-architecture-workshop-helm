@@ -55,7 +55,7 @@ Create the name of the service account to use
 */}}
 {{- define "recommendation-engine.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "recommendation-engine.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "recommendation-engine.name" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

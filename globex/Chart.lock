@@ -1,9 +1,9 @@
 dependencies:
-- name: inventory
-  repository: file://inventory
+- name: inventory-app
+  repository: file://inventory-app
   version: 0.1.0
-- name: catalog
-  repository: file://catalog
+- name: catalog-app
+  repository: file://catalog-app
   version: 0.1.0
 - name: globex-ui
   repository: file://globex-ui
@@ -14,5 +14,5 @@ dependencies:
 - name: activity-tracking
   repository: file://activity-tracking
   version: 0.1.0
-digest: sha256:bc8d4b991ab14d9527a3d68d8a7843645b959657dd86125c0cae7d254261caa7
-generated: "2022-03-25T19:43:39.904335852+01:00"
+digest: sha256:bae30f0529e1b53e2d1a5336b2bd507e28692010c66d69241f8417ebfa7c006f
+generated: "2022-11-07T10:45:33.520025344+01:00"

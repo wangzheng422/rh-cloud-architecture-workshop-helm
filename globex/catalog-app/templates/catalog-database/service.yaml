@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.catalogDb.name }}
-    app.kubernetes.io/part-of: app-catalog
+    {{- include "catalog-app.labels" . | nindent 4 }}
   name: {{ .Values.catalogDb.name }}
 spec:
   ports:
@@ -13,3 +13,4 @@ spec:
       targetPort: 5432
   selector:
     app.kubernetes.io/name: {{ .Values.catalogDb.name }}
+    {{- include "catalog-app.selectorLabels" . | nindent 4 }}

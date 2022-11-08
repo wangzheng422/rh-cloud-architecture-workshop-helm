@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     app.kubernetes.io/name: {{ .Values.catalogService.name }}
-    app.kubernetes.io/part-of: app-catalog
+    {{- include "catalog-app.selectorLabels" . | nindent 4 }}
   name: {{ .Values.catalogService.name }}
 spec:
   ports:
@@ -14,3 +14,4 @@ spec:
     targetPort: {{ .Values.catalogService.ports.httpPortName }}
   selector:
     app.kubernetes.io/name: {{ .Values.catalogService.name }}
+    {{- include "catalog-app.selectorLabels" . | nindent 4 }}
