@@ -30,14 +30,10 @@ spec:
             - name: {{ .Values.ports.httpPortName }}
               containerPort: {{ .Values.ports.httpPort }}
               protocol: TCP
-          {{- with .Values.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          {{- end }}          
-          {{- with .Values.readinessProbe }}
+            {{- toYaml .Values.livenessProbe | nindent 12 }}        
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
-          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
