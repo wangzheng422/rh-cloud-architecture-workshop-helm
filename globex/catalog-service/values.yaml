@@ -24,11 +24,33 @@ ports:
   httpPortName: http
   httpPort: 8080
 
-resources: {}
+resources:
+  limits:
+    cpu: 200m
+    memory: 768Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
 
-livenessProbe: {}
+livenessProbe:
+  failureThreshold: 3
+  httpGet:
+    path: /actuator/health
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 3
 
-readinessProbe: {}
+readinessProbe:
+  failureThreshold: 3
+  httpGet:
+    path: /actuator/health
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 3
 
 route:
   enabled: false
