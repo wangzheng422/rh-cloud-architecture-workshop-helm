@@ -11,10 +11,21 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/activity-tracking-0.1.0.tgz
     version: 0.1.0
+  catalog-db:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-12T12:22:04.612591464+01:00"
+    description: A Helm chart for the deployment of the Globex Catalog database
+    digest: 2100a46eebff13ff5058c904c8481007c49cac2475291beebf7fff3763853178
+    name: catalog-db
+    type: application
+    urls:
+    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/catalog-db-0.1.0.tgz
+    version: 0.1.0
   inventory-db:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-11-12T11:39:03.436190335+01:00"
+    created: "2022-11-12T12:22:04.612933568+01:00"
     description: A Helm chart for the deployment of the Globex Inventory database
     digest: 821f55d4096623d26bb2b7fdffd4d7af9bd71b54763dcbb2233f8468c593ee9e
     name: inventory-db
@@ -33,4 +44,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/inventory-service-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-12T11:39:03.43532087+01:00"
+generated: "2022-11-12T12:22:04.611682602+01:00"
