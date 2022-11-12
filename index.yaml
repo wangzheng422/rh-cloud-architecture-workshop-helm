@@ -22,6 +22,17 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/catalog-db-0.1.0.tgz
     version: 0.1.0
+  catalog-service:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-12T17:13:50.507918876+01:00"
+    description: A Helm chart for the deployment of the Globex Catalog service
+    digest: 95b203013c4c110080884d9a04f0ba387cb41e92cf4e7c227669a4c9761b59ea
+    name: catalog-service
+    type: application
+    urls:
+    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/catalog-service-0.1.0.tgz
+    version: 0.1.0
   inventory-db:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -44,4 +55,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/inventory-service-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-12T12:22:04.611682602+01:00"
+generated: "2022-11-12T17:13:50.506712951+01:00"
