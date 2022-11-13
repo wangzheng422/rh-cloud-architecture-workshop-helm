@@ -67,4 +67,16 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/inventory-service-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-12T18:00:34.767843758+01:00"
+  recommendation-engine:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-11-13T19:58:12.632364879+01:00"
+    description: A Helm chart for the deployment of the Globex Recommendation Engine
+      application
+    digest: 48e53674b53b5f292564fa8854e3c1f9896c5c855448180c0ba14997c1eef73c
+    name: recommendation-engine
+    type: application
+    urls:
+    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-11-13T19:58:12.629575958+01:00"
