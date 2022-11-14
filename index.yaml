@@ -36,10 +36,10 @@ entries:
   globex-ui:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-11-12T18:00:34.769531038+01:00"
+    created: "2022-11-14T12:15:13.581758497+01:00"
     description: A Helm chart for the deployment of the Globex Retail web application
       application
-    digest: fb81de55e1c1d42619c5be7c3d584a7243aa0eb1ad74529ca2676e4450375f60
+    digest: 1e01d8721ae2ba7aba2e8cc19973758012e60a18788fd3d5d6b968fe98929c4a
     name: globex-ui
     type: application
     urls:
@@ -79,4 +79,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-13T19:58:12.629575958+01:00"
+generated: "2022-11-14T12:15:13.580013763+01:00"
