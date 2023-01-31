@@ -67,6 +67,17 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/inventory-service-0.1.0.tgz
     version: 0.1.0
+  kafdrop:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-01-31T17:51:06.604474198+01:00"
+    description: A Helm chart for Kafdrop
+    digest: 008e79ba879e68f71101bcecb7c867451fc64a5f3eb798b0a5d5a5918f56e8d5
+    name: kafdrop
+    type: application
+    urls:
+    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/kafdrop-0.1.0.tgz
+    version: 0.1.0
   recommendation-engine:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -79,4 +90,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-16T11:56:54.596555014+01:00"
+generated: "2023-01-31T17:51:06.600832555+01:00"
