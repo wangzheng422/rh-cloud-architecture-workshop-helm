@@ -11,6 +11,18 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/activity-tracking-0.1.0.tgz
     version: 0.1.0
+  activity-tracking-simulator:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-01-31T20:07:23.857088033+01:00"
+    description: A Helm chart for the deployment of the Globex Activity Tracking Simulator
+      application
+    digest: 4c88c61b95e7302511de523d826d9d01387c6ea161291698f5f4f7e285bc57d8
+    name: activity-tracking-simulator
+    type: application
+    urls:
+    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/activity-tracking-simulator-0.1.0.tgz
+    version: 0.1.0
   catalog-db:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -101,4 +113,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-31T19:16:30.890079022+01:00"
+generated: "2023-01-31T20:07:23.856238484+01:00"
