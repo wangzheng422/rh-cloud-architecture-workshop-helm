@@ -50,6 +50,8 @@ spec:
               value: {{ .Values.catalogService.url }}{{ .Values.catalogService.getProductListPath }}
             - name: API_CATALOG_RECOMMENDED_PRODUCT_IDS
               value: {{ .Values.recommendationEngine.url }}{{ .Values.recommendationEngine.getRecommendedProductsPath }}
+            - name: API_TRACK_PLACEORDER
+              value: {{ .Values.orderPlacementService.url }}{{ .Values.orderPlacementService.postOrderPath }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
       serviceAccountName: {{ include "globex-ui.serviceAccountName" . }}
