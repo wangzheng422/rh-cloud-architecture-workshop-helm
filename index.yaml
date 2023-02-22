@@ -37,9 +37,9 @@ entries:
   catalog-service:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-02-22T15:22:09.180508731+01:00"
+    created: "2023-02-22T16:28:48.398829097+01:00"
     description: A Helm chart for the deployment of the Globex Catalog service
-    digest: 8d203c3b553488054e6092d602ba7cb8fa1f3dc7526fa6be5ada1a70dd9901c1
+    digest: df33b2c2d0b925047f94b829593a90eb8836c8ad9df783fb9450d0b05d9d1c2e
     name: catalog-service
     type: application
     urls:
@@ -113,4 +113,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-22T16:26:35.983543948+01:00"
+generated: "2023-02-22T16:28:48.397110898+01:00"
