@@ -7,7 +7,7 @@ image:
   repository: quay.io/globex-recommendation/catalog
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "c434beb"
+  tag: "da93a12"
 
 serviceAccount:
   # Specifies whether a service account should be created

@@ -38,7 +38,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            - name: JAVA_OPTIONS
+            - name: JAVA_OPTS
               value: -Dspring.profiles.active=openshift
             - name: POSTGRESQL_DATABASE
               valueFrom:
