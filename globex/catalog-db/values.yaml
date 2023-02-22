@@ -6,7 +6,7 @@ replicaCount: 1
 image: 
   repository: quay.io/globex-recommendation/catalog-database
   pullPolicy: IfNotPresent
-  tag: "0f2bc23"
+  tag: "5528c5a"
 
 ports:
   pqsqlPortName: postgresql

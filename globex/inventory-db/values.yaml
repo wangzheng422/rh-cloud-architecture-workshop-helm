@@ -7,7 +7,7 @@ image:
   repository: quay.io/globex-recommendation/inventory-database
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0f2bc23"
+  tag: "5528c5a"
 
 ports:
   pqsqlPortName: postgresql
