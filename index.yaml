@@ -26,9 +26,9 @@ entries:
   catalog-db:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-02-22T15:22:09.180093616+01:00"
+    created: "2023-02-22T16:26:35.984795579+01:00"
     description: A Helm chart for the deployment of the Globex Catalog database
-    digest: 76ecf9790d61e9e1807c6d695104d11307cce254ee7fda27615c17feee1d632f
+    digest: 12ad8d48307e1089bd692b2300686b2913e100d30deda74ea47143d97ffaa946
     name: catalog-db
     type: application
     urls:
@@ -60,9 +60,9 @@ entries:
   inventory-db:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-02-22T15:22:09.181302657+01:00"
+    created: "2023-02-22T16:26:35.986081202+01:00"
     description: A Helm chart for the deployment of the Globex Inventory database
-    digest: dc5c11a272d89fbe8b02b6fc7daaa6f1f7bdca6fcb4d99011f5caa8a08a511f0
+    digest: 4d5a28f9987b79a1f3630d7a6aff6f2cb1e8420487bbd65f5681c912dbfa58d0
     name: inventory-db
     type: application
     urls:
@@ -113,4 +113,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-22T15:22:09.17886751+01:00"
+generated: "2023-02-22T16:26:35.983543948+01:00"
