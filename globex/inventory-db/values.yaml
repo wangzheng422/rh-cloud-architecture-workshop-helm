@@ -4,20 +4,17 @@ fullnameOverride: ""
 replicaCount: 1
 
 image:
-  repository: quay.io/globex-recommendation/inventory-database
+  repository: quay.io/cloud-architecture-workshop/inventory-database
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "5528c5a"
+  tag: latest
 
-ports:
-  pqsqlPortName: postgresql
-  pgsqlPort: 5432
-
-securityContext:
-  allowPrivilegeEscalation: false
+podSecurityContext: 
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
       - ALL
@@ -51,6 +48,7 @@ readinessProbe:
 service:
   portName: postgresql
   port: 5432
+  containerPort: 5432
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -65,3 +63,11 @@ pgsql:
   user: inventory
   password: inventory
   database: inventory
+
+persistence:
+  mode: persistent
+  capacity: 5Gi
+
+argocd:
+  enabled: true
+  syncwave: "-2"

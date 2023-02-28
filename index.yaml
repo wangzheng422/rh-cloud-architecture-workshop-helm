@@ -59,14 +59,13 @@ entries:
     version: 0.1.0
   inventory-db:
   - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2023-02-22T16:26:35.986081202+01:00"
+    created: "2023-02-28T13:44:04.924607322+01:00"
     description: A Helm chart for the deployment of the Globex Inventory database
-    digest: 4d5a28f9987b79a1f3630d7a6aff6f2cb1e8420487bbd65f5681c912dbfa58d0
+    digest: f376d452f888ed710dd23cf881ca86358c265e55a1c4cc2079e050af31f6219e
     name: inventory-db
     type: application
     urls:
-    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/inventory-db-0.1.0.tgz
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/inventory-db-0.1.0.tgz
     version: 0.1.0
   inventory-service:
   - apiVersion: v2
@@ -113,4 +112,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-27T19:28:29.526233775+01:00"
+generated: "2023-02-28T13:44:04.922217311+01:00"

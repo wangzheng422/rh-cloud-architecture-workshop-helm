@@ -1,4 +1,5 @@
-kind: Secret
+{{- if eq .Values.persistence.mode "persistent" -}}
+kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "inventory-db.name" . }}
@@ -6,8 +7,10 @@ metadata:
     {{- include "inventory-db.labels" . | nindent 4 }}
   annotations:
     {{- include "inventory-db.argocd-syncwave" . | nindent 4 }}
-stringData:
-  database-user: {{ .Values.pgsql.user }}
-  database-password: {{ .Values.pgsql.password }}
-  database-name: {{ .Values.pgsql.database }}
-type: Opaque
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.capacity }}
+{{- end }}

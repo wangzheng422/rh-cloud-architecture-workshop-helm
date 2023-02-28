@@ -5,6 +5,8 @@ metadata:
   labels:
     {{- include "inventory-db.labels" . | nindent 4 }}
     app.openshift.io/runtime: postgresql
+  annotations:
+    {{- include "inventory-db.argocd-syncwave" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -21,13 +23,16 @@ spec:
       labels:
         {{- include "inventory-db.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "inventory-db.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
           image:  "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: {{ .Values.ports.pqsqlPortName }}
-              containerPort: {{ .Values.ports.pgsqlPort }}
+            - name: postgresql
+              containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
@@ -53,4 +58,3 @@ spec:
                   name: {{ include "inventory-db.name" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-      serviceAccountName: {{ include "inventory-db.serviceAccountName" . }}
