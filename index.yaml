@@ -68,14 +68,13 @@ entries:
     version: 0.1.0
   inventory-service:
   - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2022-11-11T19:00:46.380048097+01:00"
+    created: "2023-02-28T19:22:15.60566582+01:00"
     description: A Helm chart for the deployment of the Globex Inventory service
-    digest: f881968d2fc5d8c8397d1c0aa7acb5ce7b9c27a47c5277a7e57261ea7b229580
+    digest: 63f4f6c20968c23386b3ccdb44369626c97b2e7eba9caa5d5e71d59a5eb1fbd3
     name: inventory-service
     type: application
     urls:
-    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/inventory-service-0.1.0.tgz
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/inventory-service-0.1.0.tgz
     version: 0.1.0
   kafdrop:
   - apiVersion: v2
@@ -111,4 +110,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-28T13:44:04.922217311+01:00"
+generated: "2023-02-28T19:22:15.601867046+01:00"

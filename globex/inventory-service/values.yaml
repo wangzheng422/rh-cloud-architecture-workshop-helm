@@ -4,16 +4,12 @@ fullnameOverride: ""
 replicaCount: 1
 
 image:
-  repository: quay.io/globex-recommendation/inventory
+  repository: quay.io/cloud-architecture-workshop/inventory-service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "6500629"
+  tag: latest
 
 podAnnotations: {}
-
-ports:
-  httpPortName: http
-  httpPort: 8080
 
 resources:
   limits:
@@ -56,12 +52,15 @@ route:
 service:
   portName: http
   port: 8080
+  containerPort: 8080
 
-securityContext:
-  allowPrivilegeEscalation: false
+podSecurityContext: 
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
       - ALL
