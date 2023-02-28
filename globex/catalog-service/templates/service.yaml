@@ -10,6 +10,6 @@ spec:
   - name: {{ .Values.service.portName }}
     port: {{ .Values.service.port }}
     protocol: TCP
-    targetPort: {{ .Values.ports.httpPortName }}
+    targetPort: {{ .Values.service.containerPort }}
   selector:
     {{- include "catalog-service.selectorLabels" . | nindent 4 }}

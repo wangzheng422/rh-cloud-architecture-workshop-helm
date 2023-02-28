@@ -23,13 +23,16 @@ spec:
       labels:
         {{- include "catalog-service.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "catalog-service.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
           image:  "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: {{ .Values.ports.httpPortName }}
-              containerPort: {{ .Values.ports.httpPort }}
+            - name: http
+              containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
@@ -61,4 +64,3 @@ spec:
               value: {{ .Values.inventoryService.name }}:8080
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-      serviceAccountName: {{ include "catalog-service.serviceAccountName" . }}
