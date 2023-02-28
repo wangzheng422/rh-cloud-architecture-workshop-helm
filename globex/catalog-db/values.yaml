@@ -4,19 +4,17 @@ fullnameOverride: ""
 replicaCount: 1
 
 image: 
-  repository: quay.io/globex-recommendation/catalog-database
+  repository: quay.io/cloud-architecture-workshop/catalog-database
   pullPolicy: IfNotPresent
-  tag: "5528c5a"
+  tag: latest
 
-ports:
-  pqsqlPortName: postgresql
-  pgsqlPort: 5432
-
-securityContext:
-  allowPrivilegeEscalation: false
+podSecurityContext: 
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
       - ALL
@@ -50,6 +48,7 @@ readinessProbe:
 service:
   portName: postgresql
   port: 5432
+  containerPort: 5432
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -64,3 +63,11 @@ pgsql:
   user: catalog
   password: catalog
   database: catalog
+
+persistence:
+  mode: persistent
+  capacity: 5Gi
+
+argocd:
+  enabled: true
+  syncwave: "-2"

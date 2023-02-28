@@ -25,14 +25,13 @@ entries:
     version: 0.1.0
   catalog-db:
   - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2023-02-22T16:26:35.984795579+01:00"
+    created: "2023-02-28T17:59:02.145182928+01:00"
     description: A Helm chart for the deployment of the Globex Catalog database
-    digest: 12ad8d48307e1089bd692b2300686b2913e100d30deda74ea47143d97ffaa946
+    digest: e9dd8f1925b6c60b9a3238b009a878d03db8248722f0ce0ce176e56c791a4b74
     name: catalog-db
     type: application
     urls:
-    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/catalog-db-0.1.0.tgz
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/catalog-db-0.1.0.tgz
     version: 0.1.0
   catalog-service:
   - apiVersion: v2

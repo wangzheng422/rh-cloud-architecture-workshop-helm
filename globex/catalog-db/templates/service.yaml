@@ -4,11 +4,13 @@ metadata:
   name: {{ include "catalog-db.name" . }}
   labels:
     {{- include "catalog-db.labels" . | nindent 4 }}
+  annotations:
+    {{- include "catalog-db.argocd-syncwave" . | nindent 4 }}
 spec:
   ports:
     - name: {{ .Values.service.portName }}
       protocol: TCP
       port: {{ .Values.service.port }}
-      targetPort: {{ .Values.ports.pqsqlPortName }}
+      targetPort: {{ .Values.service.containerPort }}
   selector:
     {{- include "catalog-db.selectorLabels" . | nindent 4 }}
