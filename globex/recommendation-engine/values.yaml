@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/globex-recommendation/recommendation-engine
+  repository: quay.io/cloud-architecture-workshop/recommendation-engine
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "7f9dfea"
+  tag: latest
 
 nameOverride: ""
 fullnameOverride: ""
@@ -22,18 +22,12 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-ports:
-  httpPortName: http
-  httpPort: 8080
-
 podAnnotations: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
 
 service:
   type: ClusterIP
   port: 8080
+  containerPort: 8080
   portName: http
 
 route:
@@ -68,11 +62,13 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 3
 
-securityContext:
-  allowPrivilegeEscalation: false
+podSecurityContext: 
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
       - ALL

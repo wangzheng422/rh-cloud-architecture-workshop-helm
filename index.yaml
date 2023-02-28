@@ -98,14 +98,13 @@ entries:
     version: 0.1.0
   recommendation-engine:
   - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2023-02-22T15:22:09.18368782+01:00"
+    created: "2023-02-28T20:14:45.058391942+01:00"
     description: A Helm chart for the deployment of the Globex Recommendation Engine
       application
-    digest: 236d49cd62986b955e65bc56673584e151658fd938f12d207e8d017f56bf0bda
+    digest: 271d7ed6df9144a134cab38bc8b0a82f73a56de95bc2af9003a259aaf83f4f3d
     name: recommendation-engine
     type: application
     urls:
-    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-28T20:02:58.926911238+01:00"
+generated: "2023-02-28T20:14:45.05363534+01:00"
