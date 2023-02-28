@@ -2,14 +2,13 @@ apiVersion: v1
 entries:
   activity-tracking:
   - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2022-11-16T11:56:54.597083882+01:00"
+    created: "2023-02-28T21:12:28.047625257+01:00"
     description: A Helm chart for the deployment of the Globex Activity Tracking application
-    digest: 8b2b21a2b7b6468a62255b1393730340bfd5cbb8965961c07c2e3f829dac205f
+    digest: 058f8bdc13b87df4087433dc4b1870179de10afb356056a4195cb13e8c65e380
     name: activity-tracking
     type: application
     urls:
-    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/activity-tracking-0.1.0.tgz
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/activity-tracking-0.1.0.tgz
     version: 0.1.0
   activity-tracking-simulator:
   - apiVersion: v2
@@ -109,4 +108,4 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-28T19:37:51.926720255+01:00"
+generated: "2023-02-28T20:02:58.926911238+01:00"
