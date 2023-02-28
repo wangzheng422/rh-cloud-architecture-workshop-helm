@@ -1,21 +1,15 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/globex-recommendation/globex-recommendation-ui
+  repository: quay.io/cloud-architecture-workshop/globex-ui
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "ae55bd8"
+  tag: latest
 
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  annotations: {}
   name: ""
-
-ports:
-  httpPortName: http
-  httpPort: 8080
 
 resources:
   limits:
@@ -49,6 +43,7 @@ service:
   type: ClusterIP
   portName: http
   port: 8080
+  containerPort: 8080
 
 route:
   enabled: true
@@ -58,11 +53,13 @@ route:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
 
-securityContext:
-  allowPrivilegeEscalation: false
+podSecurityContext: 
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
       - ALL

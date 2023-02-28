@@ -23,13 +23,16 @@ spec:
       labels:
         {{- include "globex-ui.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "globex-ui.serviceAccountName" . }}
       containers:
         - image:  "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: {{ .Chart.Name }}
           ports:
-            - name: {{ .Values.ports.httpPortName }}
-              containerPort: {{ .Values.ports.httpPort }}
+            - name: http
+              containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
@@ -41,7 +44,7 @@ spec:
             - name: NODE_ENV
               value: {{ .Values.nodeEnv }}
             - name: PORT
-              value: '{{ .Values.ports.httpPort }}'
+              value: '{{ .Values.service.containerPort }}'
             - name: API_TRACK_USERACTIVITY
               value: {{ .Values.activityTrackingService.url }}{{ .Values.activityTrackingService.postActivityPath }}
             - name: API_GET_PAGINATED_PRODUCTS
@@ -54,4 +57,3 @@ spec:
               value: {{ .Values.orderPlacementService.url }}{{ .Values.orderPlacementService.postOrderPath }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-      serviceAccountName: {{ include "globex-ui.serviceAccountName" . }}
