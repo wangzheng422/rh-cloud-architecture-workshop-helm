@@ -21,6 +21,15 @@ entries:
     type: application
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/activity-tracking-simulator-0.1.0.tgz
+  cart-service:
+  - apiVersion: v2
+    created: "2023-03-03T10:15:34.720630506+01:00"
+    description: A Helm chart for the deployment of the Globex Cart service application
+    digest: 48fd13f7d7ea524d32e73ab0464cc64b7bfd05cd274c0987a68e100920c9687f
+    name: cart-service
+    type: application
+    urls:
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/cart-service-0.1.0.tgz
     version: 0.1.0
   catalog-db:
   - apiVersion: v2
@@ -106,4 +115,4 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-28T21:45:49.180983245+01:00"
+generated: "2023-03-03T10:15:34.71910125+01:00"
