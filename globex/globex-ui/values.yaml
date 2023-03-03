@@ -67,19 +67,18 @@ securityContext:
 nodeEnv: prod
 
 activityTrackingService:
-  name: activity-tracking
   url: http://activity-tracking:8080
   postActivityPath: /track
 catalogService:
-  name: catalog
   url: http://catalog:8080
   getProductsPath: /services/products
   getProductListPath: /services/product/list/
 recommendationEngine:
-  name: recommendation-engine
   url: http://recommendation-engine:8080
   getRecommendedProductsPath: /score/product 
 orderPlacementService:
-  name: order-placement
   url: http://order-placement:8080
   postOrderPath: /placeorder
+cartService:
+  url: http://cart-service:8080
+  cartPath: /cart
