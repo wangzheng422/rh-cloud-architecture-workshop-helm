@@ -28,4 +28,4 @@ dependencies:
     repository: file://activity-tracking
   - name: cart-service
     version: 0.1.0
-    repository: file://activity-tracking
+    repository: file://cart-service
