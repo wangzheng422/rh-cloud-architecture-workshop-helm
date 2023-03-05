@@ -61,6 +61,16 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/customer-db-0.1.0.tgz
     version: 0.1.0
+  customer-service:
+  - apiVersion: v2
+    created: "2023-03-05T21:02:03.629307596+01:00"
+    description: A Helm chart for the deployment of the Globex Customer service
+    digest: 46f70dd4c90ab01fb47201c84592f6682085acc2fe5f87733511892120c4a3c1
+    name: customer-service
+    type: application
+    urls:
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/customer-service-0.1.0.tgz
+    version: 0.1.0
   globex-ui:
   - apiVersion: v2
     created: "2023-03-03T11:01:43.903827715+01:00"
@@ -125,4 +135,4 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-03T19:27:31.178115868+01:00"
+generated: "2023-03-05T21:02:03.625726068+01:00"

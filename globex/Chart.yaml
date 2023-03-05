@@ -32,3 +32,6 @@ dependencies:
   - name: customer-db
     version: 0.1.0
     repository: file://customer-db
+  - name: customer-service
+    version: 0.1.0
+    repository: file://customer-service
