@@ -82,3 +82,6 @@ orderPlacementService:
 cartService:
   url: http://cart-service:8080
   cartPath: /cart
+customerService:
+  url: http://customer-service:8080
+  path: /public/customer/id/:custId
