@@ -113,6 +113,16 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/kafdrop-0.1.0.tgz
     version: 0.1.0
+  order-db:
+  - apiVersion: v2
+    created: "2023-03-06T23:34:03.346985362+01:00"
+    description: A Helm chart for the deployment of the Globex Order database
+    digest: c9ccbb0f4537341fe1fa5b2f41a0e4c9c219ee435063d4c91073c25cb7d91a3b
+    name: order-db
+    type: application
+    urls:
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/order-db-0.1.0.tgz
+    version: 0.1.0
   order-placement:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -135,4 +145,4 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-05T21:02:03.625726068+01:00"
+generated: "2023-03-06T23:34:03.341115643+01:00"
