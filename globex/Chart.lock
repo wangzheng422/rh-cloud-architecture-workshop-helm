@@ -20,5 +20,20 @@ dependencies:
 - name: activity-tracking
   repository: file://activity-tracking
   version: 0.1.0
-digest: sha256:edf82371900355553e10b88685567267d02f04a2c996e22b276a02b510c17a97
-generated: "2022-11-08T20:34:45.20895859+01:00"
+- name: cart-service
+  repository: file://cart-service
+  version: 0.1.0
+- name: customer-db
+  repository: file://customer-db
+  version: 0.1.0
+- name: customer-service
+  repository: file://customer-service
+  version: 0.1.0
+- name: order-db
+  repository: file://order-db
+  version: 0.1.0
+- name: order-service
+  repository: file://order-service
+  version: 0.1.0
+digest: sha256:bf70accbc807eb1e32b32561e5e26b6875777f4695c6c19de0f0108eec2315d0
+generated: "2023-03-07T00:39:23.470326375+01:00"
