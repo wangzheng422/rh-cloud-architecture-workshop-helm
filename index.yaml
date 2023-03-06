@@ -134,6 +134,16 @@ entries:
     urls:
     - https://globex-recommendation.github.io/globex-recommendation-helm/charts/order-placement-0.1.0.tgz
     version: 0.1.0
+  order-service:
+  - apiVersion: v2
+    created: "2023-03-07T00:32:53.404501993+01:00"
+    description: A Helm chart for the deployment of the Globex Order service
+    digest: 46be22152971b414b5d1ce4953e4ffaa9771005bc532efe8acb877ef8bd20b8d
+    name: order-service
+    type: application
+    urls:
+    - https://rh-cloud-architecture-workshop.github.io/helm/charts/order-service-0.1.0.tgz
+    version: 0.1.0
   recommendation-engine:
   - apiVersion: v2
     created: "2023-02-28T20:14:45.058391942+01:00"
@@ -145,4 +155,4 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-06T23:34:03.341115643+01:00"
+generated: "2023-03-07T00:32:53.39725432+01:00"

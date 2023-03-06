@@ -38,3 +38,6 @@ dependencies:
   - name: order-db
     version: 0.1.0
     repository: file://order-db
+  - name: order-service
+    version: 0.1.0
+    repository: file://order-service
