@@ -76,12 +76,12 @@ catalogService:
 recommendationEngine:
   url: http://recommendation-engine:8080
   getRecommendedProductsPath: /score/product 
-orderPlacementService:
-  url: http://order-placement:8080
-  postOrderPath: /placeorder
 cartService:
   url: http://cart-service:8080
   cartPath: /cart
 customerService:
   url: http://customer-service:8080
   path: /public/customer/id/:custId
+orderService:
+  url: http://order-service:8080
+  path: /order

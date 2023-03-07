@@ -53,11 +53,11 @@ spec:
               value: {{ .Values.catalogService.url }}{{ .Values.catalogService.getProductListPath }}
             - name: API_CATALOG_RECOMMENDED_PRODUCT_IDS
               value: {{ .Values.recommendationEngine.url }}{{ .Values.recommendationEngine.getRecommendedProductsPath }}
-            - name: API_TRACK_PLACEORDER
-              value: {{ .Values.orderPlacementService.url }}{{ .Values.orderPlacementService.postOrderPath }}
             - name: API_CART_SERVICE
               value: {{ .Values.cartService.url }}{{ .Values.cartService.cartPath }}
             - name: API_CUSTOMER_SERVICE
               value: {{ .Values.customerService.url }}{{ .Values.customerService.path }}
+            - name: API_ORDER_SERVICE
+              value: {{ .Values.orderService.url }}{{ .Values.orderService.path }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
