@@ -123,17 +123,6 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/order-db-0.1.0.tgz
     version: 0.1.0
-  order-placement:
-  - apiVersion: v2
-    appVersion: 1.0.0
-    created: "2023-01-31T19:16:30.893296696+01:00"
-    description: A Helm chart for the deployment of the Globex Order Placement application
-    digest: 0478fd38684c260802a2df900d687b67d65b62c7b18335781c6c0f0f6fc5e78d
-    name: order-placement
-    type: application
-    urls:
-    - https://globex-recommendation.github.io/globex-recommendation-helm/charts/order-placement-0.1.0.tgz
-    version: 0.1.0
   order-service:
   - apiVersion: v2
     created: "2023-03-07T00:32:53.404501993+01:00"
