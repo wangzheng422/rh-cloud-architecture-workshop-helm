@@ -56,5 +56,17 @@ spec:
                 secretKeyRef:
                   key: database-name
                   name: {{ include "customer-db.name" . }}
+          {{- if eq .Values.persistence.mode "persistent" }}
+          volumeMounts:
+            - name: "{{ include "customer-db.name" . }}-data"
+              mountPath: "/var/lib/pgsql/data"
+              volumes:
+          {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+      {{- if eq .Values.persistence.mode "persistent" }}
+      volumes:
+        - name: "{{ include "customer-db.name" . }}-data"
+          persistentVolumeClaim:
+            claimName: {{ include "customer-db.name" . }}
+      {{- end }}

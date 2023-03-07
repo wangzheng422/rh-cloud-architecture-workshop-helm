@@ -33,9 +33,9 @@ entries:
     version: 0.1.0
   catalog-db:
   - apiVersion: v2
-    created: "2023-02-28T17:59:02.145182928+01:00"
+    created: "2023-03-07T19:34:42.232575643+01:00"
     description: A Helm chart for the deployment of the Globex Catalog database
-    digest: e9dd8f1925b6c60b9a3238b009a878d03db8248722f0ce0ce176e56c791a4b74
+    digest: 7cf83313b35bd6218d504e8018f261fe963f9975c9ec8d4815d57207c664a12a
     name: catalog-db
     type: application
     urls:
@@ -53,9 +53,9 @@ entries:
     version: 0.1.0
   customer-db:
   - apiVersion: v2
-    created: "2023-03-03T19:27:31.182499701+01:00"
+    created: "2023-03-07T19:34:42.233378383+01:00"
     description: A Helm chart for the deployment of the Globex Customer database
-    digest: 84edcde62e9fa168de1905e06d72f15c06329b7c507f0b77e65008a8166d4104
+    digest: 16cc61a1123b66d290ae305cd8d45b2e26afba646b462514d21a858286a47c3b
     name: customer-db
     type: application
     urls:
@@ -84,9 +84,9 @@ entries:
     version: 0.1.0
   inventory-db:
   - apiVersion: v2
-    created: "2023-02-28T13:44:04.924607322+01:00"
+    created: "2023-03-07T19:34:42.235241091+01:00"
     description: A Helm chart for the deployment of the Globex Inventory database
-    digest: f376d452f888ed710dd23cf881ca86358c265e55a1c4cc2079e050af31f6219e
+    digest: 5c5b6f408b3716cbfdb7ab081f9cf4cad0e792ab64d5ee44ab17f5cb21a462e8
     name: inventory-db
     type: application
     urls:
@@ -115,9 +115,9 @@ entries:
     version: 0.1.0
   order-db:
   - apiVersion: v2
-    created: "2023-03-06T23:34:03.346985362+01:00"
+    created: "2023-03-07T19:34:42.236434161+01:00"
     description: A Helm chart for the deployment of the Globex Order database
-    digest: c9ccbb0f4537341fe1fa5b2f41a0e4c9c219ee435063d4c91073c25cb7d91a3b
+    digest: 31ce202fd1873e198a942f38ec966008e7390c83227a1abcd75148343a8bf3ab
     name: order-db
     type: application
     urls:
@@ -144,4 +144,4 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-07T18:34:09.049245455+01:00"
+generated: "2023-03-07T19:34:42.230907352+01:00"
