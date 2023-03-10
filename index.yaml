@@ -63,9 +63,9 @@ entries:
     version: 0.1.0
   customer-service:
   - apiVersion: v2
-    created: "2023-03-05T21:02:03.629307596+01:00"
+    created: "2023-03-10T21:18:11.84992501+01:00"
     description: A Helm chart for the deployment of the Globex Customer service
-    digest: 46f70dd4c90ab01fb47201c84592f6682085acc2fe5f87733511892120c4a3c1
+    digest: d7195b01382ead5d2c6a3b33bde735891bfec7086c0253466733a09c7693e3ad
     name: customer-service
     type: application
     urls:
@@ -125,9 +125,9 @@ entries:
     version: 0.1.0
   order-service:
   - apiVersion: v2
-    created: "2023-03-07T00:32:53.404501993+01:00"
+    created: "2023-03-10T21:18:11.853014183+01:00"
     description: A Helm chart for the deployment of the Globex Order service
-    digest: 46be22152971b414b5d1ce4953e4ffaa9771005bc532efe8acb877ef8bd20b8d
+    digest: 906ad00b6c2e78c4763624f48b965009104d3fb20fb165b2cb2a014fbbed5c7e
     name: order-service
     type: application
     urls:
@@ -144,4 +144,4 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-10T20:12:56.294716215+01:00"
+generated: "2023-03-10T21:18:11.847122309+01:00"

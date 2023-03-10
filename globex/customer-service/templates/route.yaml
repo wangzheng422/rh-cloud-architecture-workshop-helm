@@ -13,7 +13,7 @@ spec:
     targetPort: {{ .Values.service.portName }}
   to:
     kind: Service
-    name: name: {{ include "customer-service.name" . }}
+    name: {{ include "customer-service.name" . }}
     weight: 100
   wildcardPolicy: None
   {{- if .Values.route.tlsEnabled }}
