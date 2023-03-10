@@ -115,9 +115,9 @@ entries:
     version: 0.1.0
   order-db:
   - apiVersion: v2
-    created: "2023-03-07T19:34:42.236434161+01:00"
+    created: "2023-03-10T20:25:48.469986483+01:00"
     description: A Helm chart for the deployment of the Globex Order database
-    digest: 31ce202fd1873e198a942f38ec966008e7390c83227a1abcd75148343a8bf3ab
+    digest: 3a1673a884b51d9fe03a8705d497a3542d972c9820de496fd3cf90c33ebe04c3
     name: order-db
     type: application
     urls:

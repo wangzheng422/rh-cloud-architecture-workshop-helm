@@ -56,8 +56,8 @@ serviceAccount:
   name: ""
 
 pgsql:
-  user: globex
-  password: globex
+  user: ordermgr
+  password: ordermgr
   database: orders
 
 persistence:
