@@ -75,3 +75,14 @@ argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
 {{- "{}" }}
 {{- end }}
 {{- end }}
+
+{{/* 
+Admin password
+*/}}
+{{- define "customer-db.admin-password" -}}
+{{- $secretName := (include "customer-db.name" .) }}
+{{- $secretObj := (lookup "v1" "Secret" .Release.Namespace $secretName) | default dict }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- $adminSecret := (get $secretData "database-admin-password") | default (randAlpha 12 | b64enc) }}
+{{- $adminSecret | quote }}
+{{- end }}

@@ -53,9 +53,9 @@ entries:
     version: 0.1.0
   customer-db:
   - apiVersion: v2
-    created: "2023-03-07T19:34:42.233378383+01:00"
+    created: "2023-03-10T20:12:56.307644373+01:00"
     description: A Helm chart for the deployment of the Globex Customer database
-    digest: 16cc61a1123b66d290ae305cd8d45b2e26afba646b462514d21a858286a47c3b
+    digest: a233aa046f5c203a89d531f516a383b18f147e0024eb456efe6f07446a143b10
     name: customer-db
     type: application
     urls:
@@ -144,4 +144,4 @@ entries:
     urls:
     - https://rh-cloud-architecture-workshop.github.io/helm/charts/recommendation-engine-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-07T19:34:42.230907352+01:00"
+generated: "2023-03-10T20:12:56.294716215+01:00"
