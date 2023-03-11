@@ -1,0 +1,35 @@
+connectors:
+  customer:
+    kafkaConnect: 
+    database:
+      hostname: customer-db.globex.svc.cluster.local
+      port: 5432
+      user: postgres
+      password: 
+      dbname: customer
+      topicPrefix: customer
+    schema:
+      includeList: public
+    table:
+      includeList: public.customer
+    topic:
+      replicationFactor: 3
+      partitions: 1
+    decimalHandlingMode: string
+  order:
+    kafkaConnect: 
+    database:
+      hostname: order-db.globex.svc.cluster.local
+      port: 5432
+      user: postgres
+      password: 
+      dbname: orders
+      topicPrefix: order
+    schema:
+      includeList: public
+    table:
+      includeList: public.orders,public.line_item
+    topic:
+      replicationFactor: 3
+      partitions: 1
+    decimalHandlingMode: string
