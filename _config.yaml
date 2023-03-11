@@ -2,3 +2,4 @@ exclude:
   - ".github"
   - "globex"
   - "globex-mw"
+  - "globex-cdc"
