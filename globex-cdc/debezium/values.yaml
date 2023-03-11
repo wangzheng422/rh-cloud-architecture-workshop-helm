@@ -13,7 +13,7 @@ connectors:
     table:
       includeList: public.customer
     topic:
-      replicationFactor: 3
+      replicationFactor: 2
       partitions: 1
     decimalHandlingMode: string
   order:
@@ -30,6 +30,6 @@ connectors:
     table:
       includeList: public.orders,public.line_item
     topic:
-      replicationFactor: 3
+      replicationFactor: 2
       partitions: 1
     decimalHandlingMode: string
