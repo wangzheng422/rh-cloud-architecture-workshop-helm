@@ -1,6 +1,5 @@
 version: 3.3.1
 replicas: 1
-bootstrapServers: kafka-kafka-bootstrap:9092
 topicPrefix: globex-cdc
 keyConverter: org.apache.kafka.connect.json.JsonConverter
 valueConverter: org.apache.kafka.connect.json.JsonConverter
@@ -35,6 +34,11 @@ build:
 kafka:
   namespace: ""
   broker: ""
+  bootstrapServer: ""
+  securityProtocol: ""
+  saslMechanism: ""
+  clientId: ""
+  clientSecret: ""
 
 argocd:
   enabled: true

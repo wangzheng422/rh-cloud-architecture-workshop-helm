@@ -69,31 +69,10 @@ argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
 {{- end }}
 
 {{/*
-Kafka Client Secret Name
-*/}}
-{{- define "kafka-connect.client-secret.name" }}
-{{- $broker := .Values.broker | default "kafka" }}
-{{- $secretName := printf "%s-client-secret" $broker }}
-{{- $secretName }}
-{{- end }}
-
-{{/*
-Kafka Client Secret Required?
-*/}}
-{{- define "kafka-connect.client-secret.required" }}
-{{- $secretObj := (lookup "v1" "Secret" .Release.Namespace (include "kafka-connect.client-secret.name" . )) | default dict }}
-{{- $output := "" }}
-{{- if not $secretObj }}
-{{- $output = "1" }}
-{{- end }}
-{{- $output }}
-{{- end }}
-
-{{/*
 Kafka Client Secret
 */}}
-{{- define "kafka-connect.client-secret" }}
-{{- $secretObj := (lookup "v1" "Secret" .Values.kafka.namespace (include "kafka-connect.client-secret.name" . )) | default dict }}
+{{- define "kafka-connect.client-connection-secret" }}
+{{- $secretObj := (lookup "v1" "Secret" .Values.kafka.namespace (include "kafka.client-connection-secret.name" . )) | default dict }}
 {{- $secretData := (get $secretObj "data") | default dict }}
 {{- $bootstrapServer := (get $secretData "bootstrapServer") }}
 {{- $securityProtocol := (get $secretData "securityProtocol") }}
@@ -108,57 +87,10 @@ clientSecret: {{ $clientSecret }}
 {{- end }}
 
 {{/*
-Kafka Client Secret Namespace
-*/}}
-{{- define "kafka-connect.client-secret.namespace" }}
-{{- if ( include "kafka-connect.client-secret.required" . ) }}
-{{- .Values.kafka.namespace }}
-{{- else }}
-{{- .Release.Namespace }}
-{{- end }}
-{{- end }}
-
-{{/*
-Kafka Bootstrap Server
-*/}}
-{{- define "kafka-connect.bootstrap-server" }}
-{{- $secretObj := (lookup "v1" "Secret" (include "kafka-connect.client-secret.namespace" .) (include "kafka-connect.client-secret.name" . )) | default dict }}
-{{- $secretData := (get $secretObj "data") | default dict }}
-{{- $bootstrapServer := (get $secretData "bootstrapServer") | b64dec }}
-{{- $bootstrapServer }}
-{{- end }}
-
-{{/*
-Kafka Client Authentication
-*/}}
-{{- define "kafka-connect.authentication" }}
-{{- $secretObj := (lookup "v1" "Secret" (include "kafka-connect.client-secret.namespace" .) (include "kafka-connect.client-secret.name" . )) | default dict }}
-{{- $secretData := (get $secretObj "data") | default dict }}
-{{- $clientId := (get $secretData "clientId") | b64dec }}
-{{- $output := "" }}
-{{- if $clientId }}
-{{- $output = "1" }}
-{{- end }}
-{{- $output }}
-{{- end }}
-
-{{/*
-Kafka Client Id
-*/}}
-{{- define "kafka-connect.client-id" }}
-{{- $secretObj := (lookup "v1" "Secret" (include "kafka-connect.client-secret.namespace" .) (include "kafka-connect.client-secret.name" . )) | default dict }}
-{{- $secretData := (get $secretObj "data") | default dict }}
-{{- $clientId := (get $secretData "clientId") | b64dec }}
-{{- $clientId }}
-{{- end }}
-
-{{/*
 Kafka Authentication type
 */}}
 {{- define "kafka-connect.authentication-type" }}
-{{- $secretObj := (lookup "v1" "Secret" (include "kafka-connect.client-secret.namespace" .) (include "kafka-connect.client-secret.name" . )) | default dict }}
-{{- $secretData := (get $secretObj "data") | default dict }}
-{{- $saslMechanism := (get $secretData "saslMechanism") | b64dec }}
+{{- $saslMechanism := (include "kafka.sasl-mechanism" .) }}
 {{- $output := "" }}
 {{- if eq "PLAIN" $saslMechanism }}
 {{- $output = "plain" }}
@@ -170,12 +102,124 @@ Kafka Authentication type
 Kafka Authentication TLS
 */}}
 {{- define "kafka-connect.tls" }}
-{{- $secretObj := (lookup "v1" "Secret" (include "kafka-connect.client-secret.namespace" .) (include "kafka-connect.client-secret.name" . )) | default dict }}
-{{- $secretData := (get $secretObj "data") | default dict }}
-{{- $securityProtocol := (get $secretData "securityProtocol") | b64dec }}
+{{- $securityProtocol := (include "kafka.security-protocol" .) }}
 {{- $output := "" }}
 {{- if eq "SASL_SSL" $securityProtocol }}
 {{- $output = "1" }}
+{{- end }}
+{{- $output }}
+{{- end }}
+
+{{/*
+Kafka Client Connection Secret Name
+*/}}
+{{- define "kafka.client-connection-secret.name" }}
+{{- $broker := .Values.broker | default "kafka" }}
+{{- $secretName := printf "%s-client-secret" $broker }}
+{{- $secretName }}
+{{- end }}
+
+{{/*
+Kafka Client Secret Present?
+*/}}
+{{- define "kafka.client-connection-secret.present" }}
+{{- $secretObj := (lookup "v1" "Secret" .Release.Namespace (include "kafka.client-connection-secret.name" . )) | default dict }}
+{{- $output := "" }}
+{{- if $secretObj }}
+{{- $output = "1" }}
+{{- end }}
+{{- $output }}
+{{- end }}
+
+{{/*
+Kafka Client Secret Namespace
+*/}}
+{{- define "kafka.client-connection-secret.namespace" }}
+{{- if not (include "kafka.client-connection-secret.present" . ) }}
+{{- .Values.kafka.namespace }}
+{{- else }}
+{{- .Release.Namespace }}
+{{- end }}
+{{- end }}
+
+{{/*
+Kafka Bootstrap Server
+*/}}
+{{- define "kafka.bootstrap-server" }}
+{{- $output := "" }}
+{{- if .Values.kafka.bootstrapServer }}
+{{- $output = .Values.kafka.bootstrapServer }}
+{{- else }}
+{{- $secretObj := (lookup "v1" "Secret" (include "kafka.client-connection-secret.namespace" .) (include "kafka.client-connection-secret.name" . )) | default dict }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- $bootstrapServer := (get $secretData "bootstrapServer") | b64dec }}
+{{- $output = $bootstrapServer }}
+{{- end }}
+{{- $output }}
+{{- end }}
+
+{{/*
+Kafka Client Authentication
+*/}}
+{{- define "kafka.authentication" }}
+{{- $output := "" }}
+{{- if .Values.kafka.userId }}
+{{- $output = "1" }}
+{{- else }}
+{{- $secretObj := (lookup "v1" "Secret" (include "kafka.client-connection-secret.namespace" .) (include "kafka.client-connection-secret.name" . )) | default dict }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- $clientId := (get $secretData "clientId") | b64dec }}
+{{- if $clientId }}
+{{- $output = "1" }}
+{{- end }}
+{{- end }}
+{{- $output }}
+{{- end }}
+
+{{/*
+Kafka Sasl Mechanism
+*/}}
+{{- define "kafka.sasl-mechanism" }}
+{{- $output := "" }}
+{{- if .Values.kafka.saslMechanism }}
+{{- $output = .Values.kafka.saslMechanism }}
+{{- else }}
+{{- $secretObj := (lookup "v1" "Secret" (include "kafka.client-connection-secret.namespace" .) (include "kafka.client-connection-secret.name" . )) | default dict }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- $saslMechanism := (get $secretData "saslMechanism") | b64dec }}
+{{- $output = $saslMechanism }}
+{{- end }}
+{{- $output }}
+{{- end }}
+
+{{/*
+Kafka Security Protocol
+*/}}
+{{- define "kafka.security-protocol" }}
+{{- $output := "" }}
+{{- if .Values.kafka.securityProtocol }}
+{{- $output = .Values.kafka.securityProtocol }}
+{{- else }}
+{{- $secretObj := (lookup "v1" "Secret" (include "kafka.client-connection-secret.namespace" .) (include "kafka.client-connection-secret.name" . )) | default dict }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- $securityProtocol := (get $secretData "securityProtocol") | b64dec }}
+{{- $output = $securityProtocol }}
+{{- end }}
+{{- $output }}
+{{- end }}
+
+{{/*
+Kafka Client Id
+*/}}
+{{- define "kafka.client-id" }}
+{{- $output := "" }}
+{{- if .Values.kafka.clientId }}
+{{- $output = .Values.kafka.clientId }}
+{{- else }}
+{{- $secretObj := (lookup "v1" "Secret" (include "kafka.client-connection-secret.namespace" .) (include "kafka.client-connection-secret.name" . )) | default dict }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- $clientId := (get $secretData "clientId") | b64dec }}
+{{- $output = $clientId }}
 {{- end }}
 {{- $output }}
 {{- end }}

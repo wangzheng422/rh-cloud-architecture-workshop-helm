@@ -7,7 +7,7 @@ metadata:
 spec:
   version: {{ .Values.version }}
   replicas: {{ .Values.replicas }}
-  bootstrapServers: {{ include "kafka-connect.bootstrap-server" . }}
+  bootstrapServers: {{ include "kafka.bootstrap-server" . }}
   config:
     group.id: {{ include "kafka-connect.name" . }}
     offset.storage.topic: '{{ .Values.topicPrefix }}.{{ include "kafka-connect.name" . }}-offsets'
@@ -22,12 +22,12 @@ spec:
     status.storage.replication.factor: {{ .Values.replicationFactor }}
     topic.creation.enable: true
     default.replication.factor: {{ .Values.replicationFactor }}
-  {{- if ( include "kafka-connect.authentication" .) }}
+  {{- if ( include "kafka.authentication" .) }}
   authentication:
     passwordSecret:
       password: {{ .Values.authentication.passwordKey }}
-      secretName: {{ include "kafka-connect.client-secret.name" . }}
-    username: {{ include "kafka-connect.client-id" . }}
+      secretName: {{ include "kafka.client-connection-secret.name" . }}
+    username: {{ include "kafka.client-id" . }}
     type: {{ include "kafka-connect.authentication-type" . }}
   {{- end }}
   {{- if (include "kafka-connect.tls" .) }}

@@ -71,9 +71,9 @@ Kafka Client Secret Name
 {{- end }}
 
 {{/*
-Kafka Client Secret Required?
+Kafka Client Secret Present?
 */}}
-{{- define "kafka.client-connection-secret.required" }}
+{{- define "kafka.client-connection-secret.present" }}
 {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace (include "kafka.client-connection-secret.name" . )) | default dict }}
 {{- $output := "" }}
 {{- if not $secretObj }}
@@ -86,7 +86,7 @@ Kafka Client Secret Required?
 Kafka Client Secret Namespace
 */}}
 {{- define "kafka.client-connection-secret.namespace" }}
-{{- if ( include "kafka.client-connection-secret.required" . ) }}
+{{- if not ( include "kafka.client-connection-secret.present" . ) }}
 {{- .Values.kafka.namespace }}
 {{- else }}
 {{- .Release.Namespace }}
