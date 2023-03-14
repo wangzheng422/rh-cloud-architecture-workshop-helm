@@ -114,18 +114,18 @@ Kafka Authentication TLS
 Kafka Client Connection Secret Name
 */}}
 {{- define "kafka.client-connection-secret.name" }}
-{{- $broker := .Values.broker | default "kafka" }}
+{{- $broker := .Values.kafka.broker | default "kafka" }}
 {{- $secretName := printf "%s-client-secret" $broker }}
 {{- $secretName }}
 {{- end }}
 
 {{/*
-Kafka Client Secret Present?
+Kafka Client Secret Absent?
 */}}
-{{- define "kafka.client-connection-secret.present" }}
+{{- define "kafka.client-connection-secret.absent" }}
 {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace (include "kafka.client-connection-secret.name" . )) | default dict }}
 {{- $output := "" }}
-{{- if $secretObj }}
+{{- if not $secretObj }}
 {{- $output = "1" }}
 {{- end }}
 {{- $output }}
@@ -135,7 +135,7 @@ Kafka Client Secret Present?
 Kafka Client Secret Namespace
 */}}
 {{- define "kafka.client-connection-secret.namespace" }}
-{{- if not (include "kafka.client-connection-secret.present" . ) }}
+{{- if (include "kafka.client-connection-secret.absent" . ) }}
 {{- .Values.kafka.namespace }}
 {{- else }}
 {{- .Release.Namespace }}
