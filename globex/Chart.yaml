@@ -5,18 +5,12 @@ type: application
 version: 0.1.0
 
 dependencies:
-  - name: inventory-service
+  - name: globex-store-app
     version: 0.1.0
-    repository: file://inventory-service
-  - name: inventory-db
+    repository: file://globex-store-app
+  - name: globex-db
     version: 0.1.0
-    repository: file://inventory-db
-  - name: catalog-service
-    version: 0.1.0
-    repository: file://catalog-service
-  - name: catalog-db
-    version: 0.1.0
-    repository: file://catalog-db
+    repository: file://globex-db
   - name: globex-ui
     version: 0.1.0
     repository: file://globex-ui
@@ -26,18 +20,3 @@ dependencies:
   - name: activity-tracking
     version: 0.1.0
     repository: file://activity-tracking
-  - name: cart-service
-    version: 0.1.0
-    repository: file://cart-service
-  - name: customer-db
-    version: 0.1.0
-    repository: file://customer-db
-  - name: customer-service
-    version: 0.1.0
-    repository: file://customer-service
-  - name: order-db
-    version: 0.1.0
-    repository: file://order-db
-  - name: order-service
-    version: 0.1.0
-    repository: file://order-service
