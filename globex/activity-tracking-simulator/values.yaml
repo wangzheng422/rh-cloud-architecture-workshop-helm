@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/globex-recommendation/activity-tracking-simulator
+  repository: quay.io/cloud-architecture-workshop/activity-tracking-simulator
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "6977f03"
+  tag: latest
 
 nameOverride: ""
 fullnameOverride: ""
