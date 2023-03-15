@@ -70,10 +70,10 @@ serviceAccount:
   annotations: {}
   name: ""
 
-customerDb:
-  service: customer-db
+globexDb:
+  service: globex-db
   secret:
-    name: customer-db
+    name: globex-db
 
 catalogDb:
   service: catalog-db
@@ -81,4 +81,4 @@ catalogDb:
     name: catalog-db
 
 orderService:
-  service: order-service
+  service: globex-store-app

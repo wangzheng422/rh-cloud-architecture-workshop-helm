@@ -37,40 +37,23 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            - name: CUSTOMER_DATASOURCE_USERNAME
+            - name: GLOBEX_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
                   key: database-user
-                  name: {{ .Values.customerDb.secret.name }}
-            - name: CUSTOMER_DATASOURCE_PASSWORD
+                  name: {{ .Values.globexDb.secret.name }}
+            - name: GLOBEX_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: database-password
-                  name: {{ .Values.customerDb.secret.name }}
-            - name: CUSTOMER_POSTGRESQL_DATABASE
+                  name: {{ .Values.globexDb.secret.name }}
+            - name: GLOBEX_POSTGRESQL_DATABASE
               valueFrom:
                 secretKeyRef:
                   key: database-name
-                  name: {{ .Values.customerDb.secret.name }}
-            - name: CUSTOMER_DATASOURCE_JDBC_URL
-              value: jdbc:postgresql://{{ .Values.customerDb.service }}:5432/${CUSTOMER_POSTGRESQL_DATABASE}
-            - name: PRODUCT_DATASOURCE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: database-user
-                  name: {{ .Values.catalogDb.secret.name }}
-            - name: PRODUCT_DATASOURCE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: database-password
-                  name: {{ .Values.catalogDb.secret.name }}
-            - name: PRODUCT_POSTGRESQL_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  key: database-name
-                  name: {{ .Values.catalogDb.secret.name }}
-            - name: PRODUCT_DATASOURCE_JDBC_URL
-              value: jdbc:postgresql://{{ .Values.catalogDb.service }}:5432/${PRODUCT_POSTGRESQL_DATABASE}
+                  name: {{ .Values.globexDb.secret.name }}
+            - name: GLOBEX_DATASOURCE_JDBC_URL
+              value: jdbc:postgresql://{{ .Values.globexDb.service }}:5432/${GLOBEX_POSTGRESQL_DATABASE}
             - name: ORDER_SERVICE_URL
               value: http://{{ .Values.orderService.service }}:8080
           securityContext:
