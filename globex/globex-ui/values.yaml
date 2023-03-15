@@ -70,7 +70,7 @@ globexStoreApp:
   url: http://globex-store-app:8080
   service: globex-store-app
   getProductsPath: /services/catalog/product
-  getProductListPath: services/catalog/product/list/:ids
+  getProductListPath: /services/catalog/product/list/:ids
   cartPath: /services/cart
   customerPath: /services/customer/id/:custId
   orderPath: /services/order
