@@ -1,25 +1,16 @@
-# Default values for activity-tracking-simulator.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
   repository: quay.io/cloud-architecture-workshop/activity-tracking-simulator
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   tag: latest
 
 nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
   name: ""
 
 podAnnotations: {}
@@ -52,11 +43,13 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 3
 
-securityContext:
-  allowPrivilegeEscalation: false
+podSecurityContext: 
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
       - ALL
