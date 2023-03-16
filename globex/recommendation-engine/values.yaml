@@ -77,12 +77,12 @@ kafka:
   bootstrapServer: ""
   securityProtocol: ""
   saslMechanism: ""
-  userId: ""
-  password: ""
+  clientId: ""
+  clientSecret: ""
   streams:
     topics: globex.tracking
     replicationFactor: 2
     commitIntervalMs: 10000
     applicationId: globex.recommendation
-  topics:
+  topic:
     trackingEvent: globex.tracking
