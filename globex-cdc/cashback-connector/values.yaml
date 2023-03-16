@@ -28,7 +28,7 @@ route:
   tlsEnabled: true
   tls:
     termination: edge
-    insecureEdgeTerminationPolicy: Redirect    
+    insecureEdgeTerminationPolicy: Redirect
 
 resources:
   limits:
@@ -54,7 +54,7 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 3
 
-podSecurityContext: 
+podSecurityContext:
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
@@ -73,8 +73,8 @@ kafka:
   saslMechanism: ""
   clientId: ""
   clientSecret: ""
-  topics:
-    customer: customer.updates.public.customer
+  topic:
+    customer: globex.updates.public.customer
     order: globex.order-aggregated
   consumerGroup:
     customer: cashback-connector
