@@ -72,11 +72,11 @@ kafka:
   clientId: ""
   clientSecret: ""
   streams:
-    topics: order.updates.public.orders, order.updates.public.line_item, globex.order-aggregated
+    topics: globex.updates.public.orders, globex.updates.public.line_item, globex.order-aggregated
     replicationFactor: 2
     commitIntervalMs: 10000
     applicationId: globex-cdc
-  topics:
-    orderChangeEvent: order.updates.public.orders
-    lineItemChangeEvent: order.updates.public.line_item
+  topic:
+    orderChangeEvent: globex.updates.public.orders
+    lineItemChangeEvent: globex.updates.public.line_item
     aggregatedOrder: globex.order-aggregated
