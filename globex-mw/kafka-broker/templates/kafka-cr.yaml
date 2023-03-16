@@ -11,15 +11,21 @@ spec:
   kafka:
     replicas: {{ .Values.kafka.cluster.replicas }}
     version: {{ .Values.kafka.version }}
+    {{- if eq .Values.authorization "simple" }}
+    authorization:
+      type: simple
+    {{- end }}
     listeners:
     - name: plain
       port: 9092
       type: internal
       tls: false
+      {{- include "kafka-broker.authentication" . | nindent 6 }}
     - name: tls
       port: 9093
       type: internal
       tls: true
+      {{- include "kafka-broker.authentication" . | nindent 6 }}
     config:
       auto.create.topics.enable: {{ .Values.kafka.config.autoCreateTopics }}
       offsets.topic.replication.factor: {{ .Values.kafka.config.offsetsTopicReplicationFactor }}

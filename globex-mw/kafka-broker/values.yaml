@@ -16,13 +16,15 @@ kafka:
     minInsyncReplicas: 1
     interBrokerProtocolVersion: '3.3'
 
-bootstrapServer:  
+bootstrapServer: 
 
 authentication:
-  userId:
-  userSecret:
-  securityProtocol:
-  saslMechanism: 
+  clientId: globex
+  clientSecret: globex
+  securityProtocol: SASL_PLAINTEXT
+  saslMechanism: SCRAM-SHA-512
+
+authorization: simple
 
 argocd:
   enabled: true

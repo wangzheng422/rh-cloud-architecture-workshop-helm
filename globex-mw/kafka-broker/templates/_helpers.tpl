@@ -97,3 +97,14 @@ Kafka Bootstrap Server
 {{- end }}
 {{- end }}
 
+{{/* 
+Kafka authentication
+*/}}
+{{- define "kafka-broker.authentication" -}}
+{{- if eq .Values.authentication.saslMechanism "SCRAM-SHA-512" }}
+authentication:
+  type: scram-sha-512
+{{- else }}
+authentication: {}
+{{- end }}
+{{- end }}
