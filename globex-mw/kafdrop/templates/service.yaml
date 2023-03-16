@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "kafdrop.fullname" . }}
+  name: {{ include "kafdrop.name" . }}
   labels:
     {{- include "kafdrop.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.ports.httpPortName }}
+      targetPort: {{ .Values.service.containerPort }}
       protocol: TCP
       name: {{ .Values.service.portName }}
   selector:

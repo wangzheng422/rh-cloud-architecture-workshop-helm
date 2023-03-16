@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "kafdrop.fullname" . }}
+  name: {{ include "kafdrop.name" . }}
   labels:
     {{- include "kafdrop.labels" . | nindent 4 }}
 spec:
@@ -48,13 +48,13 @@ spec:
             - name: KAFKA_TRUSTSTORE_FILE
             - name: KAFKA_KEYSTORE_FILE
             - name: SERVER_PORT
-              value: '{{ .Values.ports.httpPort }}'
+              value: '{{ .Values.service.containerPort }}'
             - name: CMD_ARGS
             - name: SCHEMAREGISTRY_CONNECT
             - name: SCHEMAREGISTRY_AUTH            
           ports:
-            - name: {{ .Values.ports.httpPortName }}
-              containerPort: {{ .Values.ports.httpPort }}
+            - name: http
+              containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
@@ -68,5 +68,5 @@ spec:
       volumes:
         - name: kafka-properties
           secret:
-            secretName: {{ include "kafdrop.fullname" . }}
+            secretName: {{ include "kafdrop.name" . }}
             defaultMode: 420

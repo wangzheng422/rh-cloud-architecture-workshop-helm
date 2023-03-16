@@ -2,7 +2,7 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: {{ include "kafdrop.fullname" . }}
+  name: {{ include "kafdrop.name" . }}
   labels:
     {{- include "kafdrop.labels" . | nindent 4 }}
 spec:
@@ -11,7 +11,7 @@ spec:
   {{ end -}}
   to:
     kind: Service
-    name: {{ include "kafdrop.fullname" . }}
+    name: {{ include "kafdrop.name" . }}
     weight: 100
   port:
     targetPort: {{ .Values.service.portName }}

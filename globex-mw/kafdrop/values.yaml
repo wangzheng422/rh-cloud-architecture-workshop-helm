@@ -1,7 +1,3 @@
-# Default values for kafdrop.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
@@ -10,33 +6,25 @@ image:
   tag: "latest"
 
 nameOverride: ""
-fullnameOverride: "kafdrop"
+fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podSecurityContext: {}
-
-securityContext:
-  allowPrivilegeEscalation: false
+podSecurityContext: 
   runAsNonRoot: true
   seccompProfile:
     type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
       - ALL
 
 resources: {}
-
-ports:
-  httpPortName: http
-  httpPort: 9000
 
 livenessProbe:
   httpGet:
@@ -63,6 +51,7 @@ readinessProbe:
 service:
   type: ClusterIP
   port: 9000
+  containerPort: 9000
   portName: http
 
 route:
@@ -74,8 +63,8 @@ route:
     insecureEdgeTerminationPolicy: Redirect
 
 kafka:
-  bootstrapServer: kafka-kafka-bootstrap:9092
+  bootstrapServer: ""
   securityProtocol: ""
   saslMechanism: ""
-  userId: ""
-  password: ""
+  clientId: ""
+  clientSecret: ""
