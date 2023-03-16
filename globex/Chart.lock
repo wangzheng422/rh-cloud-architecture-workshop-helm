@@ -5,8 +5,8 @@ dependencies:
 - name: globex-db
   repository: file://globex-db
   version: 0.1.0
-- name: globex-ui
-  repository: file://globex-ui
+- name: globex-web
+  repository: file://globex-web
   version: 0.1.0
 - name: recommendation-engine
   repository: file://recommendation-engine
@@ -14,5 +14,5 @@ dependencies:
 - name: activity-tracking
   repository: file://activity-tracking
   version: 0.1.0
-digest: sha256:b5d3251ccb8edaa1d24c8ce0f1c40c64f9e25925e384c3ac403771c6cf7178d7
-generated: "2023-03-15T11:21:17.857468287+01:00"
+digest: sha256:ef31546ccac78875044a0a7c03a862b302d16101d99bf79772e078ae3d4b4eff
+generated: "2023-03-16T09:57:35.327934351+01:00"

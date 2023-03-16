@@ -11,9 +11,9 @@ dependencies:
   - name: globex-db
     version: 0.1.0
     repository: file://globex-db
-  - name: globex-ui
+  - name: globex-web
     version: 0.1.0
-    repository: file://globex-ui
+    repository: file://globex-web
   - name: recommendation-engine
     version: 0.1.0
     repository: file://recommendation-engine
