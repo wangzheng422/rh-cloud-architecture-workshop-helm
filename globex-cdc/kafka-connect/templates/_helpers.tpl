@@ -94,6 +94,8 @@ Kafka Authentication type
 {{- $output := "" }}
 {{- if eq "PLAIN" $saslMechanism }}
 {{- $output = "plain" }}
+{{- else if eq "SCRAM-SHA-512" $saslMechanism}}
+{{- $output = "scram-sha-512"}}
 {{- end }}
 {{- $output }}
 {{- end }}
