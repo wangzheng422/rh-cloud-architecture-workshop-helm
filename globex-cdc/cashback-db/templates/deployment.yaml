@@ -60,7 +60,6 @@ spec:
           volumeMounts:
             - name: "{{ include "cashback-db.name" . }}-data"
               mountPath: "/var/lib/pgsql/data"
-              volumes:
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
