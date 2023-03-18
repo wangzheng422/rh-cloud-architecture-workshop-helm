@@ -2,9 +2,9 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ include "globex-ui.name" . }}
+  name: {{ include "globex-web.name" . }}
   labels:
-    {{- include "globex-ui.labels" . | nindent 4 }}
+    {{- include "globex-web.labels" . | nindent 4 }}
 spec:
   {{ if .Values.route.host }}
   host: {{ .Values.route.host }}
@@ -13,7 +13,7 @@ spec:
     targetPort: {{ .Values.service.portName }}
   to:
     kind: Service
-    name: {{ include "globex-ui.name" . }}
+    name: {{ include "globex-web.name" . }}
     weight: 100
   wildcardPolicy: None
   {{- if .Values.route.tlsEnabled }}
