@@ -92,6 +92,8 @@ Kafka Bootstrap Server
 {{- define "kafka-broker.bootstrapServer" -}}
 {{- if .Values.bootstrapServer }}
 {{- .Values.bootstrapServer }}
+{{- else if .Values.namespace }}
+{{- printf "%s-kafka-bootstrap.%s.svc.cluster.local:9092" (include "kafka-broker.name" .) .Values.namespace }}
 {{- else }}
 {{- printf "%s-kafka-bootstrap.%s.svc.cluster.local:9092" (include "kafka-broker.name" .) .Release.Namespace }}
 {{- end }}
