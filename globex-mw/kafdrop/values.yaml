@@ -68,3 +68,4 @@ kafka:
   saslMechanism: ""
   clientId: ""
   clientSecret: ""
+  namespace: ""

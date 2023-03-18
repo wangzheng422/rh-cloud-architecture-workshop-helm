@@ -18,6 +18,8 @@ kafka:
 
 bootstrapServer: 
 
+namespace:
+
 authentication:
   clientId: globex
   clientSecret: globex

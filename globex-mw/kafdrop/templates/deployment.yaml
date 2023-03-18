@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "kafdrop.name" . }}
+  {{- if .Values.kafka.namespace }}
+  namespace: {{ .Values.kafka.namespace }}
+  {{- end }}
   labels:
     {{- include "kafdrop.labels" . | nindent 4 }}
 spec:
