@@ -36,7 +36,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: kafkaBootstrapServer
-                  name: {{ include "kafdrop.fullname" . }}
+                  name: {{ include "kafdrop.name" . }}
             - name: KAFKA_PROPERTIES
             - name: KAFKA_TRUSTSTORE
             - name: KAFKA_KEYSTORE
