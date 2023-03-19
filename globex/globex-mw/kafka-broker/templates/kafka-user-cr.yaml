@@ -3,6 +3,9 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:
   name: {{ .Values.authentication.clientId }}
+  {{- if .Values.namespace }}
+  namespace: {{ .Values.namespace }}
+  {{- end }}
   labels:
     {{- include "kafka-broker.labels" . | nindent 4 }}
     strimzi.io/cluster: {{ include "kafka-broker.name" . }}

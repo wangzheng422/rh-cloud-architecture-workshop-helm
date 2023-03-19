@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "kafdrop.name" . }}
+  {{- if .Values.kafka.namespace }}
+  namespace: {{ .Values.kafka.namespace }}
+  {{- end }}
   labels:
     {{- include "kafdrop.labels" . | nindent 4 }}
 spec:
@@ -33,7 +36,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: kafkaBootstrapServer
-                  name: {{ include "kafdrop.fullname" . }}
+                  name: {{ include "kafdrop.name" . }}
             - name: KAFKA_PROPERTIES
             - name: KAFKA_TRUSTSTORE
             - name: KAFKA_KEYSTORE

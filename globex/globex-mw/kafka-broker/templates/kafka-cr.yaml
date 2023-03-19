@@ -3,6 +3,9 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
   name: {{ include "kafka-broker.name" . }}
+  {{- if .Values.namespace }}
+  namespace: {{ .Values.namespace }}
+  {{- end }}
   labels:
     {{- include "kafka-broker.labels" . | nindent 4 }}
   annotations:

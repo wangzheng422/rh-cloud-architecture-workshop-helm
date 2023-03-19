@@ -8,24 +8,24 @@ metadata:
       {"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.recommendationEngine.service }}"},
       {"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.activityTrackingService.service }}"}]
   labels:
-    {{- include "globex-ui.labels" . | nindent 4 }}
+    {{- include "globex-web.labels" . | nindent 4 }}
     app.openshift.io/runtime: nodejs
-  name: {{ include "globex-ui.name" . }}
+  name: {{ include "globex-web.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "globex-ui.selectorLabels" . | nindent 6 }}
+      {{- include "globex-web.selectorLabels" . | nindent 6 }}
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        {{- include "globex-ui.selectorLabels" . | nindent 8 }}
+        {{- include "globex-web.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      serviceAccountName: {{ include "globex-ui.serviceAccountName" . }}
+      serviceAccountName: {{ include "globex-web.serviceAccountName" . }}
       containers:
         - image:  "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}

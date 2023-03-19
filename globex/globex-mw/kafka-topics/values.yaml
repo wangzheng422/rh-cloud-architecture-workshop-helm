@@ -19,6 +19,7 @@ kafka:
     - name: globex.order-aggregated
       partitions: 1
       retention: -1
+  namespace: 
 argocd:
   enabled: true
   syncwave: "-2"
