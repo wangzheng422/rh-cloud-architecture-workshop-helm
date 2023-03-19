@@ -59,6 +59,7 @@ pgsql:
   user: globex
   password: globex
   database: globex
+  adminPassword: 
 
 persistence:
   mode: persistent

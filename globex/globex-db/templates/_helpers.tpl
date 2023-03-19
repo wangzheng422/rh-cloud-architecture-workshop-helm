@@ -80,9 +80,13 @@ argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
 Admin password
 */}}
 {{- define "globex-db.admin-password" -}}
+{{- if .Values.pgsql.adminPassword }}
+{{- .Values.pgsql.adminPassword }}
+{{- else }}
 {{- $secretName := (include "globex-db.name" .) }}
 {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace $secretName) | default dict }}
 {{- $secretData := (get $secretObj "data") | default dict }}
 {{- $adminSecret := (get $secretData "database-admin-password") | default (randAlpha 12 | b64enc) }}
 {{- $adminSecret | quote }}
+{{- end }}
 {{- end }}
