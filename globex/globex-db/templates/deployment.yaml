@@ -61,6 +61,11 @@ spec:
                 secretKeyRef:
                   key: database-admin-password
                   name: {{ include "globex-db.name" . }}
+            - name: POSTGRESQL_DEBEZIUM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-debezium-password
+                  name: {{ include "globex-db.name" . }}
           {{- if eq .Values.persistence.mode "persistent" }}
           volumeMounts:
             - name: "{{ include "globex-db.name" . }}-data"

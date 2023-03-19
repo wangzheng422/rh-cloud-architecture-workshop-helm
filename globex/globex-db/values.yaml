@@ -60,6 +60,7 @@ pgsql:
   password: globex
   database: globex
   adminPassword: 
+  debeziumPassword: debezium
 
 persistence:
   mode: persistent
