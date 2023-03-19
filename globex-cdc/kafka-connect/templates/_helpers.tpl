@@ -125,10 +125,12 @@ Kafka Client Connection Secret Name
 Kafka Client Secret Absent?
 */}}
 {{- define "kafka.client-connection-secret.absent" }}
-{{- $secretObj := (lookup "v1" "Secret" .Release.Namespace (include "kafka.client-connection-secret.name" . )) | default dict }}
 {{- $output := "" }}
+{{- if not .Values.kafka.bootstrapServer }}
+{{- $secretObj := (lookup "v1" "Secret" .Release.Namespace (include "kafka.client-connection-secret.name" . )) | default dict }}
 {{- if not $secretObj }}
 {{- $output = "1" }}
+{{- end }}
 {{- end }}
 {{- $output }}
 {{- end }}
@@ -165,7 +167,7 @@ Kafka Client Authentication
 */}}
 {{- define "kafka.authentication" }}
 {{- $output := "" }}
-{{- if .Values.kafka.userId }}
+{{- if .Values.kafka.clientId }}
 {{- $output = "1" }}
 {{- else }}
 {{- $secretObj := (lookup "v1" "Secret" (include "kafka.client-connection-secret.namespace" .) (include "kafka.client-connection-secret.name" . )) | default dict }}

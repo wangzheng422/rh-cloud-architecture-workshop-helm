@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "globex-cdc.name" . }}-hook
+  labels:
+    {{- include "globex-cdc.labels" . | nindent 4 }}
+  annotations: 
+    {{- if .Values.argocd.enabled }}
+    {{- include "globex-cdc.argocd-syncwave" . | nindent 4 }}
+    {{- else }}
+    "helm.sh/hook": pre-install  
+    {{- end }}    
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: {{ include "globex-cdc.name" . }}-hook
+    spec:
+      serviceAccountName: {{ include "globex-cdc.serviceAccountName" . }}-hook
+      securityContext:
+        {{- toYaml .Values.hook.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.hook.securityContext | nindent 12 }}
+          image: "{{ .Values.hook.image.repository }}:{{ .Values.hook.image.tag }}"
+          imagePullPolicy: {{ .Values.hook.image.pullPolicy }}
+          env:
+            - name: KAFKA_NAMESPACE
+              value: {{ .Values.kafka.namespace }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+      restartPolicy: Never

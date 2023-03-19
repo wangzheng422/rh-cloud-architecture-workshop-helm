@@ -1,0 +1,27 @@
+debezium:
+  deploy: true
+cashback-connector:
+  deploy: true
+
+hook:
+  image:
+    repository: quay.io/cloud-architecture-workshop/kafka-client-connection-secret-job
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  serviceAccount:
+    create: true
+    name: ""
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  
+
+argocd:
+  enabled: true
+  syncwave: "-2"
