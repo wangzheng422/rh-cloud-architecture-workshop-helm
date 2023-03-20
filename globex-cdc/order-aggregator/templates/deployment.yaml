@@ -30,6 +30,27 @@ spec:
             - name: http
               containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVER
+              valueFrom:
+                secretKeyRef:
+                  key: bootstrapServer
+                  name: {{ .Values.kafka.secret }}
+            - name: KAFKA_SECURITY_PROTOCOL
+              valueFrom:
+                secretKeyRef:
+                  key: securityProtocol
+                  name: {{ .Values.kafka.secret }}
+            - name: KAFKA_SASL_MECHANISM
+              valueFrom:
+                secretKeyRef:
+                  key: saslMechanism
+                  name: {{ .Values.kafka.secret }}
+            - name: KAFKA_SASL_JAAS_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  key: saslJaasConfig
+                  name: {{ .Values.kafka.secret }}          
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:

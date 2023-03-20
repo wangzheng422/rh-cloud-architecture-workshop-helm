@@ -66,11 +66,7 @@ securityContext:
       - ALL
 
 kafka:
-  bootstrapServer: ""
-  securityProtocol: ""
-  saslMechanism: ""
-  clientId: ""
-  clientSecret: ""
+  secret: kafka-client-secret
   streams:
     topics: globex.updates.public.orders, globex.updates.public.line_item, globex.order-aggregated
     replicationFactor: 2
