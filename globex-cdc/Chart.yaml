@@ -1,0 +1,27 @@
+apiVersion: v2
+name: globex-cdc
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: kafka-connect
+    version: 0.1.0
+    repository: file://kafka-connect
+  - name: debezium
+    version: 0.1.0
+    repository: file://debezium
+    condition: debezium.deploy
+  - name: cashback-db
+    version: 0.1.0
+    repository: file://cashback-db
+  - name: cashback-service
+    version: 0.1.0
+    repository: file://cashback-service
+  - name: order-aggregator
+    version: 0.1.0
+    repository: file://order-aggregator
+  - name: cashback-connector
+    version: 0.1.0
+    repository: file://cashback-connector
+    condition: cashbackConnector.deploy
