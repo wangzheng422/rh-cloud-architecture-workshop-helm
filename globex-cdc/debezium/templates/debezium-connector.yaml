@@ -16,7 +16,7 @@ spec:
     database.hostname: "{{ $value.database.hostname }}"
     database.port: "{{ $value.database.port }}"
     database.user: "{{ $value.database.user }}"
-    database.password: "{{ include "db.admin.password" (dict "value" $value "namespace" $.Release.Namespace) }}"
+    database.password: "{{ $value.database.password }}"
     database.dbname: "{{ $value.database.dbname }}"
     topic.prefix: "{{ $value.database.topicPrefix }}.updates"
     decimal.handling.mode: "{{ $value.decimalHandlingMode }}"

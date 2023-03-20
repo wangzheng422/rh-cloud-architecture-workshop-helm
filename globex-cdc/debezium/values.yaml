@@ -1,11 +1,11 @@
 connectors:
   customer:
-    kafkaConnect: 
+    kafkaConnect: kafka-connect
     database:
       hostname: globex-db.globex.svc.cluster.local
       port: 5432
-      user: postgres
-      password: 
+      user: debezium
+      password: debezium
       dbname: globex
       topicPrefix: globex
     schema:
