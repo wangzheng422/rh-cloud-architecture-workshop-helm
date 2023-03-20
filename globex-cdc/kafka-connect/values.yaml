@@ -6,7 +6,6 @@ valueConverter: org.apache.kafka.connect.json.JsonConverter
 replicationFactor: 2
 authentication:
   passwordKey: clientSecret
-tls: true
 resources:
   requests:
     cpu: 100m
