@@ -66,13 +66,7 @@ securityContext:
       - ALL
 
 kafka:
-  namespace: ""
-  broker: ""
-  bootstrapServer: ""
-  securityProtocol: ""
-  saslMechanism: ""
-  clientId: ""
-  clientSecret: ""
+  secret: kafka-client-secret
   topic:
     customer: globex.updates.public.customer
     order: globex.order-aggregated

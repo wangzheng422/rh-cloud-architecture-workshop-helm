@@ -58,7 +58,27 @@ spec:
                   key: database-name
                   name: {{ .Values.cashbackDb.secret.name }}
             - name: DATASOURCE_JDBC_URL
-              value: jdbc:postgresql://{{ .Values.cashbackDb.name }}:5432/${POSTGRESQL_DATABASE}          
+              value: jdbc:postgresql://{{ .Values.cashbackDb.name }}:5432/${POSTGRESQL_DATABASE}
+            - name: KAFKA_BOOTSTRAP_SERVER
+              valueFrom:
+                secretKeyRef:
+                  key: bootstrapServer
+                  name: {{ .Values.kafka.secret }}
+            - name: KAFKA_SECURITY_PROTOCOL
+              valueFrom:
+                secretKeyRef:
+                  key: securityProtocol
+                  name: {{ .Values.kafka.secret }}
+            - name: KAFKA_SASL_MECHANISM
+              valueFrom:
+                secretKeyRef:
+                  key: saslMechanism
+                  name: {{ .Values.kafka.secret }}
+            - name: KAFKA_SASL_JAAS_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  key: saslJaasConfig
+                  name: {{ .Values.kafka.secret }}
       volumes:
         - name: config
           secret:
