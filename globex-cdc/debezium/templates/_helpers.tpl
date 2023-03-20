@@ -48,7 +48,7 @@ Database password
 {{/*
 Kafka Connect
 */}}
-{{- define "kafka-connect.name" -}}
+{{- define "debezium.kafka-connect-name" -}}
 {{- $output := "" }}
 {{- if ($.value.kafkaConnect) }}
 {{- $output = $.value.kafkaConnect }}
