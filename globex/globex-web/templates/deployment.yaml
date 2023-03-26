@@ -59,5 +59,15 @@ spec:
               value: {{ .Values.globexStoreApp.url }}{{ .Values.globexStoreApp.customerPath }}
             - name: API_ORDER_SERVICE
               value: {{ .Values.globexStoreApp.url }}{{ .Values.globexStoreApp.orderPath }}
+            {{- if .Values.sso.enabled }}
+            - name: SSO_CUSTOM_CONFIG
+              value: {{ .Values.sso.client }}
+            - name: SSO_AUTHORITY
+              value: {{ .Values.sso.url }}
+            - name: SSO_REDIRECT_LOGOUT_URI
+              value: {{ .Values.sso.logoutUri }}
+            - name: SSO_LOG_LEVEL
+              value: '{{ .Values.sso.logLevel }}'
+            {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}

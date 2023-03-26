@@ -83,3 +83,9 @@ recommendationEngine:
   service: recommendation-engine
   path: /score/product 
 
+sso:
+  enabled: true
+  url:
+  client:
+  logoutUri:
+  logLevel: "2"
