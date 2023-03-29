@@ -1,5 +1,5 @@
 connectors:
-  customer:
+  globex:
     kafkaConnect: kafka-connect
     database:
       hostname: globex-db.globex.svc.cluster.local
