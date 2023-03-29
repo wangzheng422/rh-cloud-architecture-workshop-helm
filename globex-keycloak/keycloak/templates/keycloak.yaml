@@ -23,4 +23,4 @@ spec:
   http:
     httpEnabled: true
   hostname:
-    hostname: {{ .Values.route.host }}.{{ include "keycloak.ocpDomain" . }}
+    hostname: {{ include "keycloak.hostname" . }}

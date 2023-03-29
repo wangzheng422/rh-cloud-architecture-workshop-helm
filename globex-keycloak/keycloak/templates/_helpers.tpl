@@ -85,3 +85,16 @@ Find the name of the OpenShift domain
 {{- $ocpDomain := (get $status "domain") | default dict }}
 {{- printf "%s" $ocpDomain }}
 {{- end }}
+
+{{/*
+Keycloak hostname
+*/}}
+{{- define "keycloak.hostname" -}}
+{{- if .Values.route.host }}
+{{- printf "%s" .Values.route.host }}
+{{- else if .Values.route.localName }}
+{{- printf "%s.%s" .Values.route.localName (include "keycloak.ocpDomain" .) }}
+{{- else }}
+{{- printf "%s-%s.%s" (include "keycloak.name" .) .Release.Namespace (include "keycloak.ocpDomain" .) }}
+{{- end }}
+{{- end }}
