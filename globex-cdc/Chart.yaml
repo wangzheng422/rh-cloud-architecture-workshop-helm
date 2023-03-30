@@ -25,3 +25,7 @@ dependencies:
     version: 0.1.0
     repository: file://cashback-connector
     condition: cashbackConnector.deploy
+  - name: integration-platform
+    version: 0.1.0
+    repository: file://integration-platform
+    condition: integrationPlatform.deploy

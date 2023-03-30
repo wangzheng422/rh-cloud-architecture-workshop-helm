@@ -2,6 +2,8 @@ debezium:
   deploy: true
 cashback-connector:
   deploy: true
+integration-platform:
+  deploy: false
 
 hook:
   image:
