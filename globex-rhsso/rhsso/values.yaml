@@ -1,3 +1,6 @@
+selector:
+  app: rhsso
+
 route:
   enabled: true
   host:

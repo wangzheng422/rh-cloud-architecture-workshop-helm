@@ -5,7 +5,7 @@ metadata:
   name: {{ include "rhsso.name" . }}
   labels:
     {{- include "rhsso.labels" . | nindent 4 }}
-    app: rhsso
+    app: {{ .Values.selector.app }}
   annotations:
     {{- include "rhsso.argocd-syncwave" . | nindent 4 }}
 spec:
