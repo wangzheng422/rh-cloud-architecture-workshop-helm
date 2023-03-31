@@ -150,7 +150,7 @@ spec:
           - default-roles-globex-{{ $loop }}
           - web-user
         requiredActions: []
-        group: []
+        groups: []
         credentials:
           - type: password
             value: openshift
