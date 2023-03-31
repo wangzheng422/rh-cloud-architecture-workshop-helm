@@ -2,7 +2,7 @@ keycloak:
   name: keycloak
 
 selector:
-  app: sso
+  app: rhsso
 
 loop:
   prefix: user
