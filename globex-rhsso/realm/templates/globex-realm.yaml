@@ -24,30 +24,24 @@ spec:
           composite: false
           clientRole: false
           containerId: globex-{{ $loop }}
-          attributes: {}
         - name: confidential
           composite: false
           clientRole: false
           containerId: globex-{{ $loop }}
-          attributes: {}
         - name: mobile-user
           composite: false
           clientRole: false
           containerId: globex-{{ $loop }}
-          attributes: {}
         - name: web-user
           composite: false
           clientRole: false
           containerId: globex-{{ $loop }}
-          attributes: {}
         - name: user
           composite: false
           clientRole: false
           containerId: globex-{{ $loop }}
-          attributes: {}
     clients:
       - clientId: globex-web-gateway
-        surrogateAuthRequired: false
         enabled: true
         clientAuthenticatorType: client-secret
         redirectUris:
@@ -55,7 +49,6 @@ spec:
         webOrigins:
           - "*"
           - "+"
-        notBefore: 0
         bearerOnly: false
         consentRequired: false
         standardFlowEnabled: true
@@ -63,7 +56,6 @@ spec:
         directAccessGrantsEnabled: true
         serviceAccountsEnabled: true
         publicClient: false
-        frontchannelLogout: false
         protocol: openid-connect
         attributes:
           saml.force.post.binding: 'false'
@@ -99,7 +91,6 @@ spec:
           - name: Client ID
             protocol: openid-connect
             protocolMapper: oidc-usersessionmodel-note-mapper
-            consentRequired: false
             config:
               user.session.note: clientId
               userinfo.token.claim: 'true'
@@ -110,7 +101,6 @@ spec:
           - name: Client Host
             protocol: openid-connect
             protocolMapper: oidc-usersessionmodel-note-mapper
-            consentRequired: false
             config:
               user.session.note: clientHost
               userinfo.token.claim: 'true'
@@ -121,7 +111,6 @@ spec:
           - name: Client IP Address
             protocol: openid-connect
             protocolMapper: oidc-usersessionmodel-note-mapper
-            consentRequired: false
             config:
               user.session.note: clientAddress
               userinfo.token.claim: 'true'
@@ -141,18 +130,12 @@ spec:
           - microprofile-jwt
     users:
       - username : asilva
-        firstName: ''
-        lastName: ''
         email: asilva@email.com
-        emailVerified: false
         enabled: true
         realmRoles:
           - default-roles-globex-{{ $loop }}
           - web-user
-        requiredActions: []
-        groups: []
         credentials:
           - type: password
             value: openshift
-            temporary: false
 {{- end }}
