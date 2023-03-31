@@ -33,5 +33,5 @@ spec:
             - name: STATEFULSET
               value: {{ .Values.keycloak.name }}
             - name: MAX_TIME_TO_WAIT_MS
-              value: "120000"
+              value: "{{ .Values.hook.maxTimeToWait }}"
       restartPolicy: Never
