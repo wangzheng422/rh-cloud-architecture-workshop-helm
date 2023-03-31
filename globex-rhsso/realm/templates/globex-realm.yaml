@@ -1,0 +1,158 @@
+{{- range untilStep 0 (.Values.loop.count | int64 | int) 1 }}
+{{ $loop := printf "%s%s" $.Values.loop.prefix ((add . 1) | toString) }}
+---
+kind: KeycloakRealm
+apiVersion: keycloak.org/v1alpha1
+metadata:
+  name: globex-{{ $loop }}
+  namespace: rhsso
+spec:
+  instanceSelector:
+    matchLabels:
+      app: {{ $.Values.selector.app }}
+  realm:
+    id: globex-{{ $loop }}
+    realm: globex-{{ $loop }}
+    enabled: true
+    displayName: globex-{{ $loop }}
+    eventsEnabled: false
+    adminEventsEnabled: false
+    accessTokenLifespanForImplicitFlow: 3600
+    roles:
+      realm:
+        - name: admin
+          composite: false
+          clientRole: false
+          containerId: globex-{{ $loop }}
+          attributes: {}
+        - name: confidential
+          composite: false
+          clientRole: false
+          containerId: globex-{{ $loop }}
+          attributes: {}
+        - name: mobile-user
+          composite: false
+          clientRole: false
+          containerId: globex-{{ $loop }}
+          attributes: {}
+        - name: web-user
+          composite: false
+          clientRole: false
+          containerId: globex-{{ $loop }}
+          attributes: {}
+        - name: user
+          composite: false
+          clientRole: false
+          containerId: globex-{{ $loop }}
+          attributes: {}
+    clients:
+      - clientId: globex-web-gateway
+        surrogateAuthRequired: false
+        enabled: true
+        clientAuthenticatorType: client-secret
+        redirectUris:
+          - "*"
+        webOrigins:
+          - "*"
+          - "+"
+        notBefore: 0
+        bearerOnly: false
+        consentRequired: false
+        standardFlowEnabled: true
+        implicitFlowEnabled: true
+        directAccessGrantsEnabled: true
+        serviceAccountsEnabled: true
+        publicClient: false
+        frontchannelLogout: false
+        protocol: openid-connect
+        attributes:
+          saml.force.post.binding: 'false'
+          saml.multivalued.roles: 'false'
+          frontchannel.logout.session.required: 'false'
+          oauth2.device.authorization.grant.enabled: 'false'
+          backchannel.logout.revoke.offline.tokens: 'false'
+          saml.server.signature.keyinfo.ext: 'false'
+          use.refresh.tokens: 'true'
+          oidc.ciba.grant.enabled: 'false'
+          backchannel.logout.session.required: 'false'
+          client_credentials.use_refresh_token: 'false'
+          require.pushed.authorization.requests: 'false'
+          saml.client.signature: 'false'
+          saml.allow.ecp.flow: 'false'
+          id.token.as.detached.signature: 'false'
+          saml.assertion.signature: 'false'
+          client.secret.creation.time: '1679473817'
+          saml.encrypt: 'false'
+          saml.server.signature: 'false'
+          exclude.session.state.from.auth.response: 'false'
+          saml.artifact.binding: 'false'
+          saml_force_name_id_format: 'false'
+          acr.loa.map: "{}"
+          tls.client.certificate.bound.access.tokens: 'false'
+          saml.authnstatement: 'false'
+          display.on.consent.screen: 'false'
+          token.response.type.bearer.lower-case: 'false'
+          saml.onetimeuse.condition: 'false'
+        fullScopeAllowed: true
+        nodeReRegistrationTimeout: -1
+        protocolMappers:
+          - name: Client ID
+            protocol: openid-connect
+            protocolMapper: oidc-usersessionmodel-note-mapper
+            consentRequired: false
+            config:
+              user.session.note: clientId
+              userinfo.token.claim: 'true'
+              id.token.claim: 'true'
+              access.token.claim: 'true'
+              claim.name: clientId
+              jsonType.label: String
+          - name: Client Host
+            protocol: openid-connect
+            protocolMapper: oidc-usersessionmodel-note-mapper
+            consentRequired: false
+            config:
+              user.session.note: clientHost
+              userinfo.token.claim: 'true'
+              id.token.claim: 'true'
+              access.token.claim: 'true'
+              claim.name: clientHost
+              jsonType.label: String
+          - name: Client IP Address
+            protocol: openid-connect
+            protocolMapper: oidc-usersessionmodel-note-mapper
+            consentRequired: false
+            config:
+              user.session.note: clientAddress
+              userinfo.token.claim: 'true'
+              id.token.claim: 'true'
+              access.token.claim: 'true'
+              claim.name: clientAddress
+              jsonType.label: String
+        defaultClientScopes:
+          - web-origins
+          - roles
+          - profile
+          - email
+        optionalClientScopes:
+          - address
+          - phone
+          - offline_access
+          - microprofile-jwt
+    users:
+      - username : asilva
+        firstName: ''
+        lastName: ''
+        email: asilva@email.com
+        emailVerified: false
+        enabled: true
+        realmRoles:
+          - default-roles-globex-{{ $loop }}
+          - web-user
+        requiredActions: []
+        group: []
+        credentials:
+          - type: password
+            value: openshift
+            temporary: false
+{{- end }}

@@ -1,0 +1,6 @@
+selector:
+  app: sso
+
+loop:
+  prefix: user
+  count: 10
