@@ -1,0 +1,11 @@
+route:
+  enabled: true
+  host:
+  tlsEnabled: true
+  tls:
+    termination: reencrypt
+    insecureEdgeTerminationPolicy: Redirect
+
+rhsso:
+  externalAccess:
+    enabled: false

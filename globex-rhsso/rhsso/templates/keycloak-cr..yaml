@@ -1,0 +1,15 @@
+---
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: {{ include "rhsso.name" . }}
+  labels:
+    {{- include "rhsso.labels" . | nindent 4 }}
+    app: rhsso
+spec:
+  instances: 1
+  extensions:
+    - https://github.com/aerogear/keycloak-metrics-spi/releases/download/2.5.3/keycloak-metrics-spi-2.5.3.jar
+  externalAccess:
+    enabled: {{ .Values.rhsso.externalAccess.enabled }}
+  disableDefaultServiceMonitor: true
