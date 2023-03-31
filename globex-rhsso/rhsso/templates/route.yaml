@@ -13,7 +13,7 @@ spec:
     targetPort: keycloak
   to:
     kind: Service
-    name: {{ include "rhsso.name" . }}
+    name: keycloak
     weight: 100
   wildcardPolicy: None
   {{- if .Values.route.tlsEnabled }}
