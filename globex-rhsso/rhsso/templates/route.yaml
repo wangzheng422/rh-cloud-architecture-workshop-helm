@@ -10,7 +10,7 @@ spec:
   host: {{ .Values.route.host }}
   {{ end }}
   port:
-    targetPort: {{ .Values.service.portName }}
+    targetPort: keycloak
   to:
     kind: Service
     name: {{ include "rhsso.name" . }}
