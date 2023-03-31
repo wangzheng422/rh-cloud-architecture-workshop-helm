@@ -9,3 +9,7 @@ route:
 rhsso:
   externalAccess:
     enabled: false
+
+argocd:
+  enabled: true
+  syncwave: "-2"

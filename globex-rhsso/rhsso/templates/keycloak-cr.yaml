@@ -6,6 +6,8 @@ metadata:
   labels:
     {{- include "rhsso.labels" . | nindent 4 }}
     app: rhsso
+  annotations:
+    {{- include "rhsso.argocd-syncwave" . | nindent 4 }}
 spec:
   instances: 1
   extensions:

@@ -5,6 +5,8 @@ metadata:
   name: {{ include "rhsso.name" . }}
   labels:
     {{- include "rhsso.labels" . | nindent 4 }}
+  annotations:
+    {{- include "rhsso.argocd-syncwave" . | nindent 4 }}
 spec:
   {{ if .Values.route.host }}
   host: {{ .Values.route.host }}
