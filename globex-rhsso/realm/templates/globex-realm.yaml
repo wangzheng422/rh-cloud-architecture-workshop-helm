@@ -138,4 +138,40 @@ spec:
         credentials:
           - type: password
             value: openshift
+      - username: mmiller
+        email: mmiller@topvibe.com
+        enabled: true
+        realmRoles:
+          - default-roles-globex-{{ $loop }}
+          - web-user
+        credentials:
+          - type: password
+            value: openshift
+      - username: asanders
+        email: asanders@topgreatest.com
+        enabled: true
+        realmRoles:
+          - default-roles-globex-{{ $loop }}
+          - web-user
+        credentials:
+          - type: password
+            value: openshift
+      - username: cjones
+        email: cjones@zmail.com
+        enabled: true
+        realmRoles:
+          - default-roles-globex-{{ $loop }}
+          - web-user
+        credentials:
+          - type: password
+            value: openshift
+      - username: pwong
+        email: pwong@email.com
+        enabled: true
+        realmRoles:
+          - default-roles-globex-{{ $loop }}
+          - web-user
+        credentials:
+          - type: password
+            value: openshift
 {{- end }}
