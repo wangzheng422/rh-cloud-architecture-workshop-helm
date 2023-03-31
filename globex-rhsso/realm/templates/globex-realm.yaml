@@ -49,8 +49,6 @@ spec:
         webOrigins:
           - "*"
           - "+"
-        bearerOnly: false
-        consentRequired: false
         standardFlowEnabled: true
         implicitFlowEnabled: true
         directAccessGrantsEnabled: true
