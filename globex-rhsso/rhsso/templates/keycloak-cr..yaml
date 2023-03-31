@@ -12,4 +12,4 @@ spec:
     - https://github.com/aerogear/keycloak-metrics-spi/releases/download/2.5.3/keycloak-metrics-spi-2.5.3.jar
   externalAccess:
     enabled: {{ .Values.rhsso.externalAccess.enabled }}
-  disableDefaultServiceMonitor: true
+  DisableDefaultServiceMonitor: true
