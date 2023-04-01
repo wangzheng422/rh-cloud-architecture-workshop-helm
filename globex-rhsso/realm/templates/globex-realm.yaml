@@ -5,7 +5,6 @@ kind: KeycloakRealm
 apiVersion: keycloak.org/v1alpha1
 metadata:
   name: globex-{{ $loop }}
-  namespace: rhsso
 spec:
   instanceSelector:
     matchLabels:
