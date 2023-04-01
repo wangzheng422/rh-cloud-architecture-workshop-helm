@@ -1,0 +1,18 @@
+selector:
+  app: rhsso
+
+route:
+  enabled: true
+  host:
+  tlsEnabled: true
+  tls:
+    termination: reencrypt
+    insecureEdgeTerminationPolicy: Redirect
+
+rhsso:
+  externalAccess:
+    enabled: false
+
+argocd:
+  enabled: true
+  syncwave: "-2"
