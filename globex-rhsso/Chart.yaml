@@ -5,6 +5,9 @@ type: application
 version: 0.1.0
 
 dependencies:
+  - name: rhsso-db
+    version: 0.1.0
+    repository: file://rhsso-db
   - name: rhsso
     version: 0.1.0
     repository: file://rhsso
