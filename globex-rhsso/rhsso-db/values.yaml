@@ -67,8 +67,8 @@ persistence:
 selector:
   app: rhsso
 
-rhsso:
-  name: rhsso
+keycloak:
+  name: keycloak
 
 argocd:
   enabled: true

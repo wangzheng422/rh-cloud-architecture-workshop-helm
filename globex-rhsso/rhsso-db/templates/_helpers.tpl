@@ -95,5 +95,5 @@ Admin password
 Expand the name of the chart.
 */}}
 {{- define "rhsso-db.secretName" -}}
-{{- printf "%s-db-secret" .Values.rhsso.name }}
+{{- printf "%s-db-secret" .Values.keycloak.name }}
 {{- end }}
