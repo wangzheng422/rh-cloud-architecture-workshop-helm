@@ -17,3 +17,4 @@ spec:
   externalDatabase:
     enabled: true
   DisableDefaultServiceMonitor: true
+  profile: RHSSO
