@@ -46,7 +46,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/kafkaconnect-patch-job
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "e1e2152-native"
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
