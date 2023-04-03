@@ -126,6 +126,18 @@ spec:
           - offline_access
           - microprofile-jwt
     users:
+      - username: {{ $loop }}
+        email: {{ $loop }}@email.com
+        enabled: true
+        realmRoles:
+          - default-roles-globex-{{ $loop }}
+        clientRoles:
+          realm-management:
+            - realm-admin
+            - manage-realm
+        credentials:
+          - type: password
+            value: openshift
       - username : asilva
         email: asilva@email.com
         enabled: true
