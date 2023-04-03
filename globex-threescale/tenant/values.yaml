@@ -1,0 +1,10 @@
+loop:
+  prefix: user
+  count: 1
+
+tenant:
+  adminPassword:
+  organizationName:
+
+system:
+  masterDomain:  
