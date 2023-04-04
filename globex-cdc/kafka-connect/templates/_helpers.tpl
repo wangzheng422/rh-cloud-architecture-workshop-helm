@@ -91,7 +91,7 @@ Kafka Authentication type
 */}}
 {{- define "kafka-connect.authentication-type" }}
 {{- $saslMechanism := (include "kafka.sasl-mechanism" .) }}
-{{- $output := "" }}
+{{- $output := "scram-sha-512" }}
 {{- if eq "PLAIN" $saslMechanism }}
 {{- $output = "plain" }}
 {{- else if eq "SCRAM-SHA-512" $saslMechanism}}
@@ -226,4 +226,19 @@ Kafka Client Id
 {{- $output = $clientId }}
 {{- end }}
 {{- $output }}
+{{- end }}
+
+{{/*
+ArgoCD Syncwave Hook
+*/}}
+{{- define "kafka-connect-hook.argocd-syncwave" -}}
+{{- if .Values.hook.argocd }}
+{{- if and (.Values.hook.argocd.syncwave) (.Values.hook.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.hook.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
 {{- end }}

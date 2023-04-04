@@ -9,7 +9,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/kafka-client-connection-secret-job
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "0584f4c-native"
   serviceAccount:
     create: true
     name: ""
@@ -22,8 +22,7 @@ hook:
     capabilities:
       drop:
         - ALL
-  
-
+ 
 argocd:
   enabled: true
   syncwave: "-2"

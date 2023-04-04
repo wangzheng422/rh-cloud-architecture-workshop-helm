@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "kafka-connect.name" . }}-hook
+  labels:
+    {{- include "kafka-connect.labels" . | nindent 4 }}
+  annotations:
+    {{- if .Values.hook.argocd.enabled }}
+    {{- include "kafka-connect-hook.argocd-syncwave" . | nindent 4 }}
+    {{- else }}
+    "helm.sh/hook": post-install
+    {{- end }}    
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- apiGroup: ""
+  kind: ServiceAccount
+  name: {{ include "kafka-connect.name" . }}-hook
+  namespace: {{ .Release.Namespace }}
