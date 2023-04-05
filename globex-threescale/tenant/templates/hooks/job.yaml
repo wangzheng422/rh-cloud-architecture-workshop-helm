@@ -31,5 +31,5 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: HOST
-              value: {{ include "tenant.hook.host" . }}                         
+              value: {{ include "tenant.hook-host" . }}                         
       restartPolicy: Never

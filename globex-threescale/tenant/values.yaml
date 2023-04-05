@@ -23,7 +23,7 @@ hook:
     capabilities:
       drop:
         - ALL
-  host:
+  host: ""
   argocd:
     enabled: true
     syncwave: "-3"

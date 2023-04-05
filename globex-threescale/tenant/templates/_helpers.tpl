@@ -141,12 +141,16 @@ argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
 {{/*
 Hook host
 */}}
-{{- define "tenant.hook.host" -}}
+{{- define "tenant.hook-host" -}}
 {{- $host := "" }}
 {{- if .Values.hook.host }}
 {{- $host = .Values.hook.host }}
 {{- else }}
-{{- $host = include "system.master-url" . }}
-{{- $host }}
+{{- $secretObj := (lookup "v1" "Secret" .Release.Namespace "system-seed") | default dict }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- $masterDomainEnc := (get $secretData "MASTER_DOMAIN") | default ("3scale-master" | b64enc) }}
+{{- $masterDomain := $masterDomainEnc | b64dec }}
+{{- $host = printf "%s.%s" $masterDomain (include "openshift.subdomain" .) }}
 {{- end }}
+{{- $host }}
 {{- end }}
