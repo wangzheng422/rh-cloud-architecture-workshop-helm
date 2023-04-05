@@ -107,3 +107,46 @@ tenant secret
 data:
   admin_password: {{ $adminPassword }}
 {{- end }}
+
+{{/*
+ArgoCD Syncwave Hook
+*/}}
+{{- define "tenant-hook.argocd-syncwave" -}}
+{{- if .Values.hook.argocd }}
+{{- if and (.Values.hook.argocd.syncwave) (.Values.hook.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.hook.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- end }}
+
+{{/*
+ArgoCD Syncwave
+*/}}
+{{- define "tenant.argocd-syncwave" -}}
+{{- if .Values.argocd }}
+{{- if and (.Values.argocd.syncwave) (.Values.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- end }}
+
+{{/*
+Hook host
+*/}}
+{{- define "tenant.hook.host" -}}
+{{- $host := "" }}
+{{- if .Values.hook.host }}
+{{- $host = .Values.hook.host }}
+{{- else }}
+{{- $host = include "system.master-url" . }}
+{{- $host }}
+{{- end }}
+{{- end }}
