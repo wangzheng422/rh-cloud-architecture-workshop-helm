@@ -8,7 +8,7 @@ minio:
     storage: 1Gi
     storageClass: gp3-csi
   argocd:
-    syncwave: "-2"
+    syncwave: "-5"
 
 s3Auth:
   enabled: true
@@ -35,3 +35,4 @@ system:
 
 argocd:
   enabled: true
+  syncwave: "-4"
