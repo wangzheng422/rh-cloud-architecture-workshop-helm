@@ -13,7 +13,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/wait-for-route-job
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "3450b77-native"
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
