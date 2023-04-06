@@ -16,9 +16,7 @@ spec:
       type: string
   workspaces:
     - name: working-dir
-      optional: false
     - name: provider-details
-      optional: false
   tasks:
     - name: clone-contents
       taskRef:
