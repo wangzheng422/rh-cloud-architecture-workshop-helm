@@ -33,5 +33,5 @@ spec:
             - name: HOST
               value: {{ .Values.hook.hostPattern }}
             - name: COUNT
-              value: 
+              value: "{{ .Values.loop.count }}"
       restartPolicy: Never
