@@ -1,0 +1,32 @@
+{{- range untilStep 0 (.Values.loop.count | int64 | int) 1 }}
+{{ $loop := printf "%s%s" $.Values.loop.prefix ((add . 1) | toString) }}
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: upload-cms-contents-{{ $loop }}
+  labels:
+    tekton.dev/pipeline: upload-cms-contents
+spec:
+  params:
+  - name: GIT_REPO
+    value: https://github.com/btison/cms-api-example.git
+  - name: GIT_REF
+    value: main
+  - name: CMS_IMAGE
+    value: ghcr.io/fwmotion/3scale-cms:latest
+  - name: CMS_CONTEXT_DIR
+    value: ./developer-portal
+  - name: CMS_COMMAND
+    value: upload
+  pipelineRef:
+    name: upload-cms-contents
+  timeout: 1h0m0s
+  workspaces:
+  - name: working-dir
+    persistentVolumeClaim:
+      claimName: workspace-upload-cms-pvc
+  - name: provider-details
+    secret:
+      secretName: 3scale-{{ $loop }}-tenant-secret
+{{- end }}
