@@ -11,3 +11,6 @@ dependencies:
   - name: tenant
     version: 0.1.0
     repository: file://tenant
+  - name: cms-upload
+    version: 0.1.0
+    repository: file://cms-upload
