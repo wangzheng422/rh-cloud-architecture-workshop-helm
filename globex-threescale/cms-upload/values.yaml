@@ -17,6 +17,15 @@ hook:
     enabled: true
     syncwave: "-1"
 
+git:
+  repo: https://github.com/btison/cms-api-example.git
+  ref: main
+
+cms:
+  image: ghcr.io/fwmotion/3scale-cms:latest
+  command: upload
+  contextDir: ./developer-portal
+
 loop:
   prefix: user
   count: 1
