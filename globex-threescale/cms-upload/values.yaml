@@ -22,7 +22,7 @@ hook:
     image:
       repository: quay.io/cloud-architecture-workshop/trigger-pipelines-job
       pullPolicy: IfNotPresent
-      tag: "0905777-native"
+      tag: "6182600-native"
     podSecurityContext:
       runAsNonRoot: true
       seccompProfile:
@@ -34,7 +34,7 @@ hook:
           - ALL
     argocd:
       enabled: true
-      syncwave: "1"
+      syncwave: "0"
 
 git:
   repo: https://github.com/btison/cms-api-example.git
