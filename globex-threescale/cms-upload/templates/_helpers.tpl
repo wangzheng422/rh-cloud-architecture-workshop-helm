@@ -62,12 +62,27 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-ArgoCD Syncwave Hook
+ArgoCD Syncwave Hook Pre3
 */}}
-{{- define "cms-upload-hook.argocd-syncwave" -}}
-{{- if .Values.hook.argocd }}
-{{- if and (.Values.hook.argocd.syncwave) (.Values.hook.argocd.enabled) -}}
-argocd.argoproj.io/sync-wave: "{{ .Values.hook.argocd.syncwave }}"
+{{- define "cms-upload-hook-pre.argocd-syncwave" -}}
+{{- if .Values.hook.pre.argocd }}
+{{- if and (.Values.hook.pre.argocd.syncwave) (.Values.hook.pre.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.hook.pre.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- end }}
+
+{{/*
+ArgoCD Syncwave Hook Post
+*/}}
+{{- define "cms-upload-hook-post.argocd-syncwave" -}}
+{{- if .Values.hook.post.argocd }}
+{{- if and (.Values.hook.post.argocd.syncwave) (.Values.hook.post.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.hook.post.argocd.syncwave }}"
 {{- else }}
 {{- "{}" }}
 {{- end }}
