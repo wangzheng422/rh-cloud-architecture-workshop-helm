@@ -22,7 +22,7 @@ hook:
     image:
       repository: quay.io/cloud-architecture-workshop/trigger-pipelines-job
       pullPolicy: IfNotPresent
-      tag: "e5f0b58-native"
+      tag: "e3e0ca0-native"
     podSecurityContext:
       runAsNonRoot: true
       seccompProfile:
