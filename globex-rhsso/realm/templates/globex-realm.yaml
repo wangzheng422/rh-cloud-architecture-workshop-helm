@@ -135,6 +135,7 @@ spec:
           realm-management:
             - realm-admin
             - manage-realm
+            - manage-clients
         credentials:
           - type: password
             value: openshift
