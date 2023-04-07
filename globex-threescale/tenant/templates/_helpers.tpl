@@ -107,3 +107,50 @@ tenant secret
 data:
   admin_password: {{ $adminPassword }}
 {{- end }}
+
+{{/*
+ArgoCD Syncwave Hook
+*/}}
+{{- define "tenant-hook.argocd-syncwave" -}}
+{{- if .Values.hook.argocd }}
+{{- if and (.Values.hook.argocd.syncwave) (.Values.hook.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.hook.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- end }}
+
+{{/*
+ArgoCD Syncwave
+*/}}
+{{- define "tenant.argocd-syncwave" -}}
+{{- if .Values.argocd }}
+{{- if and (.Values.argocd.syncwave) (.Values.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- end }}
+
+{{/*
+Hook host
+*/}}
+{{- define "tenant.hook-host" -}}
+{{- $host := "" }}
+{{- if .Values.hook.host }}
+{{- $host = .Values.hook.host }}
+{{- else }}
+{{- $secretObj := (lookup "v1" "Secret" .Release.Namespace "system-seed") | default dict }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- $masterDomainEnc := (get $secretData "MASTER_DOMAIN") | default ("3scale-master" | b64enc) }}
+{{- $masterDomain := $masterDomainEnc | b64dec }}
+{{- $host = printf "%s.%s" $masterDomain (include "openshift.subdomain" .) }}
+{{- end }}
+{{- $host }}
+{{- end }}

@@ -104,6 +104,22 @@ argocd.argoproj.io/sync-wave: "{{ .Values.minio.argocd.syncwave }}"
 {{- end }}
 
 {{/*
+ArgoCD Syncwave
+*/}}
+{{- define "apimanager.argocd-syncwave" -}}
+{{- if .Values.argocd }}
+{{- if and (.Values.argocd.syncwave) (.Values.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- end }}
+
+
+{{/*
 Name of the s3-auth secret.
 */}}
 {{- define "s3-auth.name" -}}

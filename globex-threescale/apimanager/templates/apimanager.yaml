@@ -4,6 +4,8 @@ metadata:
   name: {{ include "apimanager.name" . }}
   labels:
     {{- include "apimanager.labels" . | nindent 4 }}
+  annotations:
+    {{- include "apimanager.argocd-syncwave" . | nindent 4 }}
 spec:
   tenantName: {{ .Values.system.tenantName }}
   wildcardDomain: "{{ include "openshift.subdomain" . }}"
