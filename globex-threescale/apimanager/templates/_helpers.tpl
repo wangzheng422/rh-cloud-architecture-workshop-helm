@@ -171,7 +171,7 @@ system-seed secret
 {{- if .Values.system.masterAccessToken }}
 {{- $masterAccessToken = .Values.system.masterAccessToken }}
 {{- else }}
-{{- $masterAccessToken := (get $secretData "MASTER_ACCESS_TOKEN") | default (randAlpha 8 | b64enc) }}
+{{- $masterAccessToken = (get $secretData "MASTER_ACCESS_TOKEN") | default (randAlpha 16 | b64enc) }}
 {{- end }}
 {{- $masterPassword := "" }}
 {{- if .Values.system.masterPassword }}
