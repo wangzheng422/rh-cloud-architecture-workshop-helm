@@ -7,6 +7,11 @@ minio:
   pvc:
     storage: 1Gi
     storageClass: gp3-csi
+  route:
+    tlsEnabled: true
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
   argocd:
     syncwave: "-5"
 

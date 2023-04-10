@@ -131,7 +131,13 @@ s3-auth secret.
 */}}
 {{- define "s3-auth.secret" -}}
 {{- if .Values.minio.enabled }}
-{{- $hostname := printf "%s-%s.%s:80" (include "minio.name" . ) .Release.Namespace (include "openshift.subdomain" .) }}
+{{- $hostname := printf "%s-%s.%s:443" (include "minio.name" . ) .Release.Namespace (include "openshift.subdomain" .) }}
+{{- $aws_protocol := "" }}
+{{- if .Values.minio.route.tlsEnabled }}
+{{- $aws_protocol = "HTTPS" }}
+{{- else }}
+{{- $aws_protocol = "HTTP" }}
+{{- end }}
 data:
   AWS_ACCESS_KEY_ID: {{ .Values.minio.accessKey | b64enc }}
   AWS_SECRET_ACCESS_KEY: {{ .Values.minio.secretKey | b64enc }}
@@ -139,7 +145,7 @@ data:
   AWS_REGION: {{ .Values.minio.region | b64enc }}
   AWS_HOSTNAME: {{ $hostname | b64enc }}
   AWS_PATH_STYLE: {{ "true" | b64enc }}
-  AWS_PROTOCOL: {{ "HTTP" | b64enc }}
+  AWS_PROTOCOL: {{ $aws_protocol | b64enc }}
 {{- end }}
 {{- end }}
 

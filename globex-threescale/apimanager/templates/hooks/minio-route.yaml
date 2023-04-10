@@ -19,4 +19,8 @@ spec:
     name: {{ include "minio.name" . }}
     weight: 100
   wildcardPolicy: None
+  {{- if .Values.minio.route.tlsEnabled }}
+  tls:
+    {{- toYaml .Values.minio.route.tls | nindent 4 }}
+  {{ end }}
 {{- end }}
