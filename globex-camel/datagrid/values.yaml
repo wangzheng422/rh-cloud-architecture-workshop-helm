@@ -1,0 +1,26 @@
+replicaCount: 1
+
+datagrid:
+  name: globex-datagrid
+
+identities:
+  username: developer
+  password: password
+
+hook:
+  image:
+    repository: quay.io/cloud-architecture-workshop/datagrid-truststore-secret-job
+    pullPolicy: IfNotPresent
+    tag: "9b4864b-native"
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  argocd:
+    enabled: true
+    syncwave: "1"

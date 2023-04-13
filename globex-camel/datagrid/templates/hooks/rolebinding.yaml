@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "datagrid.name" . }}-hook
+  labels:
+    {{- include "datagrid.labels" . | nindent 4 }}
+  annotations:
+    {{- if .Values.hook.argocd.enabled }}
+    {{- include "datagrid.hook.argocd-syncwave" . | nindent 4 }}
+    {{- else }}
+    "helm.sh/hook": post-install
+    {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- apiGroup: ""
+  kind: ServiceAccount
+  name: {{ include "datagrid.name" . }}-hook
+  namespace: {{ .Release.Namespace }}
