@@ -29,9 +29,12 @@ dependencies:
   - name: kafka-broker
     version: 0.1.0
     repository: file://globex-mw/kafka-broker
+    condition: kafka.enabled 
   - name: kafka-topics
     version: 0.1.0
     repository: file://globex-mw/kafka-topics
+    condition: kafka.enabled
   - name: kafdrop
     version: 0.1.0
     repository: file://globex-mw/kafdrop
+    condition: kafka.enabled
