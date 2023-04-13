@@ -37,13 +37,13 @@ hook:
       syncwave: "0"
 
 git:
-  repo: https://github.com/btison/cms-api-example.git
+  repo: https://github.com/rh-cloud-architecture-workshop/globex-3scale-devportal-template.git
   ref: main
 
 cms:
   image: ghcr.io/fwmotion/3scale-cms:latest
-  command: upload
-  contextDir: ./developer-portal
+  contextDir: ./dev_portal
+  command: "upload -u"
 
 loop:
   prefix: user
