@@ -11,7 +11,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/datagrid-truststore-secret-job
     pullPolicy: IfNotPresent
-    tag: "9b4864b-native"
+    tag: "51a6ab5-native"
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
