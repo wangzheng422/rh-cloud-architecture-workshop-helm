@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  annotations:
+    app.openshift.io/connects-to: |
+      [{"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.globexStoreApp.service }}"},
+      {"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.recommendationEngine.service }}"},
+      {"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.activityTrackingService.service }}"}]
+  labels:
+    {{- include "globex-partner-web.labels" . | nindent 4 }}
+    app.openshift.io/runtime: nodejs
+  name: {{ include "globex-partner-web.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "globex-partner-web.selectorLabels" . | nindent 6 }}
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        {{- include "globex-partner-web.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "globex-partner-web.serviceAccountName" . }}
+      containers:
+        - image:  "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: {{ .Chart.Name }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.containerPort }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /deployments/config
+          env:
+            - name: NODE_ENV
+              value: {{ .Values.nodeEnv }}
+            - name: PORT
+              value: '{{ .Values.service.containerPort }}'
+            - name: GLOBEX_PARTNER_GATEWAY
+              value: {{ .Values.partnerGateway.url }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+      volumes:
+        - name: config
+          secret:
+            secretName: {{ include "globex-partner-web.name" . }}
+
