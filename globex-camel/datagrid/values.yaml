@@ -3,6 +3,9 @@ replicaCount: 1
 datagrid:
   name: globex-datagrid
 
+truststore:
+  name: client-infinispan.ts
+
 identities:
   username: developer
   password: password
@@ -11,7 +14,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/datagrid-truststore-secret-job
     pullPolicy: IfNotPresent
-    tag: "51a6ab5-native"
+    tag: "91f641f-native"
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
