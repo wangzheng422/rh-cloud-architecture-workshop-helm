@@ -1,0 +1,29 @@
+broker:
+  name: broker
+  secret: amq-tls
+  client:
+    secret: client-amq
+  admin:
+    user: admin
+    password: admin
+
+truststore:
+  name: client-amq.ts
+
+hook:
+  image:
+    repository: quay.io/cloud-architecture-workshop/amq-broker-tls-secret-job
+    pullPolicy: IfNotPresent
+    tag: "f874dde-native"
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  argocd:
+    enabled: true
+    syncwave: "-1"
