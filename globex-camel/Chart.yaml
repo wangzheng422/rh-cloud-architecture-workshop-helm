@@ -8,3 +8,6 @@ dependencies:
   - name: datagrid
     version: 0.1.0
     repository: file://datagrid
+  - name: amq-broker
+    version: 0.1.0
+    repository: file://amq-broker
