@@ -14,7 +14,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/amq-broker-tls-secret-job
     pullPolicy: IfNotPresent
-    tag: "f874dde-native"
+    tag: "f874dde"
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
