@@ -11,3 +11,6 @@ dependencies:
   - name: amq-broker
     version: 0.1.0
     repository: file://amq-broker
+  - name: minio
+    version: 0.1.0
+    repository: file://minio

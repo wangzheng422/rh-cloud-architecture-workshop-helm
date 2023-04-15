@@ -1,0 +1,20 @@
+{{- if .Values.route.enabled -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "minio.name" . }}
+  labels:
+    {{- include "minio.labels" . | nindent 4 }}
+spec:
+  port:
+    targetPort: 9000
+  to:
+    kind: Service
+    name: {{ include "minio.name" . }}
+    weight: 100
+  wildcardPolicy: None
+  {{- if .Values.route.tlsEnabled }}
+  tls:
+    {{- toYaml .Values.route.tls | nindent 4 }}
+  {{ end }}
+{{- end }}

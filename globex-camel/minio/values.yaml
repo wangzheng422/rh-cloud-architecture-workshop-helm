@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image: minio/minio:RELEASE.2020-12-29T23-29-29Z
+
+serviceAccount:
+  create: true
+  name: ""
+
+podSecurityContext: 
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+route:
+  enabled: true
+  host:
+  tlsEnabled: true
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+
+resources: {}
+
+minio:
+  accessKey: minio
+  secretKey: minio123
+  region: us-east-1
+  pvc:
+    storage: 1Gi
+    storageClass: gp3-csi
