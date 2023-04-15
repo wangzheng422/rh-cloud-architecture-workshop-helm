@@ -1,3 +1,0 @@
-argocd:
-  enabled: true
-  syncwave: "-2"
