@@ -14,3 +14,6 @@ dependencies:
   - name: minio
     version: 0.1.0
     repository: file://minio
+  - name: kafka
+    version: 0.1.0
+    repository: file://kafka
