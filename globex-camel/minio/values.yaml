@@ -34,3 +34,7 @@ minio:
   pvc:
     storage: 1Gi
     storageClass: gp3-csi
+
+client:
+  secret:
+    name: client-s3
