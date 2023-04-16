@@ -67,10 +67,9 @@ securityContext:
 nodeEnv: prod
 
 partnerGateway:
-  url: http://activity-tracking:8080
-  service: globex-partner-gateway
+  url: http://globex-partner-gateway:8080
 
 api:
-  clientid: true
-  clientsecret:
-  tokenurl:
+  clientid: ""
+  clientsecret: ""
+  tokenurl: ""
