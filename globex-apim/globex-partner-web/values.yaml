@@ -70,6 +70,6 @@ partnerGateway:
   url: http://globex-partner-gateway:8080
 
 api:
-  clientid: ""
-  clientsecret: ""
-  tokenurl: ""
+  clientid: "replaceme"
+  clientsecret: "replaceme"
+  tokenurl: "replaceme"
