@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "globex-partner-gateway.name" . }}
+  labels:
+    {{- include "globex-partner-gateway.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.containerPort }}
+      protocol: TCP
+      name: {{ .Values.service.portName }}
+  selector:
+    {{- include "globex-partner-gateway.selectorLabels" . | nindent 4 }}

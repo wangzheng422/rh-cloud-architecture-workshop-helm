@@ -1,0 +1,75 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/cloud-architecture-workshop/globex-partner-web
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  failureThreshold: 3
+  httpGet:
+    path: /health
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 3
+
+readinessProbe:
+  failureThreshold: 3
+  httpGet:
+    path: /health
+    port: 8080
+    scheme: HTTP
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 3
+
+service:
+  type: ClusterIP
+  portName: http
+  port: 8080
+  containerPort: 8080
+
+route:
+  enabled: true
+  host:
+  tlsEnabled: true
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+
+podSecurityContext: 
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+nodeEnv: prod
+
+partnerGateway:
+  url: http://globex-partner-gateway:8080
+
+api:
+  clientid: "replaceme"
+  clientsecret: "replaceme"
+  tokenurl: "replaceme"

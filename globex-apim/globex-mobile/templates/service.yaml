@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "globex-mobile.name" . }}
+  labels:
+    {{- include "globex-mobile.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - name: {{ .Values.service.portName }}
+    port: {{ .Values.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.service.containerPort }}
+  selector:
+    {{- include "globex-mobile.selectorLabels" . | nindent 4 }}
