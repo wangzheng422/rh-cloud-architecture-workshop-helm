@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.name }}-argocd-dex-server
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.name }}-argocd-dex-server
+    name: {{ .Values.name }}-gitops-argocd-dex-server
     namespace: {{ .Values.namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
