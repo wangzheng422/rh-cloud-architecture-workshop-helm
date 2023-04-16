@@ -71,4 +71,3 @@ securityContext:
 
 globexStoreApp:
   url: http://globex-store-app:8080
-  service: globex-store-app
