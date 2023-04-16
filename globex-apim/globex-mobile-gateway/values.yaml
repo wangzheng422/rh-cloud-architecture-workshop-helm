@@ -46,10 +46,6 @@ livenessProbe:
   periodSeconds: 10
   timeoutSeconds: 3
 
-loop:
-  prefix: user
-  count: 10
-
 readinessProbe:
   httpGet:
     path: /q/health/ready
