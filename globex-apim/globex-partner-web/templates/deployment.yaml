@@ -37,6 +37,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /deployments/config
+              name: config
           env:
             - name: NODE_ENV
               value: {{ .Values.nodeEnv }}
