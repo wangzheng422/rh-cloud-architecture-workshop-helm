@@ -1,0 +1,19 @@
+apiVersion: v2
+name: globex-camel
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: datagrid
+    version: 0.1.0
+    repository: file://datagrid
+  - name: amq-broker
+    version: 0.1.0
+    repository: file://amq-broker
+  - name: minio
+    version: 0.1.0
+    repository: file://minio
+  - name: kafka
+    version: 0.1.0
+    repository: file://kafka

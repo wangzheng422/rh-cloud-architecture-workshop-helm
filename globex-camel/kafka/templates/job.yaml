@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "kafka.name" . }}
+  labels:
+    {{- include "kafka.labels" . | nindent 4 }}   
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: {{ include "kafka.name" . }}
+    spec:
+      serviceAccountName: {{ include "kafka.name" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: KAFKA_NAMESPACE
+              value: {{ .Values.kafka.namespace }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+      restartPolicy: Never

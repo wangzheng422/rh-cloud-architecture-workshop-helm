@@ -1,0 +1,10 @@
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: {{ .Values.datagrid.name }}
+  labels:
+    {{- include "datagrid.labels" . | nindent 4 }}
+spec:
+  security:
+    endpointSecretName: {{ include "datagrid.name" . }}-identities
+  replicas: {{ .Values.replicaCount }}
