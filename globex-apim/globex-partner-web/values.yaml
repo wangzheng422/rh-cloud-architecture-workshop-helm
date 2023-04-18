@@ -67,7 +67,7 @@ securityContext:
 nodeEnv: prod
 
 partnerGateway:
-  url: http://globex-partner-gateway:8080
+  url: "replaceme"
 
 api:
   clientid: "replaceme"
