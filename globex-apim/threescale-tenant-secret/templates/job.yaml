@@ -10,7 +10,7 @@ spec:
     metadata:
       name: {{ include "threescale-tenant-secret.name" . }}-hook
     spec:
-      serviceAccountName: {{ include "threescale-tenant-secret.serviceAccountName" . }}-hook
+      serviceAccountName: threescale-tenant-secret
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

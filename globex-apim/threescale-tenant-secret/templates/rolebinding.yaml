@@ -11,5 +11,5 @@ roleRef:
 subjects:
 - apiGroup: ""
   kind: ServiceAccount
-  name: {{ include "threescale-tenant-secret.serviceAccountName" . }}-hook
+  name: threescale-tenant-secret
   namespace: {{ .Release.Namespace }}
