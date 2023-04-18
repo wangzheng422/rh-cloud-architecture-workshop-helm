@@ -1,0 +1,14 @@
+apiVersion: registry.apicur.io/v1
+kind: ApicurioRegistry
+metadata:
+  name: {{ include "service-registry.name" . }}
+  labels:
+    {{- include "service-registry.labels" . | nindent 4 }}
+spec:
+  configuration:
+    persistence: "sql"
+    sql:
+      dataSource:
+        url: "jdbc:postgresql://{{ .Values.pgsql.service }}.{{ .Release.Namespace }}.svc:5432/{{ .Values.pgsql.database }}"
+        userName: {{ .Values.pgsql.user }}
+        password: {{ .Values.pgsql.password }}

@@ -1,0 +1,13 @@
+pgsql:
+  service: service-registry-db
+  database: apicurio
+  user: apicurio
+  password: apicurio
+
+route:
+  enabled: true
+  host: 
+  tlsEnabled: true
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
