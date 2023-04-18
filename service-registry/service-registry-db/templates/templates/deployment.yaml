@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "service-registry-db.name" . }}
+  labels:
+    {{- include "service-registry-db.labels" . | nindent 4 }}
+    app.openshift.io/runtime: postgresql
+  annotations:
+    {{- include "service-registry-db.argocd-syncwave" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "service-registry-db.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "service-registry-db.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "service-registry-db.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: postgresql
+              containerPort: {{ .Values.service.containerPort }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: POSTGRESQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: {{ include "service-registry-db.name" . }}
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: {{ include "service-registry-db.name" . }}
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: database-name
+                  name: {{ include "service-registry-db.name" . }}
+          {{- if eq .Values.persistence.mode "persistent" }}
+          volumeMounts:
+            - name: "{{ include "service-registry-db.name" . }}-data"
+              mountPath: "/var/lib/pgsql/data"
+              volumes:
+      {{- end }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+      {{- if eq .Values.persistence.mode "persistent" }}
+      volumes:
+        - name: "{{ include "service-registry-db.name" . }}-data"
+          persistentVolumeClaim:
+            claimName: {{ include "service-registry-db.name" . }}
+      {{- end }}
