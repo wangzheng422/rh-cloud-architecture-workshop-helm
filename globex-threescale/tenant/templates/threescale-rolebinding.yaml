@@ -1,0 +1,21 @@
+{{- range untilStep 0 (.Values.loop.count | int64 | int) 1 }}
+{{ $loop := printf "%s%s" $.Values.loop.prefix ((add . 1) | toString) }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: threescale-tenant-secret-{{ $loop }}
+  labels:
+    {{- include "tenant.labels" $ | nindent 4 }}
+  annotations: 
+    {{- include "tenant.argocd-syncwave" $ | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- apiGroup: ""
+  kind: ServiceAccount
+  name: threescale-tenant-secret
+  namespace: {{ $.Values.rolebinding.serviceAccountNamespace }}-{{ $loop }}
+{{- end }}

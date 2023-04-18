@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "threescale-tenant-secret.name" . }}-hook
+  labels:
+    {{- include "threescale-tenant-secret.labels" . | nindent 4 }}   
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: {{ include "threescale-tenant-secret.name" . }}-hook
+    spec:
+      serviceAccountName: threescale-tenant-secret
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: THREESCALE_NAMESPACE
+              value: {{ .Values.threescale.namespace }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+      restartPolicy: Never
