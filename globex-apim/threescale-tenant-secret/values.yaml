@@ -1,0 +1,22 @@
+image:
+  repository: quay.io/cloud-architecture-workshop/threescale-tenant-secret-job
+  pullPolicy: IfNotPresent
+  tag: "69ea753-native"
+
+serviceAccount:
+  create: true
+  name: ""
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+threescale:
+  namespace: 3scale
