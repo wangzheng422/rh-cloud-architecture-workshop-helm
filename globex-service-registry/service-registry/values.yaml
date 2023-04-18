@@ -1,0 +1,5 @@
+pgsql:
+  service: service-registry-db
+  database: apicurio
+  user: apicurio
+  password: apicurio

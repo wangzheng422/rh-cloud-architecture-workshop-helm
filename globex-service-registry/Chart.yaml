@@ -8,3 +8,6 @@ dependencies:
   - name: service-registry-db
     version: 0.1.0
     repository: file://service-registry-db
+  - name: service-registry
+    version: 0.1.0
+    repository: file://service-registry
