@@ -11,5 +11,5 @@ spec:
   generatorRouteHostname: {{ .Values.apicurito.generatorHost }}
   {{- end }}
   {{- if .Values.apicurito.uiHost }}
-  generatorRouteHostname: {{ .Values.apicurito.uiHost }}
+  uiRouteHostname : {{ .Values.apicurito.uiHost }}
   {{- end }}
