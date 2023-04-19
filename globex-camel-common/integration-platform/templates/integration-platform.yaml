@@ -1,0 +1,12 @@
+---
+apiVersion: camel.apache.org/v1
+kind: IntegrationPlatform
+metadata:
+  name: {{ include "integration-platform.name" . }}
+  labels:
+    {{- include "integration-platform.labels" . | nindent 4 }}
+spec:
+  build: {}
+  kamelet: {}
+  profile: OpenShift
+  resources: {}

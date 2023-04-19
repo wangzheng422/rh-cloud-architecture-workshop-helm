@@ -1,29 +1,18 @@
-broker:
-  name: broker
-  secret: amq-tls
-  client:
-    secret: client-amq
-  admin:
-    user: admin
-    password: admin
+nameOverride: globex-camel-amq
 
-truststore:
-  name: client-amq.ts
+image:
+  repository: quay.io/cloud-architecture-workshop/amq-camel-secret-job
+  pullPolicy: IfNotPresent
+  tag: "21971cd-native"
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
 
-hook:
-  image:
-    repository: quay.io/cloud-architecture-workshop/amq-broker-tls-secret-job
-    pullPolicy: IfNotPresent
-    tag: "f874dde"
-  podSecurityContext:
-    runAsNonRoot: true
-    seccompProfile:
-      type: RuntimeDefault
-  securityContext:
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - ALL
-  argocd:
-    enabled: true
-    syncwave: "-1"
+amq:
+  namespace: 
