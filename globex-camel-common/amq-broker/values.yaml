@@ -27,3 +27,10 @@ hook:
   argocd:
     enabled: true
     syncwave: "-1"
+
+loop:
+  prefix: user
+  count: 1
+
+rolebinding:
+  serviceAccountNamespace: ""
