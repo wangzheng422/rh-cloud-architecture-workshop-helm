@@ -17,3 +17,6 @@ dependencies:
   - name: kafka
     version: 0.1.0
     repository: file://kafka
+  - name: integration-platform
+    version: 0.1.0
+    repository: file://integration-platform
