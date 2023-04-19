@@ -45,6 +45,21 @@ spec:
               value: '{{ .Values.service.containerPort }}'
             - name: GLOBEX_PARTNER_GATEWAY
               value: {{ .Values.partnerGateway.url }}
+            - name: API_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: globex-partner-web
+                  key: api-client-id
+            - name: API_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: globex-partner-web
+                  key: api-client-secret
+            - name: API_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  name: globex-partner-web
+                  key: api-token-url
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
       volumes:
