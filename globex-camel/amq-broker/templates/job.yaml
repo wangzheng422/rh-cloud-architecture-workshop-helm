@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "amq-broker.name" . }}
+  labels:
+    {{- include "amq-broker.labels" . | nindent 4 }}   
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: {{ include "amq-broker.name" . }}
+    spec:
+      serviceAccountName: amq-secret-job
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: AMQ_NAMESPACE
+              value: {{ .Values.amq.namespace }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+      restartPolicy: Never
