@@ -1,0 +1,15 @@
+apiVersion: apicur.io/v1
+kind: Apicurito
+metadata:
+metadata:
+  name: {{ include "globex-apicurio-designer.name" . }}
+  labels:
+    {{- include "globex-apicurio-designer.labels" . | nindent 4 }}
+spec:
+  size: {{ .Values.replicaCount }}
+  {{- if .Values.apicurito.generatorHost }}
+  generatorRouteHostname: {{ .Values.apicurito.generatorHost }}
+  {{- end }}
+  {{- if .Values.apicurito.uiHost }}
+  uiRouteHostname : {{ .Values.apicurito.uiHost }}
+  {{- end }}
