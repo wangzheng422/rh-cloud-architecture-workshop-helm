@@ -8,3 +8,6 @@ dependencies:
   - name: amq-broker
     version: 0.1.0
     repository: file://amq-broker
+  - name: integration-platform
+    version: 0.1.0
+    repository: file://integration-platform
