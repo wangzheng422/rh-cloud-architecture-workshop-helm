@@ -4,7 +4,7 @@ image:
   repository: quay.io/cloud-architecture-workshop/globex-web
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: latest
+  tag: skupper-lab
 
 serviceAccount:
   create: true
