@@ -9,7 +9,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/kafka-client-connection-secret-job
     pullPolicy: IfNotPresent
-    tag: "0584f4c-native"
+    tag: "4be872f-native"
   serviceAccount:
     create: true
     name: ""
