@@ -2,11 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  annotations:
-    app.openshift.io/connects-to: |
-      [{"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.globexStoreApp.service }}"},
-      {"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.recommendationEngine.service }}"},
-      {"apiVersion":"apps/v1","kind":"Deployment","name":"{{ .Values.activityTrackingService.service }}"}]
   labels:
     {{- include "globex-web.labels" . | nindent 4 }}
     app.openshift.io/runtime: nodejs
