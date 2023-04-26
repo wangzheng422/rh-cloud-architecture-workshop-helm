@@ -1,0 +1,302 @@
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: {{ include "integration.name" . }}
+  labels:
+    {{- include "integration.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  dependencies:
+    - 'mvn:org.apache.camel:camel-ahc-ws:3.18.2'
+    - 'camel:amqp'
+    - 'camel:jackson'
+    - 'camel:jslt'
+    - 'mvn:io.quarkiverse.messaginghub:quarkus-pooled-jms:1.1.0'
+  sources:
+    - content: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!-- camel-k: language=xml -->
+
+        <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://camel.apache.org/schema/spring"
+                xsi:schemaLocation="
+                    http://camel.apache.org/schema/spring
+                    https://camel.apache.org/schema/spring/camel-spring.xsd">
+
+
+            <route id="start">
+                <from uri="timer:start?repeatCount=1"/>
+
+                <removeHeaders pattern="*"/>
+                <setHeader name="Authorization">
+                    <simple>Bearer {{`{{slack.token.app}}`}}</simple>
+                </setHeader>
+                <setHeader name="Content-type">
+                    <simple>application/x-www-form-urlencoded</simple>
+                </setHeader>
+                <setHeader name="CamelHttpMethod">
+                    <simple>POST</simple>
+                </setHeader>
+                <to uri="https://slack.com/api/apps.connections.open"/>
+                <!-- <log message="payload: ${body}"/> -->
+
+                <unmarshal><json/></unmarshal>
+
+                <setBody>
+                    <simple>${body.get(url)}</simple>
+                </setBody>
+
+                <log message="payload: ${body}"/>
+
+                <setProperty name="ticket">
+                    <simple>${body.split(=)[1].split(&amp;)[0]}</simple>
+                </setProperty>
+                <log message="payload: ${exchangeProperty.ticket}"/>
+                <setBody>
+                    <simple>null</simple>
+                </setBody>
+
+                <bean ref="creator" method="startListener(${exchangeProperty.ticket})"/>
+            </route>
+
+
+            <route id="listener">
+                <from uri="direct:listener"/>
+                <log message="from SLACK: ${body}"/>
+                <!-- <to uri="log:deb?showAll=true"/> -->
+                <unmarshal>
+                    <json/>
+                </unmarshal>
+
+                <when>
+                    <simple>${body.get(type)} == "hello"</simple>
+                    <log message="got HELLO message"/>
+                    <stop/>
+                </when>
+
+                <wireTap uri="direct:send-ack"/>
+
+                <when>
+                    <simple>${body.get(payload).get(event).get(bot_id)} != null</simple>
+                    <log message="BOT message: ignored"/>
+                    <stop/>
+                </when>
+
+                <!-- <log message="msg: ${body}"/> -->
+
+                <to uri="direct:process-message"/>
+            </route>
+
+            <route id="send-ack">
+                <from uri="direct:send-ack"/>
+                <setBody>
+                    <simple>{"envelope_id":"${body.get(envelope_id)}"}</simple>
+                </setBody>
+                <to uri="direct:producer"/>
+            </route>
+
+            <route id="process-message">
+                <from uri="direct:process-message"/>
+
+                <setProperty name="user">
+                    <simple>${body.get(payload).get(event).get(user)}</simple>
+                </setProperty>
+                <setProperty name="text">
+                    <simple>${body.get(payload).get(event).get(text)}</simple>
+                </setProperty>
+                <setProperty name="channel">
+                    <simple>${body.get(payload).get(event).get(channel)}</simple>
+                </setProperty>
+
+                <log message="new message: ${body}"/>
+                <marshal>
+                    <json/>
+                </marshal>
+                <convertBodyTo type="String"/>
+
+                <to uri="jslt:classpath:request.jslt?allowContextMapAll=true"/>
+
+                <removeHeaders pattern="*"/>
+                <log message="to discord: ${body}"/>
+                <!-- <to uri="amqp:topic:support?connectionFactory=#myFactory"/> -->
+                <toD uri="{{`amqp:topic:{{broker.amqp.topic.clients}}${exchangeProperty.channel}?connectionFactory=#myFactory`}}"/>
+                <log message="AMQP message sent."/>
+            </route>
+
+            <route id="support-response">
+                <from uri="{{`amqp:topic:{{broker.amqp.topic.agents}}?connectionFactory=#myFactory`}}"/>
+                <log message="new message: ${body}"/>
+
+                <unmarshal>
+                    <json/>
+                </unmarshal>
+
+                <setProperty name="channel">
+                    <simple>${body.get(source).get(room)}</simple>
+                </setProperty>
+
+                <setBody>
+                    <simple>${body.get(agent)}: ${body.get(text)}</simple>
+                </setBody>
+
+                <to uri="direct:support-message"/>
+
+            </route>
+
+            <route id="support-message">
+                <from uri="direct:support-message"/>
+
+                <removeHeaders pattern="*"/>
+                <setHeader name="Authorization">
+                    <simple>Bearer {{`{{slack.token.bot}}`}}</simple>
+                </setHeader>
+                <setBody>
+                    <simple>text=${body}</simple>
+                </setBody>
+                <setHeader name="CamelHttpMethod">
+                    <simple>POST</simple>
+                </setHeader>
+                <setHeader name="Content-Type">
+                        <simple>application/x-www-form-urlencoded</simple>
+                </setHeader>
+
+                <toD uri="https://slack.com/api/chat.postMessage?channel=${exchangeProperty.channel}"/>
+             
+                <log message="got response: ${body}"/>
+            </route>
+
+
+        </routes>
+      name: routes.xml
+    - content: |-
+        // camel-k: language=java
+        /*
+         * Licensed to the Apache Software Foundation (ASF) under one or more
+         * contributor license agreements.  See the NOTICE file distributed with
+         * this work for additional information regarding copyright ownership.
+         * The ASF licenses this file to You under the Apache License, Version 2.0
+         * (the "License"); you may not use this file except in compliance with
+         * the License.  You may obtain a copy of the License at
+         *
+         *      http://www.apache.org/licenses/LICENSE-2.0
+         *
+         * Unless required by applicable law or agreed to in writing, software
+         * distributed under the License is distributed on an "AS IS" BASIS,
+         * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+         * See the License for the specific language governing permissions and
+         * limitations under the License.
+         */
+
+        import org.apache.camel.CamelContext;
+        import org.apache.camel.ProducerTemplate;
+        import org.apache.camel.builder.RouteBuilder;
+        import org.apache.camel.PropertyInject;
+        import org.apache.camel.component.amqp.AMQPComponent;
+        import org.apache.camel.impl.DefaultCamelContext;
+
+        import javax.jms.Connection;
+        import javax.jms.ConnectionFactory;
+        import org.apache.qpid.jms.JmsConnectionFactory;
+        import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
+
+        public class factory extends RouteBuilder {
+
+            @PropertyInject("broker.amqp.uri")
+            private static String uri;
+
+            @PropertyInject("broker.amqp.connections")
+            private static int maxConnections;
+
+            @Override
+            public void configure() {
+                JmsPoolConnectionFactory myFactory = createConnectionFactory();
+                getContext().getRegistry().bind("myFactory", myFactory);
+            }
+
+            private JmsPoolConnectionFactory createConnectionFactory() {
+
+                ConnectionFactory factory = new JmsConnectionFactory(uri);
+                JmsPoolConnectionFactory pool = new JmsPoolConnectionFactory();
+
+                try {
+                    pool.setConnectionFactory(factory);
+
+                    // Set the max connections per user to a higher value
+                    pool.setMaxConnections(maxConnections);
+
+                    // Create a MessageProducer for each createProducer() call
+                    // pool.setUseAnonymousProducers(false);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return pool;
+            }    
+        }
+      name: factory.java
+    - content: |-
+        // package org.demo;
+
+        //Camel API
+        import org.apache.camel.BindToRegistry;
+        import org.apache.camel.CamelContext;
+        import org.apache.camel.Exchange;
+        import org.apache.camel.Processor;
+        import org.apache.camel.PropertyInject;
+        import org.apache.camel.builder.RouteBuilder;
+
+        public class helper extends RouteBuilder {
+            
+            @PropertyInject("slack.app.id")
+            private static String appid;
+
+            //dummy
+            @Override
+            public void configure() throws Exception {}
+
+            //declaration
+            public static class Creator {};
+
+            @BindToRegistry
+            public Creator creator(CamelContext context) throws Exception {
+
+                //implementation
+                return new Creator(){
+
+                    public void startListener(String ticket,CamelContext context) throws Exception{
+
+                        String uri="ahc-wss://wss-primary.slack.com/link/?ticket="+ticket+"&app_id="+appid;
+
+                        context.addRoutes(new RouteBuilder() {
+                            @Override
+                            public void configure() throws Exception {
+                                from(uri)
+                                .to("direct:listener");
+
+                                from("direct:producer")
+                                .to(uri);
+                            }
+                        });
+
+                        context.start();
+                    }
+                };
+            }
+        }
+      name: helper.java
+  traits:
+    camel:
+      configuration:
+        properties:
+          - broker.amqp.connections = {{ .Values.broker.amqp.connections }}
+          - broker.amqp.topic.clients = {{ .Values.broker.amqp.topic.clients }}
+          - broker.amqp.topic.agents = {{ .Values.broker.amqp.topic.agents }}
+    mount:
+      configuration:
+        configs:
+          - 'secret:{{ .Values.broker.client.secret }}'
+          - 'secret:{{ include "integration.name" . }}-credentials'
+        resources:
+          - >-
+            configmap:{{ include "integration.name" . }}-jlst/request.jslt@/etc/camel/resources/request.jslt

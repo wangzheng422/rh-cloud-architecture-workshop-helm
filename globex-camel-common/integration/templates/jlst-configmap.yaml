@@ -1,0 +1,7 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "integration.name" . }}-jlst
+immutable: true
+data:
+  request.jslt: "{\n    \"user\": $exchange.properties.user,\n    \"text\": $exchange.properties.text,\n    \"source\": {\n    \t\"name\" :  \"slack\",\n    \t\"uname\":  \"slack\",\n    \t\"room\" :  $exchange.properties.channel\n    }\n}"

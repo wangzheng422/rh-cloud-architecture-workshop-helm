@@ -1,0 +1,17 @@
+replicaCount: 0
+nameOverride: "slack"
+
+broker:
+  client:
+    secret: client-amq
+  amqp:
+    connections: 5
+    topic:
+      clients: "support-slack-client."
+      agents: "support.slack"
+
+slack:
+  appId: placeholder
+  token:
+    app: placeholder
+    bot: placeholder
