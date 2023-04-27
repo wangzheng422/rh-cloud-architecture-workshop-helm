@@ -83,7 +83,7 @@ recommendationEngine:
   service: recommendation-engine
   path: /score/product 
 globexSupportUrl:
-  url: http://recommendation-engine:8080
+  url: http://globex-support:8080
   service: globex-support
   path: /support/message
 
