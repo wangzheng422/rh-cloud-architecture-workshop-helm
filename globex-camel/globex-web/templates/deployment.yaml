@@ -55,7 +55,7 @@ spec:
             - name: API_ORDER_SERVICE
               value: {{ .Values.globexStoreApp.url }}{{ .Values.globexStoreApp.orderPath }}
             - name: GLOBEX_SUPPORT_URL
-              value: {{ .Values.globexSupportUrl.url }}{{ .Values.globexStoreApp.path }}
+              value: {{ .Values.globexSupportUrl.url }}{{ .Values.globexSupportUrl.path }}
             {{- if .Values.sso.enabled }}
             - name: SSO_CUSTOM_CONFIG
               value: {{ .Values.sso.client }}
