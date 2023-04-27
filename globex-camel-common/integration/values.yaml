@@ -7,7 +7,7 @@ broker:
   amqp:
     connections: 5
     topic:
-      clients: "support-slack-client."
+      clients: "support.slack.client."
       agents: "support.slack"
 
 slack:
