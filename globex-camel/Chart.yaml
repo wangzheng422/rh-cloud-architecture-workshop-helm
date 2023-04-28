@@ -23,3 +23,6 @@ dependencies:
   - name: globex-web
     version: 0.1.0
     repository: file://globex-web
+  - name: discord
+    version: 0.1.0
+    repository: file://discord
