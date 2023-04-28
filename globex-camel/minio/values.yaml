@@ -38,6 +38,3 @@ minio:
 client:
   secret:
     name: client-s3
-
-openshift:
-  domain: ""
