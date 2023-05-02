@@ -37,4 +37,5 @@ minio:
 
 client:
   secret:
+    enabled: false
     name: client-s3
