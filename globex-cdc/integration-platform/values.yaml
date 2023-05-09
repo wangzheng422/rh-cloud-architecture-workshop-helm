@@ -1,1 +1,3 @@
 nameOverride: globex-cdc
+
+buildStrategy: pod

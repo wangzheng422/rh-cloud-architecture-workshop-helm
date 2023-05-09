@@ -6,7 +6,8 @@ metadata:
   labels:
     {{- include "integration-platform.labels" . | nindent 4 }}
 spec:
-  build: {}
+  build:
+    buildStrategy: {{ .Values.buildStrategy }}
   kamelet: {}
   profile: OpenShift
   resources: {}
