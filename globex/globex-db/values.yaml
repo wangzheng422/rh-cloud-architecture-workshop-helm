@@ -64,7 +64,7 @@ pgsql:
   debeziumPassword: debezium
 
 persistence:
-  mode: persistent
+  mode: ephemeral
   capacity: 20Gi
 
 argocd:
