@@ -1,3 +1,4 @@
+{{- if .Values.enabled -}}
 ---
 apiVersion: camel.apache.org/v1
 kind: IntegrationPlatform
@@ -11,3 +12,4 @@ spec:
   kamelet: {}
   profile: OpenShift
   resources: {}
+{{ end }}
