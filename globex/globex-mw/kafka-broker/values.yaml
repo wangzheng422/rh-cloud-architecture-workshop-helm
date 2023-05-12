@@ -7,6 +7,13 @@ kafka:
     replicas: 2
   zookeeper:
     replicas: 3
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512M
+      requests:
+        cpu: 100m
+        memory: 200M
   config:
     autoCreateTopics: false
     defaultReplicationFactor: 2
@@ -32,6 +39,14 @@ kafka:
         requests:
           cpu: 150m
           memory: 150M
+  resources:
+    limits:
+      cpu: '1'
+      memory: 2G
+    requests:
+      cpu: 300m
+      memory: 500M
+
 bootstrapServer: 
 
 namespace:

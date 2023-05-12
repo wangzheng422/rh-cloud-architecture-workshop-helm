@@ -38,11 +38,15 @@ spec:
       min.insync.replicas: {{ .Values.kafka.config.minInsyncReplicas }}
       inter.broker.protocol.version: '{{ .Values.kafka.config.interBrokerProtocolVersion }}'
     storage:
-      type: ephemeral 
+      type: ephemeral
+    resources:
+      {{- toYaml .Values.kafka.resources | nindent 6 }}
   zookeeper:
     replicas: {{ .Values.kafka.zookeeper.replicas }}
     storage:
       type: ephemeral
+    resources:
+      {{- toYaml .Values.kafka.zookeeper.resources | nindent 6 }}
   entityOperator:
     topicOperator:
       resources:
