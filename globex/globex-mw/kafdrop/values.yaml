@@ -24,7 +24,11 @@ securityContext:
     drop:
       - ALL
 
-resources: {}
+resources:
+  limits:
+    memory: 1Gi
+  requests:
+    memory: 512Mi
 
 livenessProbe:
   httpGet:
