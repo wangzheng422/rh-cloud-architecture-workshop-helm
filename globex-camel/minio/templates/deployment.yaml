@@ -40,6 +40,8 @@ spec:
               value: {{ .Values.minio.secretKey }}
             - name: MINIO_REGION_NAME
               value: {{ .Values.minio.region }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           ports:
             - containerPort: 9000
           securityContext:

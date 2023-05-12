@@ -25,7 +25,13 @@ route:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
 
-resources: {}
+resources:
+  limits:
+    cpu: 200m
+    memory: 250Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 minio:
   accessKey: minio
