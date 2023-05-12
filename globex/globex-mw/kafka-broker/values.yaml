@@ -10,7 +10,7 @@ kafka:
     resources:
       limits:
         cpu: 500m
-        memory: 512M
+        memory: 512Mi
       requests:
         cpu: 100m
         memory: 200M
