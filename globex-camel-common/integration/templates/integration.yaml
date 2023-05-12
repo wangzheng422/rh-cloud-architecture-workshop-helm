@@ -300,3 +300,7 @@ spec:
         resources:
           - >-
             configmap:{{ include "integration.name" . }}-jlst/request.jslt@/etc/camel/resources/request.jslt
+    container:
+      configuration:
+        limitCPU: 250m
+        limitMemory: 512Mi
