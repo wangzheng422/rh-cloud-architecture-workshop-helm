@@ -44,6 +44,10 @@ spec:
     storage:
       type: ephemeral
   entityOperator:
-    topicOperator: {}
-    userOperator: {}
+    topicOperator:
+      resources:
+        {{- toYaml .Values.kafka.entityOperator.topicOperator.resources | nindent 8 }}
+    userOperator:
+      resources:
+        {{- toYaml .Values.kafka.entityOperator.userOperator.resources | nindent 8 }}
 {{- end }}

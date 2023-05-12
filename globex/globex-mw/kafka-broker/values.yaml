@@ -15,7 +15,23 @@ kafka:
     transactionStateLogMinIsr: 2
     minInsyncReplicas: 1
     interBrokerProtocolVersion: '3.3'
-
+  entityOperator:
+    topicOperator:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500M
+        requests:
+          cpu: 250m
+          memory: 250M
+    userOperator:
+      resources:
+        limits:
+          cpu: 250m
+          memory: 250M
+        requests:
+          cpu: 150m
+          memory: 150M
 bootstrapServer: 
 
 namespace:
