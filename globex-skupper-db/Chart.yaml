@@ -1,0 +1,14 @@
+apiVersion: v2
+name: globex-skupper-db
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: globex-db
+    version: 0.1.0
+    repository: file://globex-db
+  - name: networkpolicy
+    version: 0.1.0
+    repository: file://networkpolicy
+
