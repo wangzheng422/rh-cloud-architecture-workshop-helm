@@ -11,3 +11,6 @@ route:
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
+
+ingress:
+  disabled: true

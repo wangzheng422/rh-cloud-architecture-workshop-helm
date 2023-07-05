@@ -12,3 +12,10 @@ spec:
         url: "jdbc:postgresql://{{ .Values.pgsql.service }}.{{ .Release.Namespace }}.svc:5432/{{ .Values.pgsql.database }}"
         userName: {{ .Values.pgsql.user }}
         password: {{ .Values.pgsql.password }}
+  deployment:
+    {{ if .Values.route.host }}
+    host: {{ .Values.route.host }}
+    {{ end }}
+    managedResources:
+      disableIngress: {{ .Values.ingress.disabled }}
+  
