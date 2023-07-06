@@ -54,6 +54,7 @@ spec:
               value: '{{ .Values.service.containerPort }}'
             - name: CMD_ARGS
             - name: SCHEMAREGISTRY_CONNECT
+              value: '{{ .Values.schemaRegistry.url }}'
             - name: SCHEMAREGISTRY_AUTH            
           ports:
             - name: http

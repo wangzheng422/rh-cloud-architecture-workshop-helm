@@ -73,3 +73,6 @@ kafka:
   clientId: ""
   clientSecret: ""
   namespace: ""
+
+schemaRegistry:
+  url: ""
