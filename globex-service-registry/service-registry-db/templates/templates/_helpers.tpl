@@ -90,3 +90,14 @@ Admin password
 {{- $adminSecret | quote }}
 {{- end }}
 {{- end }}
+
+{{/* 
+Define the namespace to depoy the service registry to
+*/}}
+{{- define "service-registry-db.namespace" -}}
+{{- if .Values.namespace }}
+{{- .Values.namespace }}
+{{- else }}
+{{- .Release.Namespace }}
+{{- end }}
+{{- end }}

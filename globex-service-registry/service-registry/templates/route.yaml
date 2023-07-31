@@ -3,6 +3,7 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: {{ include "service-registry.name" . }}
+  namespace: {{ include "service-registry.namespace" . }}
   labels:
     {{- include "service-registry.labels" . | nindent 4 }}
 spec:

@@ -60,3 +60,14 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/* 
+Define the namespace to depoy the service registry to
+*/}}
+{{- define "service-registry.namespace" -}}
+{{- if .Values.namespace }}
+{{- .Values.namespace }}
+{{- else }}
+{{- .Release.Namespace }}
+{{- end }}
+{{- end }}

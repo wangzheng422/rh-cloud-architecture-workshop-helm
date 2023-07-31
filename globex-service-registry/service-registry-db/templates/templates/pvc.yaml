@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "service-registry-db.name" . }}
+  namespace: {{ include "service-registry.namespace" . }}
   labels:
     {{- include "service-registry-db.labels" . | nindent 4 }}
   annotations:

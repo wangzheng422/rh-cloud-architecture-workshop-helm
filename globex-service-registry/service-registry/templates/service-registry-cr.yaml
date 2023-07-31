@@ -2,6 +2,7 @@ apiVersion: registry.apicur.io/v1
 kind: ApicurioRegistry
 metadata:
   name: {{ include "service-registry.name" . }}
+  namespace: {{ include "service-registry.namespace" . }}
   labels:
     {{- include "service-registry.labels" . | nindent 4 }}
 spec:
