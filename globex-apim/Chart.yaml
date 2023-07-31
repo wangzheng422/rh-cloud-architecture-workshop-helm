@@ -20,6 +20,6 @@ dependencies:
   - name: threescale-tenant-secret
     version: 0.1.0
     repository: file://threescale-tenant-secret
-  - name: globex-service-registry
+  - name: service-registry
     version: 0.1.0
-    repository: file://../globex-service-registry
+    repository: file://../service-registry

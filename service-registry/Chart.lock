@@ -1,0 +1,9 @@
+dependencies:
+- name: service-registry-db
+  repository: file://service-registry-db
+  version: 0.1.0
+- name: service-registry
+  repository: file://service-registry
+  version: 0.1.0
+digest: sha256:3b229d54ce639121d466b8e19bb5e3faba1a135ba4c5212a4d6bdac479ef3149
+generated: "2023-07-31T13:35:14.799924157+02:00"
