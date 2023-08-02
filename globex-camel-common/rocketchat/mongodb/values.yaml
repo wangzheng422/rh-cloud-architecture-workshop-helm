@@ -60,6 +60,9 @@ readinessProbe:
 
 mongodb:
   initDb: rocketchat
+  admin:
+    username: rocketchat-admin
+    password: rocketchat
   persistence:
     config:
       capacity: 1Gi
