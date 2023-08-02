@@ -45,4 +45,7 @@ persistence:
 
 synapse:
   serverName: globex
-  baseUrl: 
+  baseUrl:
+  registrationSharedSecret:
+  macaroonSecretKey:
+  formSecretKey:

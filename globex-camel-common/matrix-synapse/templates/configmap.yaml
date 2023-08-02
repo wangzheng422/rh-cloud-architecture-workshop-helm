@@ -53,10 +53,10 @@ data:
 
     log_config: "/data/{{ .Values.synapse.serverName }}.log.config"
     media_store_path: /data/media_store
-    registration_shared_secret: "BtDaMSiDS-B:V2KP-_QoGgGu,FwK~9zKfL8Ow3=g;xHAm4GR=r"
+    registration_shared_secret: "{{ .Values.synapse.registrationSharedSecret }}"
     report_stats: false
-    macaroon_secret_key: "+Ysdz_s*7tOL0j0P&kF^@hA_wQ6SLeV6ciwxR4*f3n&HM;7fN1"
-    form_secret: "@RzaZ;NsJT1QueIgSVzw,0IhNxPf3atW_ItNXTfUIzB9:5RP4~"
+    macaroon_secret_key: "{{ .Values.synapse.macaroonSecretKey }}"
+    form_secret: "{{ .Values.synapse.formSecretKey }}"
     signing_key_path: "/data/{{ .Values.synapse.serverName }}.signing.key"
     trusted_key_servers:
       - server_name: "matrix.org"
