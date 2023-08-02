@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mongodb.name" . }}
+  labels:
+    {{- include "mongodb.labels" . | nindent 4 }}
+  annotations:
+    {{- include "mongodb.argocd-syncwave" . | nindent 4 }}
+data:
+  setup.sh: |-
+    #!/usr/bin/env bash
+
+    sleep 15
+    echo starting replication...
+    /etc/db/config/start-replication.sh > /tmp/s.out
+  start-replication.js: "if(isStatusOK()){\n\tprint(\" ### Replication OK\");\n\tprintjson(rs.status());\n} else {\n\tprint(\" ### Starting replication...\");\n\ttry {\n\t\trs.initiate(\n\t\t   {\n\t\t      _id: \"rs0\",\n\t\t      version: 1,\n\t\t      members: [\n\t\t         { _id: 0, host : \"{{ include "mongodb.name" . }}:{{ .Values.service.port }}\" }\n\t\t      ]\n\t\t   }\n\t\t)\n\t\t\n\t\twhile (! db.isMaster().ismaster ) {\t\t\n\t\t\tsleep(1000);\n\t\t}\n\t\t\n\t\tprint(\" ### try initiate done\");\n\t}\n\tcatch (e) {\n\t\tprint(\" ### initiate failed code: \" + e.code);\n\t\tprintjson(e);\n\t}\n\n\tsleep(5000);\n\tprint(\" ### Replica Set status\");\n\tprintjson(rs.status());\n\n\tdb.getSiblingDB(\"admin\").createUser({user:\"rocketchat-admin\",pwd:\"rocketchat\",roles:[]})\n\tprint(\" ### Admin user created\");\n}\n\nvar sleep = function (milliseconds) {\n  var start = new Date().getTime();\n  for (var i = 0; i < 1e7; i++) {\n    if ((new Date().getTime() - start) > milliseconds){\n      break;\n    }\n  }\n};\n\nfunction isStatusOK() {\n\n\tvar ok = true;\n\tvar replStatus;\n\n\ttry { \n\t\treplStatus = rs.status();\n\t}\n\tcatch (e) {\n\t\tok = false;\n\t\tprint(\"status code: \" + e.code);\n\t}\n\n  \treturn ok;\n}"
+  start-replication.sh: |-
+    #!/usr/bin/env bash
+
+    scriptPath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    echo "$scriptPath"
+    echo running as `whoami`
+    mongosh -f $scriptPath/start-replication.js

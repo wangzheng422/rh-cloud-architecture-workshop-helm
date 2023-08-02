@@ -11,3 +11,6 @@ dependencies:
   - name: matrix-synapse
     version: 0.1.0
     repository: file://matrix-synapse
+  - name: rocketchat
+    version: 0.1.0
+    repository: file://rocketchat

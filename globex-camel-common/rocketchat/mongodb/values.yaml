@@ -1,0 +1,71 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/redhatintegration/mongo
+  pullPolicy: IfNotPresent
+  tag: "6.0.6"
+
+nameOverride: "mongodb-rocketchat"
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podSecurityContext: 
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 27017
+
+resources:
+  limits:
+    memory: '512Mi'
+
+livenessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  successThreshold: 1
+  exec:
+    command:
+      - /bin/sh
+      - '-i'
+      - '-c'
+      - 'mongosh "mongodb://127.0.0.1:27017" --eval="rs.status()"'
+  timeoutSeconds: 5
+
+readinessProbe:
+  exec:
+    command:
+      - /bin/sh
+      - '-i'
+      - '-c'
+      - 'mongosh "mongodb://127.0.0.1:27017" --eval="quit()"'
+  failureThreshold: 3
+  initialDelaySeconds: 3
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
+
+mongodb:
+  initDb: rocketchat
+  persistence:
+    config:
+      capacity: 1Gi
+    db:
+      capacity: 1Gi
+
+argocd:
+  enabled: true
+  syncwave: "-2"
