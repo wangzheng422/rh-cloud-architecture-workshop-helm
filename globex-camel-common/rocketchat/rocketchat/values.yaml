@@ -61,12 +61,6 @@ readinessProbe:
 
 resources: {}
 
-rocketchat:
-  admin:
-    username: rocketchat-admin
-    password: rocketchat
-    email: admin@example.com
-
 mongodb:
   username:
   password:
