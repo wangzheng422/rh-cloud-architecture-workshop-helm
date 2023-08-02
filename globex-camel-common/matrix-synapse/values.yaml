@@ -1,0 +1,48 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/redhatintegration/synapse
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v1.85.0"
+
+nameOverride: "globex-synapse"
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podSecurityContext: 
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 8008
+
+route:
+  enabled: true
+  host:
+  tlsEnabled: true
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+
+resources: {}
+
+persistence:
+  mode: persistent
+  capacity: 1Gi
+
+synapse:
+  serverName: globex
+  baseUrl: 

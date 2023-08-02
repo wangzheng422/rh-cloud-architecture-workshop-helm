@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "matrix-synapse.name" . }}
+  labels:
+    {{- include "matrix-synapse.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "matrix-synapse.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "matrix-synapse.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "matrix-synapse.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c", "/start.py generate && /start.py"]
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          command: ["/bin/sh", "-c", "/start.py generate && /start.py"]
+          env:
+            - name: SYNAPSE_SERVER_NAME
+              value: {{ .Values.synapse.serverName }}
+            - name: SYNAPSE_REPORT_STATS
+              value: "no"
+            - name: SYNAPSE_CONFIG_PATH
+              value: "/data/config/homeserver.yaml"
+            - name: PUBLIC_BASE_URL
+              value: "{{ .Values.synapse.baseUrl }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              subPath: synapse
+            - name: config
+              mountPath: /data/config
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "matrix-synapse.name" . }}-claim
+        - name: config
+          configMap:
+            name: {{ include "matrix-synapse.name" . }}-config
