@@ -33,6 +33,23 @@ spec:
               value: completed
             - name: OVERWRITE_SETTING_Use_DNS_Domain_Check
               value: 'false'
+            - name: OVERWRITE_SETTING_API_Enable_Rate_Limiter
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowUserProfileChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowUserAvatarChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowRealNameChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowUsernameChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowEmailChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowPasswordChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowEmailNotifications
+              value: 'false'
+
           ports:
             - containerPort: {{ .Values.service.port }}
               protocol: TCP
