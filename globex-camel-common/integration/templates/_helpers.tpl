@@ -55,8 +55,23 @@ Create the name of the service account to use
 */}}
 {{- define "integration.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "integration.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "integration.name" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{/*
+ArgoCD Syncwave
+*/}}
+{{- define "globex-db.argocd-syncwave" -}}
+{{- if .Values.argocd }}
+{{- if and (.Values.argocd.syncwave) (.Values.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
 {{- end }}
 {{- end }}

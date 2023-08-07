@@ -1,5 +1,5 @@
-replicaCount: 0
-nameOverride: "slack"
+replicaCount: 1
+nameOverride: rocketchat-integration
 
 broker:
   client:
@@ -7,11 +7,12 @@ broker:
   amqp:
     connections: 5
     topic:
-      clients: "support.slack.client."
-      agents: "support.slack"
+      clients: "support.rocketchat.client."
+      agents: "support.rocketchat"
 
-slack:
-  appId: placeholder
-  token:
-    app: placeholder
-    bot: placeholder
+rocketchat:
+  secret: rocketchat-webhook
+
+argocd:
+  enabled: true
+  syncwave: "2"

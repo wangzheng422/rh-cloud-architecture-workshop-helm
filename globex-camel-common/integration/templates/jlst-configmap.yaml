@@ -2,6 +2,10 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: {{ include "integration.name" . }}-jlst
+  labels:
+    {{- include "integration.labels" . | nindent 4 }}
+  annotations:
+    {{- include "integration.argocd-syncwave" . | nindent 4 }}
 immutable: true
 data:
-  request.jslt: "{\n    \"user\": $exchange.properties.user,\n    \"text\": $exchange.properties.text,\n    \"source\": {\n    \t\"name\" :  \"slack\",\n    \t\"uname\":  \"slack\",\n    \t\"room\" :  $exchange.properties.channel\n    }\n}"
+  request.jslt: "{\n    \"user\": $exchange.properties.user,\n    \"text\": $exchange.properties.text,\n    \"source\": {\n    \t\"name\" :  \"rocketchat\",\n    \t\"uname\":  \"rocketchat\",\n    \t\"room\" :  $exchange.properties.channel\n    }\n}"

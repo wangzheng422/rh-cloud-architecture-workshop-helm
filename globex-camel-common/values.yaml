@@ -1,0 +1,7 @@
+integration:
+  nameOverride: rocketchat-integration
+
+rocketchat:
+  rocketchat:
+    webhook:
+      out: http://rocketchat-integration:80/rocketchat-in
