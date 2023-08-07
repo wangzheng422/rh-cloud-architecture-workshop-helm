@@ -14,3 +14,10 @@ dependencies:
   - name: rocketchat
     version: 0.1.0
     repository: file://rocketchat
+  - name: integration-platform
+    version: 0.1.0
+    repository: file://integration-platform
+  - name: integration
+    version: 0.1.0
+    repository: file://integration
+

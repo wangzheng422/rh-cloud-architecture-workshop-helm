@@ -27,7 +27,7 @@ spec:
 
 
             <route id="rest">
-                <from uri="platform-http:/rocketchat-in?consumes=application/json&httpMethodRestrict=POST"/>
+                <from uri="platform-http:/rocketchat-in?consumes=application/json&amp;httpMethodRestrict=POST"/>
                 <log message="from RocketChat: ${body}"/>
                 <unmarshal>
                     <json/>

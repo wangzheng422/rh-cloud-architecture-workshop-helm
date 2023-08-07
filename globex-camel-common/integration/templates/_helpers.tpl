@@ -64,7 +64,7 @@ Create the name of the service account to use
 {{/*
 ArgoCD Syncwave
 */}}
-{{- define "globex-db.argocd-syncwave" -}}
+{{- define "integration.argocd-syncwave" -}}
 {{- if .Values.argocd }}
 {{- if and (.Values.argocd.syncwave) (.Values.argocd.enabled) -}}
 argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
