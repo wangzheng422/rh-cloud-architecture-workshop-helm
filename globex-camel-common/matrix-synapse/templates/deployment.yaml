@@ -53,5 +53,5 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "matrix-synapse.name" . }}-claim
         - name: config
-          configMap:
-            name: {{ include "matrix-synapse.name" . }}-config
+          secret:
+            secretName: {{ include "matrix-synapse.name" . }}-config
