@@ -49,3 +49,23 @@ synapse:
   registrationSharedSecret:
   macaroonSecretKey:
   formSecretKey:
+
+numUsers: 1
+
+hook:
+  image:
+    repository: quay.io/cloud-architecture-workshop/configure-matrix-job
+    pullPolicy: IfNotPresent
+    tag: "59ca0e5"
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  argocd:
+    enabled: true
+    syncwave: "1"

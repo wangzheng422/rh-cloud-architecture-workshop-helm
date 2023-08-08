@@ -60,3 +60,18 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+ArgoCD Syncwave
+*/}}
+{{- define "matrix-synapse.hook.argocd-syncwave" -}}
+{{- if .Values.hook.argocd }}
+{{- if and (.Values.hook.argocd.syncwave) (.Values.hook.argocd.enabled) -}}
+argocd.argoproj.io/sync-wave: "{{ .Values.hook.argocd.syncwave }}"
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- else }}
+{{- "{}" }}
+{{- end }}
+{{- end }}
