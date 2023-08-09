@@ -20,4 +20,7 @@ dependencies:
   - name: integration
     version: 0.1.0
     repository: file://integration
+  - name: element
+    version: 0.1.0
+    repository: file://element
 
