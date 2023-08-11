@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "matrix-secret.name" . }}
+  labels:
+    {{- include "matrix-secret.labels" . | nindent 4 }}   
+spec:
+  selector: {}
+  template:
+    metadata:
+      name: {{ include "matrix-secret.name" . }}
+    spec:
+      serviceAccountName: matrix-secret-job
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: MATRIX_NAMESPACE
+              value: {{ .Values.matrix.namespace }}
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MATRIX_SERVER_URL
+              value: {{ .Values.matrix.url }}
+      restartPolicy: Never

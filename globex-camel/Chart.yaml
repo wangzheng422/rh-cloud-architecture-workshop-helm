@@ -17,6 +17,9 @@ dependencies:
   - name: kafka
     version: 0.1.0
     repository: file://kafka
+  - name: matrix-secret
+    version: 0.1.0
+    repository: file://matrix-secret
   - name: integration-platform
     version: 0.1.0
     repository: file://integration-platform

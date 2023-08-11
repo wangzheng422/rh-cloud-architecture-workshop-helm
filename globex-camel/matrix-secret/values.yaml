@@ -1,0 +1,21 @@
+image:
+  repository: quay.io/cloud-architecture-workshop/matrix-camel-secret-job
+  pullPolicy: IfNotPresent
+  tag: "848f21f"
+
+nameOverride: "matrix-secret-job"
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+matrix:
+  namespace:
+  url:
