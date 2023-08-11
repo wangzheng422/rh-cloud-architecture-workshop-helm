@@ -13,6 +13,7 @@ spec:
     - 'camel:jackson'
     - 'camel:jslt'
     - 'camel:platform-http'
+    - 'camel:http'
     - 'mvn:io.quarkiverse.messaginghub:quarkus-pooled-jms:1.1.0'
   sources:
     - content: |
@@ -70,7 +71,7 @@ spec:
                 <log message="AMQP message sent."/>
             </route>
 
-            <!--<route id="support-response">
+            <route id="support-response">
                 <from uri="{{`amqp:topic:{{broker.amqp.topic.agents}}?connectionFactory=#myFactory`}}"/>
                 <log message="new message: ${body}"/>
 
@@ -78,12 +79,8 @@ spec:
                     <json/>
                 </unmarshal>
 
-                <setProperty name="channel">
-                    <simple>${body.get(source).get(room)}</simple>
-                </setProperty>
-
                 <setBody>
-                    <simple>${body.get(agent)}: ${body.get(text)}</simple>
+                    <simple>{"channel":"${body.get(source).get(room)}", "text": "*${body.get(agent)}*: ${body.get(text)}"}</simple>
                 </setBody>
 
                 <to uri="direct:support-message"/>
@@ -94,23 +91,17 @@ spec:
                 <from uri="direct:support-message"/>
 
                 <removeHeaders pattern="*"/>
-                <setHeader name="Authorization">
-                    <simple>Bearer {{`{{slack.token.bot}}`}}</simple>
-                </setHeader>
-                <setBody>
-                    <simple>text=${body}</simple>
-                </setBody>
                 <setHeader name="CamelHttpMethod">
                     <simple>POST</simple>
                 </setHeader>
                 <setHeader name="Content-Type">
-                        <simple>application/x-www-form-urlencoded</simple>
+                    <simple>application/json</simple>
                 </setHeader>
 
-                <toD uri="https://slack.com/api/chat.postMessage?channel=${exchangeProperty.channel}"/>
+                <toD uri="{{rocketchat.webhook.url}}"/>
              
                 <log message="got response: ${body}"/>
-            </route>-->
+            </route>
 
 
         </routes>
