@@ -56,7 +56,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/configure-matrix-job
     pullPolicy: IfNotPresent
-    tag: "59ca0e5"
+    tag: "30e200e"
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
