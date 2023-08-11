@@ -51,6 +51,10 @@ synapse:
   formSecretKey:
 
 numUsers: 1
+userPrefix: user
+
+rolebinding:
+  serviceAccountNamespace: ""
 
 hook:
   image:
