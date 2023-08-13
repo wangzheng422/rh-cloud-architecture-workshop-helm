@@ -1,0 +1,21 @@
+deploy: false
+
+replicaCount: 1
+
+imagePullSecrets: []
+
+datagrid:
+  host: globex-datagrid
+
+rocketchat:
+  channel:
+
+secrets:
+  - 'secret:client-infinispan'
+  - 'secret:client-amq'
+  - 'secret:client-matrix'
+  - 'secret:client-kafka'
+
+argocd:
+  enabled: true
+  syncwave: "1"

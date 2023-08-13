@@ -1,0 +1,7 @@
+datagrid:
+  datagrid:
+    name: globex-datagrid
+
+matrix-integration:
+  datagrid:
+    host: globex-datagrid

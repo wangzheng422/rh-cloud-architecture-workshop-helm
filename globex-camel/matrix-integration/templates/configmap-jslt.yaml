@@ -1,0 +1,13 @@
+{{- if .Values.deploy -}}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "matrix-integration.name" . }}-jslt
+  labels:
+    {{- include "matrix-integration.labels" . | nindent 4 }}
+  annotations:
+    {{- include "matrix-integration.argocd-syncwave" . | nindent 4 }}
+immutable: true
+data:
+  cachetarget.jslt: "{\n\t\"name\": \"matrix\",\n\t\"room\": .room_id\n}"
+{{- end }}

@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "matrix-integration.name" . }}
+  labels:
+    {{- include "matrix-integration.labels" . | nindent 4 }}
+  annotations:
+    {{- include "matrix-integration.argocd-syncwave" . | nindent 4 }}
+data:
+  rocketchat.properties: |
+    rocketchat.channel.id = {{ .Values.rocketchat.channel }}

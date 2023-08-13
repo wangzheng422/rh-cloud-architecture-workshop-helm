@@ -26,3 +26,6 @@ dependencies:
   - name: globex-web
     version: 0.1.0
     repository: file://globex-web
+  - name: matrix-integration
+    version: 0.1.0
+    repository: file://matrix-integration
