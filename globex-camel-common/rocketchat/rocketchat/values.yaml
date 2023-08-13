@@ -72,7 +72,7 @@ hook:
   image:
     repository: quay.io/cloud-architecture-workshop/configure-rocketchat-job
     pullPolicy: IfNotPresent
-    tag: "f065b14"
+    tag: "6cbaf9a"
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
