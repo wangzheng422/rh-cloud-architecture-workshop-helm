@@ -98,7 +98,7 @@ spec:
                     <simple>application/json</simple>
                 </setHeader>
 
-                <toD uri="{{rocketchat.webhook.url}}"/>
+                <toD uri="{{`{{rocketchat.webhook.url}}`}}"/>
              
                 <log message="got response: ${body}"/>
             </route>
