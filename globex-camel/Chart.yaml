@@ -29,3 +29,6 @@ dependencies:
   - name: matrix-integration
     version: 0.1.0
     repository: file://matrix-integration
+  - name: globex-support-integration
+    version: 0.1.0
+    repository: file://globex-support-integration

@@ -1,0 +1,13 @@
+deploy: false
+
+replicaCount: 1
+
+globex_web:
+  host: globex-web
+
+secrets:
+  - 'secret:client-amq'
+
+argocd:
+  enabled: true
+  syncwave: "1"

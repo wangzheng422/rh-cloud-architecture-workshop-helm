@@ -2,8 +2,6 @@ deploy: false
 
 replicaCount: 1
 
-imagePullSecrets: []
-
 datagrid:
   host: globex-datagrid
 

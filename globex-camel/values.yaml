@@ -5,3 +5,12 @@ datagrid:
 matrix-integration:
   datagrid:
     host: globex-datagrid
+
+globex-web:
+  globexSupportUrl:
+    url: http://globex-support:80
+    service: globex-support
+    path: /support/message
+
+globex-support-integration:
+  nameOverride: globex-support
