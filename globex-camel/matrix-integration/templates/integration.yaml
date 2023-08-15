@@ -15,6 +15,8 @@ spec:
     - 'camel:jslt'
     - 'camel:language'
     - 'camel:http'
+    - 'camel:infinispan'
+    - 'camel:kafka'
     - 'mvn:io.quarkiverse.messaginghub:quarkus-pooled-jms:1.1.0'
   flows:
     - from:
@@ -233,9 +235,7 @@ spec:
     - from:
         steps:
           - log:
-              message: room member leave event detected!!!!
-          - log:
-              message: '${body}'
+              message: room member leave event detected
           - setHeader:
               expression:
                 constant:
@@ -245,7 +245,6 @@ spec:
 
                     {
                       "user": "replace($event[0].sender,"@|:(.*)","")",
-                      "text": "your session ended, conversation is now closed.",
                       "sent": format-time(replace($event[0].origin_server_ts, "[\\s\\S]{3}\\z", ""), "yyyy-MM-dd'T'HH:mm:ss.SSSX"),
                       "room": $room[0].key
                     }
@@ -254,45 +253,7 @@ spec:
           - unmarshal:
               json: {}
           - to:
-              parameters:
-                transform: false
-              uri: >-
-                language:simple:${body.put(text,'your session ended,
-                conversation is now closed.')}
-          - log:
-              message: '${body}'
-          - setProperty:
-              name: key
-              simple: '${body.get(room)}'
-          - to:
-              uri: 'direct:process-agent-message'
-          - to:
-              uri: 'direct:cache-get'
-          - choice:
-              otherwise:
-                steps:
-                  - log: 'no cache entry, ignoring message'
-              when:
-                - simple: '${body} != null'
-                  steps:
-                    - setProperty:
-                        name: key-rocketchat
-                        simple: '${body.get(source).get(room)}-${body.get(user)}'
-                    - setProperty:
-                        name: kafka-body
-                        simple: >-
-                          matrix${body.get(target).get(room).replace(":","-").replace("!","-")}
-                    - to:
-                        uri: 'direct:cache-remove'
-                    - setProperty:
-                        name: key
-                        simple: '${exchangeProperty.key-rocketchat}'
-                    - to:
-                        uri: 'direct:cache-remove'
-                    - setBody:
-                        simple: '${exchangeProperty.kafka-body}'
-                    - toD:
-                        uri: 'kafka:support.${env.NAMESPACE}.closed'
+              uri: 'direct:process-room-leave-event'
         uri: 'direct:process-matrix-room-member-leave-event'
     - from:
         steps:
@@ -345,6 +306,74 @@ spec:
                         uri: >-
                           kafka:support.${env.NAMESPACE}.matrix${exchangeProperty.key.replace(":","-").replace("!","-")}
         uri: 'direct:process-agent-message'
+    - from:
+        steps:
+          - log:
+              message: '${body}'
+          - setProperty:
+              name: key
+              simple: '${body.get(room)}'
+          - setProperty:
+              name: agent
+              simple: '${body.get(user)}'
+          - to:
+              uri: 'direct:cache-get'
+          - choice:
+              otherwise:
+                steps:
+                  - log: 'no cache entry, ignoring message'
+              when:
+                - simple: '${body} != null'
+                  steps:
+                    - to:
+                        parameters:
+                          transform: false
+                        uri: >-
+                          language:simple:${body.replace(text,'your session
+                          ended, conversation is now closed.')}
+                    - to:
+                        parameters:
+                          transform: false
+                        uri: 'language:simple:${body.put(agent,''support'')}'
+                    - setProperty:
+                        name: source
+                        simple: '${body.get(source).get(uname)}'
+                    - setProperty:
+                        name: key-rocketchat
+                        simple: '${body.get(source).get(room)}-${body.get(user)}'
+                    - setProperty:
+                        name: kafka-client
+                        simple: >-
+                          matrix${body.get(target).get(room).replace(":","-").replace("!","-")}
+                    - marshal:
+                        json: {}
+                    - setProperty:
+                        name: context
+                        simple: '${body}'
+                    - toD:
+                        parameters:
+                          connectionFactory: '#myFactory'
+                        uri: 'amqp:topic:support.${exchangeProperty.source}'
+                    - to:
+                        uri: 'direct:cache-remove'
+                    - setProperty:
+                        name: key
+                        simple: '${exchangeProperty.key-rocketchat}'
+                    - to:
+                        uri: 'direct:cache-remove'
+                    - setBody:
+                        simple: done
+                    - setHeader:
+                        name: context
+                        simple: '${exchangeProperty.context}'
+                    - toD:
+                        uri: >-
+                          kafka:support.${env.NAMESPACE}.${exchangeProperty.kafka-client}
+                    - setBody:
+                        simple: '${exchangeProperty.kafka-client}'
+                    - toD:
+                        uri: 'kafka:support.${env.NAMESPACE}.closed'
+        uri: 'direct:process-room-leave-event'
   sources:
     - content: |-
         <?xml version="1.0" encoding="UTF-8"?>
