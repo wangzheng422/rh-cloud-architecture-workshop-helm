@@ -1,0 +1,15 @@
+deploy: false
+
+replicaCount: 1
+
+minio:
+  service: minio
+
+secrets:
+  - 'secret:client-amq'
+  - 'secret:client-kafka'
+  - 'secret:client-s3'
+
+argocd:
+  enabled: true
+  syncwave: "1"

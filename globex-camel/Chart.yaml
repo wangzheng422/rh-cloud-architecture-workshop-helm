@@ -32,3 +32,6 @@ dependencies:
   - name: globex-support-integration
     version: 0.1.0
     repository: file://globex-support-integration
+  - name: transcript-integration
+    version: 0.1.0
+    repository: file://transcript-integration
