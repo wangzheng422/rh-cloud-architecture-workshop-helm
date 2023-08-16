@@ -1,7 +1,7 @@
 image:
   repository: quay.io/cloud-architecture-workshop/matrix-camel-secret-job
   pullPolicy: IfNotPresent
-  tag: "848f21f"
+  tag: "de42795"
 
 nameOverride: "matrix-secret-job"
 
