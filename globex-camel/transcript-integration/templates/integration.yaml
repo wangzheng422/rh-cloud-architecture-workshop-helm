@@ -22,7 +22,101 @@ spec:
         <!-- camel-k: language=xml -->
         
         <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns="http://camel.apache.org/schema/spring"\n        xsi:schemaLocation="\n            http://camel.apache.org/schema/spring\n            http://camel.apache.org/schema/spring/camel-spring.xsd">\n\n\n\t<!-- Write your routes here, for example: -->\n    <route id="process">\n        <from uri="direct:process"/>\n\n        <setProperty name="client">\n            <simple>${body}</simple>\n        </setProperty>\n\n        <log message="Initiating KAFKA processor for: ${exchangeProperty.client}"/>\n\n        <setProperty name="continue">\n            <simple>true</simple>\n        </setProperty>\n\n        <loop doWhile="true">\n            <simple>${exchangeProperty.continue}</simple>\n\n            <pollEnrich>\n                <simple>kafka:support.${env.NAMESPACE}.${exchangeProperty.client}?autoOffsetReset=earliest</simple>\n            </pollEnrich>\n\n            <when>\n                <simple>${body} == 'done'</simple>\n                <setProperty name="continue">\n                    <simple>false</simple>\n                </setProperty>\n            </when>\n\n            <log message="source is: ${header.source}"/>\n            <log message="got message: ${body}"/>\n\n            <aggregate strategyRef="myStrategy">\n                <correlationExpression>\n                    <constant>true</constant>\n                </correlationExpression>\n                <completionPredicate>\n                    <simple>${exchangeProperty.continue} == false</simple>\n                </completionPredicate>\n\n                <log message="aggregation done: ${body}"/>\n\n                <to uri="pdf:create"/>\n                <log message="PDF created."/>\n\n                <to uri="direct:store-pdf"/>\n                <to uri="direct:get-shared-url"/>\n                <to uri="direct:share-transcript"/>\n            </aggregate>\n        </loop>\n        <log message="KAFKA processor done"/>\n    </route>\n\n\n    <route id="store-pdf">\n        <from uri="direct:store-pdf"/>                                       <!-- 1 -->\n\n        <setProperty name="store-key">\n            <simple>transcript_${date:now:yyyy-MM-dd_HH-mm-ss}.pdf</simple>  <!-- 2 -->\n        </setProperty>\n\n        <setHeader name="CamelFileName">                                     <!-- 3 -->\n            <simple>${exchangeProperty.store-key}</simple>\n        </setHeader>\n\n        <setHeader name="CamelAwsS3Key">                                     <!-- 3 -->\n            <simple>${exchangeProperty.store-key}</simple>\n        </setHeader>\n\n        <setHeader name="CamelAwsS3ContentType">                             <!-- 3 -->\n            <simple>application/pdf</simple>\n        </setHeader>\n\n        <toD uri="aws2-s3:pdf.bucket"/>                                      <!-- 4 -->\n        <log message="PDF stored"/>\n    </route>\n\n\n    <route id="share-transcript">\n        <from uri="direct:share-transcript"/>                                       <!-- 1 -->\n\n        <log message="context is: ${exchangeProperty.context}"/>                    <!-- 2 -->\n\n        <setBody>\n            <simple>${exchangeProperty.context}</simple>                            <!-- 3 -->\n        </setBody>\n\n        <to uri="direct:recycle-context"/>                                          <!-- 4 -->\n\n        <log message="AMQP to send out: ${body}"/>\n\n        <toD uri="amqp:topic:support.${exchangeProperty.source}?connectionFactory=#myFactory"/>  <!-- 5 -->\n    </route>\n\n</routes>     name: transcript.xml
+                xmlns="http://camel.apache.org/schema/spring"
+                xsi:schemaLocation="
+                    http://camel.apache.org/schema/spring
+                    http://camel.apache.org/schema/spring/camel-spring.xsd">
+                    
+            <route id="process">
+                <from uri="direct:process"/>
+                
+                <setProperty name="client">
+                    <simple>${body}</simple>
+                </setProperty>
+                
+                <log message="Initiating KAFKA processor for: ${exchangeProperty.client}"/>
+                
+                <setProperty name="continue">
+                    <simple>true</simple>
+                </setProperty>
+                
+                <loop doWhile="true">              
+                    <simple>${exchangeProperty.continue}</simple>
+
+                    <pollEnrich>
+                        <simple>kafka:support.${env.NAMESPACE}.${exchangeProperty.client}?autoOffsetReset=earliest</simple>
+                    </pollEnrich>
+
+                    <when>
+                        <simple>${body} == 'done'</simple>
+                        <setProperty name="continue">
+                            <simple>false</simple>
+                        </setProperty>
+                    </when>
+                    
+                    <log message="source is: ${header.source}"/>
+                    <log message="got message: ${body}"/>
+                    
+                    <aggregate strategyRef="myStrategy">
+                        <correlationExpression>
+                            <constant>true</constant>
+                        </correlationExpression>
+                        <completionPredicate>
+                            <simple>${exchangeProperty.continue} == false</simple>
+                        </completionPredicate>
+                        
+                        <log message="aggregation done: ${body}"/>
+                        
+                        <to uri="pdf:create"/>
+                        <log message="PDF created."/>
+                        
+                        <to uri="direct:store-pdf"/>
+                        <to uri="direct:get-shared-url"/>
+                        <to uri="direct:share-transcript"/>
+                    </aggregate>
+                </loop>
+                <log message="KAFKA processor done"/>
+            </route>
+            
+            <route id="store-pdf">
+                <from uri="direct:store-pdf"/>
+                <setProperty name="store-key">
+                    <simple>transcript_${date:now:yyyy-MM-dd_HH-mm-ss}.pdf</simple>
+                </setProperty>
+                
+                <setHeader name="CamelFileName">
+                    <simple>${exchangeProperty.store-key}</simple>
+                </setHeader>
+                
+                <setHeader name="CamelAwsS3Key">
+                    <simple>${exchangeProperty.store-key}</simple>
+                </setHeader>
+                
+                <setHeader name="CamelAwsS3ContentType">
+                    <simple>application/pdf</simple>
+                </setHeader>
+                
+                <toD uri="aws2-s3:pdf.bucket"/>
+                <log message="PDF stored"/>
+            </route>
+            
+            <route id="share-transcript">
+                <from uri="direct:share-transcript"/>
+                
+                <log message="context is: ${exchangeProperty.context}"/>
+                
+                <setBody>
+                    <simple>${exchangeProperty.context}</simple>
+                </setBody>
+                
+                <to uri="direct:recycle-context"/>
+                
+                <log message="AMQP to send out: ${body}"/>
+                
+                <toD uri="amqp:topic:support.${exchangeProperty.source}?connectionFactory=#myFactory"/>
+            </route>
+        </routes>
+      name: transcript.xml
     - content: >-
         <?xml version="1.0" encoding="UTF-8"?>
 
