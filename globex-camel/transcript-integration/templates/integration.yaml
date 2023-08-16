@@ -379,7 +379,5 @@ spec:
     mount:
       configuration:
         configs:
-          - 'secret:client-amq'
-          - 'secret:client-kafka'
-          - 'secret:client-s3'
+          {{- toYaml .Values.secrets | nindent 10 }}
 {{- end }}
