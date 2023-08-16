@@ -146,7 +146,7 @@ spec:
                 "account_data": { "not_types": [ "*" ] }, "room": {
                 "account_data": { "not_types": [ "*" ] }, "timeline": { "limit":
                 1, "types": [ "m.room.message", "m.room.member" ], "senders": [
-                "@user1:globex" ] }, "state": { "not_types": [ "*" ] },
+                "{{`{{matrix.user}}`}}" ] }, "state": { "not_types": [ "*" ] },
                 "ephemeral": { "not_types": [ "*" ] } } }
           - log:
               message: Matrix HTTP Streaming started
@@ -174,7 +174,7 @@ spec:
                       "account_data": { "not_types": [ "*" ] }, "room": {
                       "account_data": { "not_types": [ "*" ] }, "timeline": {
                       "limit": 1, "types": [ "m.room.message", "m.room.member"
-                      ], "senders": [ "@user1:globex" ] }, "state": {
+                      ], "senders": [ "{{`{{matrix.user}}`}}" ] }, "state": {
                       "not_types": [ "*" ] }, "ephemeral": { "not_types": [ "*"
                       ] } }
                       }&since=${exchangeProperty.next_batch}&disableStreamCache=true
