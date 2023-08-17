@@ -1,6 +1,0 @@
-discord:
-  enabled: false
-  token: discord-token-placeholder
-  guild:
-    id: discord-guild-id-placeholder
-    group: discord-guild-group-placeholder
