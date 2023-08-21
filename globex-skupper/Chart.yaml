@@ -8,9 +8,17 @@ dependencies:
   - name: globex-store-app
     version: 0.1.0
     repository: file://globex-store-app
-  - name: globex-db
+  - name: globex-db-secret
     version: 0.1.0
-    repository: file://globex-db
+    repository: file://globex-db-secret
   - name: globex-web
     version: 0.1.0
     repository: file://globex-web
+  - name: globex-db
+    version: 0.1.0
+    repository: file://globex-db
+    condition: skupper.deploy
+  - name: networkpolicy
+    version: 0.1.0
+    repository: file://networkpolicy
+    condition: skupper.deploy

@@ -1,0 +1,12 @@
+nameOverride: ""
+fullnameOverride: ""
+pgsql:
+  user: globex
+  password: globex
+  database: globex
+  adminPassword: 
+  debeziumPassword: debezium
+
+argocd:
+  enabled: true
+  syncwave: "-1"
