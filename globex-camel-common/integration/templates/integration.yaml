@@ -175,20 +175,17 @@ spec:
       name: factory.java
   traits:
     camel:
-      configuration:
-        properties:
-          - broker.amqp.connections = {{ .Values.broker.amqp.connections }}
-          - broker.amqp.topic.clients = {{ .Values.broker.amqp.topic.clients }}
-          - broker.amqp.topic.agents = {{ .Values.broker.amqp.topic.agents }}
+      properties:
+        - broker.amqp.connections = {{ .Values.broker.amqp.connections }}
+        - broker.amqp.topic.clients = {{ .Values.broker.amqp.topic.clients }}
+        - broker.amqp.topic.agents = {{ .Values.broker.amqp.topic.agents }}
     mount:
-      configuration:
-        configs:
-          - 'secret:{{ .Values.broker.client.secret }}'
-          - 'secret:{{ .Values.rocketchat.secret }}'
-        resources:
-          - >-
-            configmap:{{ include "integration.name" . }}-jlst/request.jslt@/etc/camel/resources/request.jslt
+      configs:
+        - 'secret:{{ .Values.broker.client.secret }}'
+        - 'secret:{{ .Values.rocketchat.secret }}'
+      resources:
+        - >-
+          configmap:{{ include "integration.name" . }}-jlst/request.jslt@/etc/camel/resources/request.jslt
     container:
-      configuration:
-        limitCPU: 250m
-        limitMemory: 512Mi
+      limitCPU: 250m
+      limitMemory: 512Mi
