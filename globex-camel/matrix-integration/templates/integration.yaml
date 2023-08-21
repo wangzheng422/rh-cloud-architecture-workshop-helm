@@ -19,361 +19,372 @@ spec:
     - 'camel:kafka'
     - 'mvn:io.quarkiverse.messaginghub:quarkus-pooled-jms:1.1.0'
   flows:
-    - from:
-        steps:
-          - marshal:
-              json: {}
-          - removeHeaders:
-              pattern: '*'
-          - setHeader:
-              name: '{{`${{{cache.operation}}}`}}'
-              simple: '{{`${{{cache.put}}}`}}'
-          - setHeader:
-              name: '{{`${{{cache.value}}}`}}'
-              simple: '${body}'
-          - setHeader:
-              name: '{{`${{{cache.key}}}`}}'
-              simple: '${exchangeProperty.key}'
-          - to:
-              uri: 'infinispan://default'
-        uri: 'direct:cache-put'
-    - from:
-        steps:
-          - removeHeaders:
-              pattern: '*'
-          - setHeader:
-              name: '{{`${{{cache.operation}}}`}}'
-              simple: '{{`${{{cache.get}}}`}}'
-          - setHeader:
-              name: '{{`${{{cache.key}}}`}}'
-              simple: '${exchangeProperty.key}'
-          - to:
-              uri: 'infinispan://default'
-          - when:
-              simple: '${body} != null'
-              steps:
-                - unmarshal:
-                    json: {}
-        uri: 'direct:cache-get'
-    - from:
-        steps:
-          - removeHeaders:
-              pattern: '*'
-          - setHeader:
-              name: '{{`${{{cache.operation}}}`}}'
-              simple: '{{`${{{cache.remove}}}`}}'
-          - setHeader:
-              name: '{{`${{{cache.key}}}`}}'
-              simple: '${exchangeProperty.key}'
-          - to:
-              uri: 'infinispan://default'
-        uri: 'direct:cache-remove'
-    - from:
-        parameters:
-          connectionFactory: '#myFactory'
-        steps:
-          - to:
-              uri: 'direct:support-request'
-        uri: >-
-          amqp:topic:{{`{{broker.amqp.topic.clients.rocketchat}}{{rocketchat.channel.id}}`}}
-    - from:
-        steps:
-          - unmarshal:
-              json: {}
-          - setProperty:
-              name: in
-              simple: '${body}'
-          - to:
-              uri: 'direct:get-cache-entry'
-          - setProperty:
-              name: matrix-room
-              simple: '${exchangeProperty.cache.get(target).get(room)}'
-          - setProperty:
-              name: user
-              simple: >-
-                ${exchangeProperty.cache.get(user)}@${exchangeProperty.cache.get(source).get(name)}
-          - setBody:
-              simple: '${exchangeProperty.in.get(text)}'
-          - to:
-              uri: 'direct:matrix-send-message'
-        uri: 'direct:support-request'
-    - from:
-        steps:
-          - setProperty:
-              name: kafka-body
-              simple: '${body}'
-          - removeHeaders:
-              pattern: '*'
-          - setHeader:
-              name: Authorization
-              simple: 'Bearer {{`{{matrix.access.token}}`}}'
-          - setHeader:
-              name: Content-Type
-              simple: application/json
-          - setHeader:
-              constant: PUT
-              name: CamelHttpMethod
-          - setBody:
-              simple: >-
-                {"body": "${body}", "formatted_body":
-                "<b>${exchangeProperty.user}</b> ${body}", "format":
-                "org.matrix.custom.html", "msgtype":"m.text"}
-          - toD:
-              uri: >-
-                {{`{{matrix.server.url}}/_matrix/client/v3/rooms/${exchangeProperty.matrix-room}/send/m.room.message/${random(999999)}`}}
-          - setBody:
-              simple: 'you: ${exchangeProperty.kafka-body}'
-          - removeHeaders:
-              pattern: '*'
-          - toD:
-              uri: >-
-                kafka:support.${env.NAMESPACE}.matrix${exchangeProperty.matrix-room.replace(":","-").replace("!","-")}
-        uri: 'direct:matrix-send-message'
-    - from:
-        parameters:
-          repeatCount: 1
-        steps:
-          - log:
-              message: Opening connection to Matrix...
-          - setHeader:
-              expression:
-                simple:
-                  expression: '{{`Bearer {{matrix.access.token}}`}}'
-              name: Authorization
-          - to:
-              uri: >-
-                {{`{{matrix.server.url}}`}}/_matrix/client/v3/sync?filter={
-                "account_data": { "not_types": [ "*" ] }, "room": {
-                "account_data": { "not_types": [ "*" ] }, "timeline": { "limit":
-                1, "types": [ "m.room.message", "m.room.member" ], "senders": [
-                "{{`{{matrix.user}}`}}" ] }, "state": { "not_types": [ "*" ] },
-                "ephemeral": { "not_types": [ "*" ] } } }
-          - log:
-              message: Matrix HTTP Streaming started
-          - loop:
-              doWhile: true
-              expression:
-                simple:
-                  expression: true
-              steps:
-                - removeHeaders:
-                    pattern: '*'
-                - setProperty:
-                    expression:
-                      jsonpath:
-                        expression: $.next_batch
-                    name: next_batch
-                - setHeader:
-                    expression:
-                      simple:
-                        expression: '{{`Bearer {{matrix.access.token}}`}}'
-                    name: Authorization
-                - toD:
-                    uri: >-
-                      {{`{{matrix.server.url}}`}}/_matrix/client/v3/sync?timeout=10000&filter={
-                      "account_data": { "not_types": [ "*" ] }, "room": {
-                      "account_data": { "not_types": [ "*" ] }, "timeline": {
-                      "limit": 1, "types": [ "m.room.message", "m.room.member"
-                      ], "senders": [ "{{`{{matrix.user}}`}}" ] }, "state": {
-                      "not_types": [ "*" ] }, "ephemeral": { "not_types": [ "*"
-                      ] } }
-                      }&since=${exchangeProperty.next_batch}&disableStreamCache=true
-                - convertBodyTo:
-                    type: String
-                - setProperty:
-                    expression:
-                      simple:
-                        expression: '${body}'
-                    name: backup-response
-                - when:
-                    expression:
-                      jsonpath:
-                        expression: >-
-                          $['rooms'].join..timeline.events[?(@.type ==
-                          'm.room.message')]
-                        suppressExceptions: true
+    - route:
+        from:
+          steps:
+            - marshal:
+                json: {}
+            - removeHeaders:
+                pattern: '*'
+            - setHeader:
+                name: '{{`${{{cache.operation}}}`}}'
+                simple: '{{`${{{cache.put}}}`}}'
+            - setHeader:
+                name: '{{`${{{cache.value}}}`}}'
+                simple: '${body}'
+            - setHeader:
+                name: '{{`${{{cache.key}}}`}}'
+                simple: '${exchangeProperty.key}'
+            - to:
+                uri: 'infinispan://default'
+          uri: 'direct:cache-put'
+    - route:
+        from:
+          steps:
+            - removeHeaders:
+                pattern: '*'
+            - setHeader:
+                name: '{{`${{{cache.operation}}}`}}'
+                simple: '{{`${{{cache.get}}}`}}'
+            - setHeader:
+                name: '{{`${{{cache.key}}}`}}'
+                simple: '${exchangeProperty.key}'
+            - to:
+                uri: 'infinispan://default'
+            - when:
+                simple: '${body} != null'
+                steps:
+                  - unmarshal:
+                      json: {}
+          uri: 'direct:cache-get'
+    - route:
+        from:
+          steps:
+            - removeHeaders:
+                pattern: '*'
+            - setHeader:
+                name: '{{`${{{cache.operation}}}`}}'
+                simple: '{{`${{{cache.remove}}}`}}'
+            - setHeader:
+                name: '{{`${{{cache.key}}}`}}'
+                simple: '${exchangeProperty.key}'
+            - to:
+                uri: 'infinispan://default'
+          uri: 'direct:cache-remove'
+    - route:
+        from:
+          parameters:
+            connectionFactory: '#myFactory'
+          steps:
+            - to:
+                uri: 'direct:support-request'
+          uri: >-
+            amqp:topic:{{`{{broker.amqp.topic.clients.rocketchat}}{{rocketchat.channel.id}}`}}
+    - route:
+        from:
+          steps:
+            - unmarshal:
+                json: {}
+            - setProperty:
+                name: in
+                simple: '${body}'
+            - to:
+                uri: 'direct:get-cache-entry'
+            - setProperty:
+                name: matrix-room
+                simple: '${exchangeProperty.cache.get(target).get(room)}'
+            - setProperty:
+                name: user
+                simple: >-
+                  ${exchangeProperty.cache.get(user)}@${exchangeProperty.cache.get(source).get(name)}
+            - setBody:
+                simple: '${exchangeProperty.in.get(text)}'
+            - to:
+                uri: 'direct:matrix-send-message'
+          uri: 'direct:support-request'
+    - route:
+        from:
+          steps:
+            - setProperty:
+                name: kafka-body
+                simple: '${body}'
+            - removeHeaders:
+                pattern: '*'
+            - setHeader:
+                name: Authorization
+                simple: 'Bearer {{`{{matrix.access.token}}`}}'
+            - setHeader:
+                name: Content-Type
+                simple: application/json
+            - setHeader:
+                constant: PUT
+                name: CamelHttpMethod
+            - setBody:
+                simple: >-
+                  {"body": "${body}", "formatted_body":
+                  "<b>${exchangeProperty.user}</b> ${body}", "format":
+                  "org.matrix.custom.html", "msgtype":"m.text"}
+            - toD:
+                uri: >-
+                  {{`{{matrix.server.url}}/_matrix/client/v3/rooms/${exchangeProperty.matrix-room}/send/m.room.message/${random(999999)}`}}
+            - setBody:
+                simple: 'you: ${exchangeProperty.kafka-body}'
+            - removeHeaders:
+                pattern: '*'
+            - toD:
+                uri: >-
+                  kafka:support.${env.NAMESPACE}.matrix${exchangeProperty.matrix-room.replace(":","-").replace("!","-")}
+          uri: 'direct:matrix-send-message'
+    - route:
+        from:
+          steps:
+            - to:
+                uri: 'log:matrix?showBody=true'
+            - setProperty:
+                name: text
+                simple: '${body.get(text)}'
+            - setProperty:
+                name: agent
+                simple: '${body.get(user)}'
+            - setProperty:
+                name: key
+                simple: '${body.get(room)}'
+            - to:
+                uri: 'direct:cache-get'
+            - choice:
+                otherwise:
+                  steps:
+                    - log: >-
+                        no cache entry, ignoring message from user:
+                        ${exchangeProperty.agent}
+                when:
+                  - simple: '${body} != null'
                     steps:
                       - to:
-                          uri: 'direct:process-matrix-message-event'
-                - when:
-                    expression:
-                      jsonpath:
-                        expression: >-
-                          $['rooms'].join..timeline.events[?(@.type ==
-                          'm.room.member' && @.content.membership == 'leave')]
-                        suppressExceptions: true
+                          parameters:
+                            transform: false
+                          uri: >-
+                            language:simple:${body.replace(text,${exchangeProperty.text})}
+                      - to:
+                          parameters:
+                            transform: false
+                          uri: >-
+                            language:simple:${body.put(agent,${exchangeProperty.agent})}
+                      - setProperty:
+                          name: source
+                          simple: '${body.get(source).get(uname)}'
+                      - marshal:
+                          json: {}
+                      - toD:
+                          parameters:
+                            connectionFactory: '#myFactory'
+                          uri: 'amqp:topic:support.${exchangeProperty.source}'
+                      - setBody:
+                          simple: '${exchangeProperty.agent}: ${exchangeProperty.text}'
+                      - removeHeaders:
+                          pattern: '*'
+                      - toD:
+                          uri: >-
+                            kafka:support.${env.NAMESPACE}.matrix${exchangeProperty.key.replace(":","-").replace("!","-")}
+          uri: 'direct:process-agent-message'
+    - route:
+        from:
+          steps:
+            - log:
+                message: '${body}'
+            - setProperty:
+                name: key
+                simple: '${body.get(room)}'
+            - setProperty:
+                name: agent
+                simple: '${body.get(user)}'
+            - to:
+                uri: 'direct:cache-get'
+            - choice:
+                otherwise:
+                  steps:
+                    - log: 'no cache entry, ignoring message'
+                when:
+                  - simple: '${body} != null'
                     steps:
                       - to:
-                          uri: 'direct:process-matrix-room-member-leave-event'
-                - setBody:
-                    expression:
-                      simple:
-                        expression: '${exchangeProperty.backup-response}'
-        uri: 'timer:trigger-matrix-streaming'
-    - from:
-        steps:
-          - setHeader:
-              expression:
-                constant:
-                  expression: >-
-                    let event = [for (.rooms.join) .value.timeline.events[0]]
-                    let room = [for (.rooms.join) .]
-
-                    {
-                      "user": replace($event[0].sender,"@|:(.*)",""),
-                      "text": $event[0].content.body,
-                      "sent": format-time(replace($event[0].origin_server_ts, "[\\s\\S]{3}\\z", ""), "yyyy-MM-dd'T'HH:mm:ss.SSSX"),
-                      "room": $room[0].key
-                    }
-              name: CamelJsltString
-          - to: 'jslt:dummy?allowTemplateFromHeader=true'
-          - unmarshal:
-              json: {}
-          - wire-tap:
-              uri: 'direct:process-agent-message'
-        uri: 'direct:process-matrix-message-event'
-    - from:
-        steps:
-          - log:
-              message: room member leave event detected
-          - setHeader:
-              expression:
-                constant:
-                  expression: >-
-                    let event = [for (.rooms.join) .value.timeline.events[0]]
-                    let room = [for (.rooms.join) .]
-
-                    {
-                      "user": "replace($event[0].sender,"@|:(.*)","")",
-                      "sent": format-time(replace($event[0].origin_server_ts, "[\\s\\S]{3}\\z", ""), "yyyy-MM-dd'T'HH:mm:ss.SSSX"),
-                      "room": $room[0].key
-                    }
-              name: CamelJsltString
-          - to: 'jslt:dummy?allowTemplateFromHeader=true'
-          - unmarshal:
-              json: {}
-          - to:
-              uri: 'direct:process-room-leave-event'
-        uri: 'direct:process-matrix-room-member-leave-event'
-    - from:
-        steps:
-          - to:
-              uri: 'log:matrix?showBody=true'
-          - setProperty:
-              name: text
-              simple: '${body.get(text)}'
-          - setProperty:
-              name: agent
-              simple: '${body.get(user)}'
-          - setProperty:
-              name: key
-              simple: '${body.get(room)}'
-          - to:
-              uri: 'direct:cache-get'
-          - choice:
-              otherwise:
+                          parameters:
+                            transform: false
+                          uri: >-
+                            language:simple:${body.replace(text,'your session
+                            ended, conversation is now closed.')}
+                      - to:
+                          parameters:
+                            transform: false
+                          uri: 'language:simple:${body.put(agent,''support'')}'
+                      - setProperty:
+                          name: source
+                          simple: '${body.get(source).get(uname)}'
+                      - setProperty:
+                          name: key-rocketchat
+                          simple: '${body.get(source).get(room)}-${body.get(user)}'
+                      - setProperty:
+                          name: kafka-client
+                          simple: >-
+                            matrix${body.get(target).get(room).replace(":","-").replace("!","-")}
+                      - marshal:
+                          json: {}
+                      - setProperty:
+                          name: context
+                          simple: '${body}'
+                      - toD:
+                          parameters:
+                            connectionFactory: '#myFactory'
+                          uri: 'amqp:topic:support.${exchangeProperty.source}'
+                      - to:
+                          uri: 'direct:cache-remove'
+                      - setProperty:
+                          name: key
+                          simple: '${exchangeProperty.key-rocketchat}'
+                      - to:
+                          uri: 'direct:cache-remove'
+                      - setBody:
+                          simple: done
+                      - setHeader:
+                          name: context
+                          simple: '${exchangeProperty.context}'
+                      - toD:
+                          uri: >-
+                            kafka:support.${env.NAMESPACE}.${exchangeProperty.kafka-client}
+                      - setBody:
+                          simple: '${exchangeProperty.kafka-client}'
+                      - toD:
+                          uri: 'kafka:support.${env.NAMESPACE}.closed'
+          uri: 'direct:process-room-leave-event'
+    - route:
+        from:
+          parameters:
+            repeatCount: 1
+          steps:
+            - log:
+                message: Opening connection to Matrix...
+            - setHeader:
+                expression:
+                  simple:
+                    expression: '{{`Bearer {{matrix.access.token}}`}}'
+                name: Authorization
+            - to:
+                uri: >-
+                  {{`{{matrix.server.url}}`}}/_matrix/client/v3/sync?filter={
+                  "account_data": { "not_types": [ "*" ] }, "room": {
+                  "account_data": { "not_types": [ "*" ] }, "timeline": { "limit":
+                  1, "types": [ "m.room.message", "m.room.member" ], "senders": [
+                  "{{`{{matrix.user}}`}}" ] }, "state": { "not_types": [ "*" ] },
+                  "ephemeral": { "not_types": [ "*" ] } } }
+            - log:
+                message: Matrix HTTP Streaming started
+            - loop:
+                doWhile: true
+                expression:
+                  simple:
+                    expression: true
                 steps:
-                  - log: >-
-                      no cache entry, ignoring message from user:
-                      ${exchangeProperty.agent}
-              when:
-                - simple: '${body} != null'
-                  steps:
-                    - to:
-                        parameters:
-                          transform: false
-                        uri: >-
-                          language:simple:${body.replace(text,${exchangeProperty.text})}
-                    - to:
-                        parameters:
-                          transform: false
-                        uri: >-
-                          language:simple:${body.put(agent,${exchangeProperty.agent})}
-                    - setProperty:
-                        name: source
-                        simple: '${body.get(source).get(uname)}'
-                    - marshal:
-                        json: {}
-                    - toD:
-                        parameters:
-                          connectionFactory: '#myFactory'
-                        uri: 'amqp:topic:support.${exchangeProperty.source}'
-                    - setBody:
-                        simple: '${exchangeProperty.agent}: ${exchangeProperty.text}'
-                    - removeHeaders:
-                        pattern: '*'
-                    - toD:
-                        uri: >-
-                          kafka:support.${env.NAMESPACE}.matrix${exchangeProperty.key.replace(":","-").replace("!","-")}
-        uri: 'direct:process-agent-message'
-    - from:
-        steps:
-          - log:
-              message: '${body}'
-          - setProperty:
-              name: key
-              simple: '${body.get(room)}'
-          - setProperty:
-              name: agent
-              simple: '${body.get(user)}'
-          - to:
-              uri: 'direct:cache-get'
-          - choice:
-              otherwise:
-                steps:
-                  - log: 'no cache entry, ignoring message'
-              when:
-                - simple: '${body} != null'
-                  steps:
-                    - to:
-                        parameters:
-                          transform: false
-                        uri: >-
-                          language:simple:${body.replace(text,'your session
-                          ended, conversation is now closed.')}
-                    - to:
-                        parameters:
-                          transform: false
-                        uri: 'language:simple:${body.put(agent,''support'')}'
-                    - setProperty:
-                        name: source
-                        simple: '${body.get(source).get(uname)}'
-                    - setProperty:
-                        name: key-rocketchat
-                        simple: '${body.get(source).get(room)}-${body.get(user)}'
-                    - setProperty:
-                        name: kafka-client
-                        simple: >-
-                          matrix${body.get(target).get(room).replace(":","-").replace("!","-")}
-                    - marshal:
-                        json: {}
-                    - setProperty:
-                        name: context
-                        simple: '${body}'
-                    - toD:
-                        parameters:
-                          connectionFactory: '#myFactory'
-                        uri: 'amqp:topic:support.${exchangeProperty.source}'
-                    - to:
-                        uri: 'direct:cache-remove'
-                    - setProperty:
-                        name: key
-                        simple: '${exchangeProperty.key-rocketchat}'
-                    - to:
-                        uri: 'direct:cache-remove'
-                    - setBody:
-                        simple: done
-                    - setHeader:
-                        name: context
-                        simple: '${exchangeProperty.context}'
-                    - toD:
-                        uri: >-
-                          kafka:support.${env.NAMESPACE}.${exchangeProperty.kafka-client}
-                    - setBody:
-                        simple: '${exchangeProperty.kafka-client}'
-                    - toD:
-                        uri: 'kafka:support.${env.NAMESPACE}.closed'
-        uri: 'direct:process-room-leave-event'
+                  - removeHeaders:
+                      pattern: '*'
+                  - setProperty:
+                      expression:
+                        jsonpath:
+                          expression: $.next_batch
+                      name: next_batch
+                  - setHeader:
+                      expression:
+                        simple:
+                          expression: '{{`Bearer {{matrix.access.token}}`}}'
+                      name: Authorization
+                  - toD:
+                      uri: >-
+                        {{`{{matrix.server.url}}`}}/_matrix/client/v3/sync?timeout=10000&filter={
+                        "account_data": { "not_types": [ "*" ] }, "room": {
+                        "account_data": { "not_types": [ "*" ] }, "timeline": {
+                        "limit": 1, "types": [ "m.room.message", "m.room.member"
+                        ], "senders": [ "{{`{{matrix.user}}`}}" ] }, "state": {
+                        "not_types": [ "*" ] }, "ephemeral": { "not_types": [ "*"
+                        ] } }
+                        }&since=${exchangeProperty.next_batch}&disableStreamCache=true
+                  - convertBodyTo:
+                      type: String
+                  - setProperty:
+                      expression:
+                        simple:
+                          expression: '${body}'
+                      name: backup-response
+                  - when:
+                      expression:
+                        jsonpath:
+                          expression: >-
+                            $['rooms'].join..timeline.events[?(@.type ==
+                            'm.room.message')]
+                          suppressExceptions: true
+                      steps:
+                        - to:
+                            uri: 'direct:process-matrix-message-event'
+                  - when:
+                      expression:
+                        jsonpath:
+                          expression: >-
+                            $['rooms'].join..timeline.events[?(@.type ==
+                            'm.room.member' && @.content.membership == 'leave')]
+                          suppressExceptions: true
+                      steps:
+                        - to:
+                            uri: 'direct:process-matrix-room-member-leave-event'
+                  - setBody:
+                      expression:
+                        simple:
+                          expression: '${exchangeProperty.backup-response}'
+          uri: 'timer:trigger-matrix-streaming'
+    - route:
+        from:
+          steps:
+            - setHeader:
+                expression:
+                  constant:
+                    expression: >-
+                      let event = [for (.rooms.join) .value.timeline.events[0]]
+                      let room = [for (.rooms.join) .]
+
+                      {
+                        "user": replace($event[0].sender,"@|:(.*)",""),
+                        "text": $event[0].content.body,
+                        "sent": format-time(replace($event[0].origin_server_ts, "[\\s\\S]{3}\\z", ""), "yyyy-MM-dd'T'HH:mm:ss.SSSX"),
+                        "room": $room[0].key
+                      }
+                name: CamelJsltString
+            - to: 'jslt:dummy?allowTemplateFromHeader=true'
+            - unmarshal:
+                json: {}
+            - wire-tap:
+                uri: 'direct:process-agent-message'
+          uri: 'direct:process-matrix-message-event'
+    - route:
+        from:
+          steps:
+            - log:
+                message: room member leave event detected
+            - setHeader:
+                expression:
+                  constant:
+                    expression: >-
+                      let event = [for (.rooms.join) .value.timeline.events[0]]
+                      let room = [for (.rooms.join) .]
+
+                      {
+                        "user": "replace($event[0].sender,"@|:(.*)","")",
+                        "sent": format-time(replace($event[0].origin_server_ts, "[\\s\\S]{3}\\z", ""), "yyyy-MM-dd'T'HH:mm:ss.SSSX"),
+                        "room": $room[0].key
+                      }
+                name: CamelJsltString
+            - to: 'jslt:dummy?allowTemplateFromHeader=true'
+            - unmarshal:
+                json: {}
+            - to:
+                uri: 'direct:process-room-leave-event'
+          uri: 'direct:process-matrix-room-member-leave-event'
   sources:
     - content: |-
         <?xml version="1.0" encoding="UTF-8"?>
@@ -481,32 +492,6 @@ spec:
     - content: |
         // camel-k: language=java
 
-        import org.apache.camel.builder.RouteBuilder;
-        import org.infinispan.client.hotrod.RemoteCacheManager;
-        import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
-
-        import java.util.Properties;
-
-        public class Infinispan extends RouteBuilder {
-
-            @Override
-            public void configure() throws Exception {
-
-                Properties props = getContext().getPropertiesComponent().loadProperties(key -> key.startsWith("infinispan.client"));
-
-                // create remote infinispan cache manager and start it
-                RemoteCacheManager remote = new RemoteCacheManager(
-                        new ConfigurationBuilder().withProperties(props).build(),
-                        true
-                );
-
-                getContext().getRegistry().bind("myCM", remote);
-            }
-        }
-      name: Infinispan.java
-    - content: |
-        // camel-k: language=java
-
         import javax.jms.ConnectionFactory;
         import org.apache.camel.PropertyInject;
         import org.apache.camel.builder.RouteBuilder;
@@ -573,39 +558,63 @@ spec:
           }
         }
       name: GlobexListener.java
+    - content: |
+        // camel-k: language=java
+
+        import org.apache.camel.builder.RouteBuilder;
+        import org.infinispan.client.hotrod.RemoteCacheManager;
+        import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
+
+        import java.util.Properties;
+
+        public class Infinispan extends RouteBuilder {
+
+            @Override
+            public void configure() throws Exception {
+
+                Properties props = getContext().getPropertiesComponent().loadProperties(key -> key.startsWith("infinispan.client"));
+
+                // create remote infinispan cache manager and start it
+                RemoteCacheManager remote = new RemoteCacheManager(
+                        new ConfigurationBuilder().withProperties(props).build(),
+                        true
+                );
+
+                getContext().getRegistry().bind("myCM", remote);
+            }
+        }
+      name: Infinispan.java
   traits:
     camel:
-      configuration:
-        properties:
-          - >-
-            cache.get =
-            type:org.apache.camel.component.infinispan.InfinispanOperation.GET
-          - >-
-            cache.put =
-            type:org.apache.camel.component.infinispan.InfinispanOperation.PUT
-          - >-
-            cache.remove =
-            type:org.apache.camel.component.infinispan.InfinispanOperation.REMOVE
-          - >-
-            cache.operation =
-            type:org.apache.camel.component.infinispan.InfinispanConstants.OPERATION
-          - >-
-            cache.value =
-            type:org.apache.camel.component.infinispan.InfinispanConstants.VALUE
-          - >-
-            cache.key =
-            type:org.apache.camel.component.infinispan.InfinispanConstants.KEY
-          - broker.amqp.connections = 5
-          - broker.amqp.topic.clients.rocketchat = support.rocketchat.client.
-          - broker.amqp.topic.clients.globex = support.globex.client.
-          - broker.amqp.topic.agents = support.
-          - 'infinispan.client.hotrod.server_list = {{ .Values.datagrid.host }}:11222'
+      properties:
+        - >-
+          cache.get =
+          type:org.apache.camel.component.infinispan.InfinispanOperation.GET
+        - >-
+          cache.put =
+          type:org.apache.camel.component.infinispan.InfinispanOperation.PUT
+        - >-
+          cache.remove =
+          type:org.apache.camel.component.infinispan.InfinispanOperation.REMOVE
+        - >-
+          cache.operation =
+          type:org.apache.camel.component.infinispan.InfinispanConstants.OPERATION
+        - >-
+          cache.value =
+          type:org.apache.camel.component.infinispan.InfinispanConstants.VALUE
+        - >-
+          cache.key =
+          type:org.apache.camel.component.infinispan.InfinispanConstants.KEY
+        - broker.amqp.connections = 5
+        - broker.amqp.topic.clients.rocketchat = support.rocketchat.client.
+        - broker.amqp.topic.clients.globex = support.globex.client.
+        - broker.amqp.topic.agents = support.
+        - 'infinispan.client.hotrod.server_list = {{ .Values.datagrid.host }}:11222'
     mount:
-      configuration:
-        configs:
-          {{- toYaml .Values.secrets | nindent 10 }}
-          - 'configmap:{{ include "matrix-integration.name" .}}'
-        resources:
-          - >-
+      configs:
+        {{- toYaml .Values.secrets | nindent 10 }}
+        - 'configmap:{{ include "matrix-integration.name" .}}'
+      resources:
+        - >-
             configmap:{{ include "matrix-integration.name" .}}-jslt/cachetarget.jslt@/etc/camel/resources/cachetarget.jslt
 {{- end }}

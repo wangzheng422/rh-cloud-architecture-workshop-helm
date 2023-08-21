@@ -57,7 +57,7 @@ spec:
                     <log message="source is: ${header.source}"/>
                     <log message="got message: ${body}"/>
                     
-                    <aggregate strategyRef="myStrategy">
+                    <aggregate aggregationStrategy="myStrategy">
                         <correlationExpression>
                             <constant>true</constant>
                         </correlationExpression>
@@ -365,19 +365,17 @@ spec:
       name: KafkaListener.java
   traits:
     camel:
-      configuration:
-        properties:
-          - broker.amqp.connections = 5
-          - broker.amqp.topic.clients.slack = support.slack.client.
-          - broker.amqp.topic.clients.globex = support.globex.client.
-          - broker.amqp.topic.agents = support.
-          - camel.component.aws2-s3.region = us-east-1
-          - 'camel.component.aws2-s3.uriEndpointOverride = http://{{ .Values.minio.service }}:9000'
-          - camel.component.aws2-s3.overrideEndpoint = true
-          - camel.component.aws2-s3.useDefaultCredentialsProvider = false
-          - camel.component.aws2-s3.autoCreateBucket = true
+      properties:
+        - broker.amqp.connections = 5
+        - broker.amqp.topic.clients.slack = support.slack.client.
+        - broker.amqp.topic.clients.globex = support.globex.client.
+        - broker.amqp.topic.agents = support.
+        - camel.component.aws2-s3.region = us-east-1
+        - 'camel.component.aws2-s3.uriEndpointOverride = http://{{ .Values.minio.service }}:9000'
+        - camel.component.aws2-s3.overrideEndpoint = true
+        - camel.component.aws2-s3.useDefaultCredentialsProvider = false
+        - camel.component.aws2-s3.autoCreateBucket = true
     mount:
-      configuration:
-        configs:
-          {{- toYaml .Values.secrets | nindent 10 }}
+      configs:
+        {{- toYaml .Values.secrets | nindent 10 }}
 {{- end }}

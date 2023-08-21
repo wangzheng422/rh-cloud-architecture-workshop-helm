@@ -107,19 +107,17 @@ spec:
       name: GlobexListener.java
   traits:
     camel:
-      configuration:
-        properties:
-          - 'client.callback.url = http://{{ .Values.globex_web.host }}:8080/api/chatCallBack'
-          - broker.amqp.connections = 5
-          - broker.amqp.topic.clients = support.globex.client.
-          - broker.amqp.topic.agents = support.globex.
+      properties:
+        - 'client.callback.url = http://{{ .Values.globex_web.host }}:8080/api/chatCallBack'
+        - broker.amqp.connections = 5
+        - broker.amqp.topic.clients = support.globex.client.
+        - broker.amqp.topic.agents = support.globex.
     mount:
-      configuration:
-        configs:
-          {{- toYaml .Values.secrets | nindent 10 }}
-        resources:
-          - >-
-            configmap:{{ include "globex-support-integration.name" .}}-request-jslt/request.jslt@/etc/camel/resources/request.jslt
-          - >-
-            configmap:{{ include "globex-support-integration.name" .}}-response-jslt/response.jslt@/etc/camel/resources/response.jslt
+      configs:
+        {{- toYaml .Values.secrets | nindent 10 }}
+      resources:
+        - >-
+          configmap:{{ include "globex-support-integration.name" .}}-request-jslt/request.jslt@/etc/camel/resources/request.jslt
+        - >-
+          configmap:{{ include "globex-support-integration.name" .}}-response-jslt/response.jslt@/etc/camel/resources/response.jslt
 {{- end }}
