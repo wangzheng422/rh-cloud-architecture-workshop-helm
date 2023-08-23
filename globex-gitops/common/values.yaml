@@ -1,4 +1,4 @@
-name: globex
+name: globex-gitops
 namespace: globex-gitops
 
 applicationSet:

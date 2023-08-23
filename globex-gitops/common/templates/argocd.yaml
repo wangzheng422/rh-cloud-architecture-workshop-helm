@@ -3,7 +3,7 @@ kind: ArgoCD
 metadata:
   finalizers:
   - argoproj.io/finalizer
-  name: {{ .Values.name }}-gitops
+  name: {{ .Values.name }}
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
