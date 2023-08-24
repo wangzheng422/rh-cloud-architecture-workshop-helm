@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "service-registry-db.name" . }}
-  namespace: {{ include "service-registry.namespace" . }}
+  namespace: {{ include "service-registry-db.namespace" . }}
   labels:
     {{- include "service-registry-db.labels" . | nindent 4 }}
   annotations:
