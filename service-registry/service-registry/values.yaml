@@ -14,3 +14,11 @@ route:
 
 ingress:
   disabled: true
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 512Mi
+  requests:
+    cpu: 125m
+    memory: 512Mi

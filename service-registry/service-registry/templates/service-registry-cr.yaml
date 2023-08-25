@@ -19,4 +19,10 @@ spec:
     {{ end }}
     managedResources:
       disableIngress: {{ .Values.ingress.disabled }}
+    podTemplateSpecPreview:
+      spec:
+        containers:
+          - name: registry
+            resources:
+              {{- toYaml .Values.resources | nindent 14 }}
   
