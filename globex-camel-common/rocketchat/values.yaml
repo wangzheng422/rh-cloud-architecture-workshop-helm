@@ -1,0 +1,15 @@
+mongodb:
+  nameOverride: "mongodb-rocketchat"
+  mongodb:
+    initDb: rocketchat
+    admin:
+      username: rocketchat-admin
+      password: rocketchat
+
+rocketchat:
+  mongodb:
+    username: rocketchat-admin
+    password: rocketchat
+    service: mongodb-rocketchat
+    port: 27017
+    database: rocketchat

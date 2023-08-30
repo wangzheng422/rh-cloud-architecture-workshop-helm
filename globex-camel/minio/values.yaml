@@ -43,5 +43,5 @@ minio:
 
 client:
   secret:
-    enabled: false
+    enabled: true
     name: client-s3

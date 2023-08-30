@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "integration.name" -}}
+{{- define "element.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "integration.fullname" -}}
+{{- define "element.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "integration.chart" -}}
+{{- define "element.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "integration.labels" -}}
-helm.sh/chart: {{ include "integration.chart" . }}
-{{ include "integration.selectorLabels" . }}
+{{- define "element.labels" -}}
+helm.sh/chart: {{ include "element.chart" . }}
+{{ include "element.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,33 +45,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "integration.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "integration.name" . }}
+{{- define "element.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "element.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "integration.serviceAccountName" -}}
+{{- define "element.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "integration.name" .) .Values.serviceAccount.name }}
+{{- default (include "element.name" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
-ArgoCD Syncwave
-*/}}
-{{- define "integration.argocd-syncwave" -}}
-{{- if .Values.argocd }}
-{{- if and (.Values.argocd.syncwave) (.Values.argocd.enabled) -}}
-argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"
-{{- else }}
-{{- "{}" }}
-{{- end }}
-{{- else }}
-{{- "{}" }}
 {{- end }}
 {{- end }}

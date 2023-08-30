@@ -1,0 +1,123 @@
+{{- if .Values.deploy -}}
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: {{ include "globex-support-integration.name" . }}
+  labels:
+    {{- include "globex-support-integration.labels" . | nindent 4 }}
+  annotations:
+    {{- include "globex-support-integration.argocd-syncwave" . | nindent 4 }}
+spec:
+  dependencies:
+    - 'camel:amqp'
+    - 'camel:jackson'
+    - 'camel:jslt'
+    - 'camel:http'
+    - 'mvn:io.quarkiverse.messaginghub:quarkus-pooled-jms:1.1.0'
+  sources:
+    - content: |
+        // camel-k: language=java
+
+        import org.apache.camel.builder.RouteBuilder;
+
+        public class RoutesGlobex extends RouteBuilder {
+
+            @Override
+            public void configure() throws Exception {
+
+                from("platform-http:/support/message")                      
+                    .setProperty("clientid", simple("${env.NAMESPACE}"))
+                    .convertBodyTo(String.class)
+                    .to("jslt:request.jslt?allowContextMapAll=true")
+                    .toD("amqp:topic:{{`{{broker.amqp.topic.clients}}${env.NAMESPACE}?disableReplyTo=true&connectionFactory=#myFactory")`}};
+
+                
+                from("direct:support-response")
+                    .convertBodyTo(String.class)
+                    .to("jslt:response.jslt?allowContextMapAll=true")
+                    .to("{{`{{client.callback.url}}`}}");
+
+          }
+        }
+      name: RoutesGlobex.java
+    - content: |
+        // camel-k: language=java
+
+        import javax.jms.ConnectionFactory;
+        import org.apache.camel.PropertyInject;
+        import org.apache.camel.builder.RouteBuilder;
+        import org.apache.qpid.jms.JmsConnectionFactory;
+        import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+
+        public class CamelJmsConnectionFactory extends RouteBuilder {
+            
+            private static final Logger LOGGER = LoggerFactory.getLogger(CamelJmsConnectionFactory.class);
+
+            @PropertyInject("broker.amqp.uri")
+            private static String uri;
+
+            @PropertyInject("broker.amqp.connections")
+            private static int maxConnections;
+
+            @Override
+            public void configure() {
+                JmsPoolConnectionFactory myFactory = createConnectionFactory();
+                getContext().getRegistry().bind("myFactory", myFactory);
+            }
+
+            private JmsPoolConnectionFactory createConnectionFactory() {
+                
+                ConnectionFactory factory = new JmsConnectionFactory(uri);
+                JmsPoolConnectionFactory pool = new JmsPoolConnectionFactory();
+
+                try {
+                    pool.setConnectionFactory(factory);
+
+                    // Set the max connections per user to a higher value
+                    pool.setMaxConnections(maxConnections);
+
+                } catch (Exception e) {
+                    LOGGER.error("Exception creating JMS Connection Factory", e);
+                }
+
+                return pool;
+            }
+        }
+      name: CamelJmsConnectionFactory.java
+    - content: |
+        // camel-k: language=java
+        
+        import org.apache.camel.builder.RouteBuilder;
+        
+        public class GlobexListener extends RouteBuilder {
+            
+            @Override
+            public void configure() throws Exception {
+                //ID will be: globex-camel-user1, globex-camel-user2, globex-camel-user3
+                String instanceId = System.getenv("NAMESPACE");
+                String amqpUri    = "{{`amqp:topic:{{broker.amqp.topic.agents}}`}}" + instanceId + "?connectionFactory=#myFactory";
+                
+                from(amqpUri)
+                    .routeId("amqp-globex-consumer")
+                    .to("direct:support-response");
+            }
+        }
+      name: GlobexListener.java
+  traits:
+    camel:
+      properties:
+        - 'client.callback.url = http://{{ .Values.globex_web.host }}:8080/api/chatCallBack'
+        - broker.amqp.connections = 5
+        - broker.amqp.topic.clients = support.globex.client.
+        - broker.amqp.topic.agents = support.globex.
+    mount:
+      configs:
+        {{- toYaml .Values.secrets | nindent 10 }}
+      resources:
+        - >-
+          configmap:{{ include "globex-support-integration.name" .}}-request-jslt/request.jslt@/etc/camel/resources/request.jslt
+        - >-
+          configmap:{{ include "globex-support-integration.name" .}}-response-jslt/response.jslt@/etc/camel/resources/response.jslt
+{{- end }}

@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "integration.name" -}}
+{{- define "transcript-integration.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "integration.fullname" -}}
+{{- define "transcript-integration.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "integration.chart" -}}
+{{- define "transcript-integration.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "integration.labels" -}}
-helm.sh/chart: {{ include "integration.chart" . }}
-{{ include "integration.selectorLabels" . }}
+{{- define "transcript-integration.labels" -}}
+helm.sh/chart: {{ include "transcript-integration.chart" . }}
+{{ include "transcript-integration.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "integration.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "integration.name" . }}
+{{- define "transcript-integration.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "transcript-integration.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "integration.serviceAccountName" -}}
+{{- define "transcript-integration.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "integration.name" .) .Values.serviceAccount.name }}
+{{- default (include "transcript-integration.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -64,7 +64,7 @@ Create the name of the service account to use
 {{/*
 ArgoCD Syncwave
 */}}
-{{- define "integration.argocd-syncwave" -}}
+{{- define "transcript-integration.argocd-syncwave" -}}
 {{- if .Values.argocd }}
 {{- if and (.Values.argocd.syncwave) (.Values.argocd.enabled) -}}
 argocd.argoproj.io/sync-wave: "{{ .Values.argocd.syncwave }}"

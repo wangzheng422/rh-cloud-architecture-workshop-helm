@@ -17,12 +17,21 @@ dependencies:
   - name: kafka
     version: 0.1.0
     repository: file://kafka
+  - name: matrix-secret
+    version: 0.1.0
+    repository: file://matrix-secret
   - name: integration-platform
     version: 0.1.0
     repository: file://integration-platform
   - name: globex-web
     version: 0.1.0
     repository: file://globex-web
-  - name: discord
+  - name: matrix-integration
     version: 0.1.0
-    repository: file://discord
+    repository: file://matrix-integration
+  - name: globex-support-integration
+    version: 0.1.0
+    repository: file://globex-support-integration
+  - name: transcript-integration
+    version: 0.1.0
+    repository: file://transcript-integration

@@ -1,0 +1,19 @@
+{{- if .Values.deploy -}}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "globex-support-integration.name" . }}-response-jslt
+  labels:
+    {{- include "globex-support-integration.labels" . | nindent 4 }}
+  annotations:
+    {{- include "globex-support-integration.argocd-syncwave" . | nindent 4 }}
+immutable: true
+data:  
+  response.jslt: |-
+    {
+        "agent": .agent,
+        "text": .text,
+        "sessionid" : .source.room,
+        "pdf":  .pdf
+    }
+{{- end }}

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rocketchat.name" . }}
+  labels:
+    {{- include "rocketchat.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "rocketchat.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "rocketchat.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "rocketchat.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: ROOT_URL
+              value: https://{{ .Values.route.host }}
+            - name: MONGO_URL
+              value: >-
+                mongodb://{{ .Values.mongodb.username }}:{{ .Values.mongodb.password }}@{{ .Values.mongodb.service }}:{{ .Values.mongodb.port }}/{{ .Values.mongodb.database }}?authSource=admin
+            - name: OVERWRITE_SETTING_Show_Setup_Wizard
+              value: completed
+            - name: OVERWRITE_SETTING_Use_DNS_Domain_Check
+              value: 'false'
+            - name: OVERWRITE_SETTING_API_Enable_Rate_Limiter
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowUserProfileChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowUserAvatarChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowRealNameChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowUsernameChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowEmailChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowPasswordChange
+              value: 'false'
+            - name: OVERWRITE_SETTING_Accounts_AllowEmailNotifications
+              value: 'false'
+
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /app/uploads
+              name: rocketchat-volume
+      volumes:
+        - emptyDir: {}
+          name: rocketchat-volume

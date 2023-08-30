@@ -1,0 +1,22 @@
+{{- if .Values.deploy -}}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "globex-support-integration.name" . }}-request-jslt
+  labels:
+    {{- include "globex-support-integration.labels" . | nindent 4 }}
+  annotations:
+    {{- include "globex-support-integration.argocd-syncwave" . | nindent 4 }}
+immutable: true
+data:
+  request.jslt: |-
+    {
+        "user": .user,
+        "text": .text,
+        "source": {
+          "name" : "globex",
+          "uname": "globex."+$exchange.properties.clientid,
+          "room" : .sessionid
+        }
+    }    
+{{- end }}

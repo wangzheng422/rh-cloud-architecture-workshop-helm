@@ -1,0 +1,381 @@
+{{- if .Values.deploy -}}
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: {{ include "transcript-integration.name" . }}
+  labels:
+    {{- include "transcript-integration.labels" . | nindent 4 }}
+  annotations:
+    {{- include "transcript-integration.argocd-syncwave" . | nindent 4 }}
+spec:
+  dependencies:
+    - 'camel:amqp'
+    - 'camel:jackson'
+    - 'camel:pdf'
+    - 'camel:joor'
+    - 'camel:kafka'
+    - 'camel:language'
+    - 'mvn:io.quarkiverse.messaginghub:quarkus-pooled-jms:1.1.0'
+  sources:
+    - content: >-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!-- camel-k: language=xml -->
+        
+        <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://camel.apache.org/schema/spring"
+                xsi:schemaLocation="
+                    http://camel.apache.org/schema/spring
+                    http://camel.apache.org/schema/spring/camel-spring.xsd">
+                    
+            <route id="process">
+                <from uri="direct:process"/>
+                
+                <setProperty name="client">
+                    <simple>${body}</simple>
+                </setProperty>
+                
+                <log message="Initiating KAFKA processor for: ${exchangeProperty.client}"/>
+                
+                <setProperty name="continue">
+                    <simple>true</simple>
+                </setProperty>
+                
+                <loop doWhile="true">              
+                    <simple>${exchangeProperty.continue}</simple>
+
+                    <pollEnrich>
+                        <simple>kafka:support.${env.NAMESPACE}.${exchangeProperty.client}?autoOffsetReset=earliest</simple>
+                    </pollEnrich>
+
+                    <when>
+                        <simple>${body} == 'done'</simple>
+                        <setProperty name="continue">
+                            <simple>false</simple>
+                        </setProperty>
+                    </when>
+                    
+                    <log message="source is: ${header.source}"/>
+                    <log message="got message: ${body}"/>
+                    
+                    <aggregate aggregationStrategy="myStrategy">
+                        <correlationExpression>
+                            <constant>true</constant>
+                        </correlationExpression>
+                        <completionPredicate>
+                            <simple>${exchangeProperty.continue} == false</simple>
+                        </completionPredicate>
+                        
+                        <log message="aggregation done: ${body}"/>
+                        
+                        <to uri="pdf:create"/>
+                        <log message="PDF created."/>
+                        
+                        <to uri="direct:store-pdf"/>
+                        <to uri="direct:get-shared-url"/>
+                        <to uri="direct:share-transcript"/>
+                    </aggregate>
+                </loop>
+                <log message="KAFKA processor done"/>
+            </route>
+            
+            <route id="store-pdf">
+                <from uri="direct:store-pdf"/>
+                <setProperty name="store-key">
+                    <simple>transcript_${date:now:yyyy-MM-dd_HH-mm-ss}.pdf</simple>
+                </setProperty>
+                
+                <setHeader name="CamelFileName">
+                    <simple>${exchangeProperty.store-key}</simple>
+                </setHeader>
+                
+                <setHeader name="CamelAwsS3Key">
+                    <simple>${exchangeProperty.store-key}</simple>
+                </setHeader>
+                
+                <setHeader name="CamelAwsS3ContentType">
+                    <simple>application/pdf</simple>
+                </setHeader>
+                
+                <toD uri="aws2-s3:pdf.bucket"/>
+                <log message="PDF stored"/>
+            </route>
+            
+            <route id="share-transcript">
+                <from uri="direct:share-transcript"/>
+                
+                <log message="context is: ${exchangeProperty.context}"/>
+                
+                <setBody>
+                    <simple>${exchangeProperty.context}</simple>
+                </setBody>
+                
+                <to uri="direct:recycle-context"/>
+                
+                <log message="AMQP to send out: ${body}"/>
+                
+                <toD uri="amqp:topic:support.${exchangeProperty.source}?connectionFactory=#myFactory"/>
+            </route>
+        </routes>
+      name: transcript.xml
+    - content: >-
+        <?xml version="1.0" encoding="UTF-8"?>
+
+        <!-- camel-k: language=xml -->
+
+
+        <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://camel.apache.org/schema/spring"
+                xsi:schemaLocation="
+                    http://camel.apache.org/schema/spring
+                    https://camel.apache.org/schema/spring/camel-spring.xsd">
+
+            <route id="get-s3-token">
+                <from uri="direct:get-s3-token"/>
+
+                <setProperty name="minioserver">
+                    <simple>{{`{{minio.url}}`}}</simple>
+                </setProperty>
+                <removeHeaders pattern="*"/>
+                <setHeader name="Content-Type">
+                    <simple>application/json</simple>
+                </setHeader>
+                <setHeader name="User-Agent">
+                    <simple>Mozilla/5.0</simple>
+                </setHeader>
+                <setBody>
+                    <simple>
+        {"id":1,"jsonrpc":"2.0","params":{"username":"{{`{{camel.component.aws2-s3.accessKey}}`}}","password":"{{`{{camel.component.aws2-s3.secretKey}}`}}"},"method":"web.Login"}
+                    </simple>
+                </setBody>
+                <toD uri="https:${exchangeProperty.minioserver}/minio/webrpc"/>
+                <convertBodyTo type="String"/>
+                <log message="response: ${body}"/>
+
+                <unmarshal>
+                    <json/>
+                </unmarshal>
+
+                <setProperty name="s3-token">
+                    <simple>${body.get(result).get(token)}</simple>
+                </setProperty>
+            </route>
+
+            <route id="get-shared-url">
+                <from uri="direct:get-shared-url"/>
+
+                <to uri="direct:get-s3-token"/>
+
+                <setProperty name="minioserver">
+                    <simple>{{`{{minio.url}}`}}</simple>
+                </setProperty>
+
+                <removeHeaders pattern="*"/>
+                <setHeader name="Authorization">
+                    <simple>Bearer ${exchangeProperty.s3-token}</simple>
+                </setHeader>
+                <setHeader name="content-type">
+                    <simple>application/json</simple>
+                </setHeader>
+                <setHeader name="User-Agent">
+                    <simple>Mozilla/5.0</simple>
+                </setHeader>
+                <setBody>
+                    <simple>
+        {"id":1,"jsonrpc":"2.0","params":{"host":"${exchangeProperty.minioserver}","bucket":"pdf.bucket","object":"${exchangeProperty.store-key}","expiry":432000},"method":"web.PresignedGet"}
+                    </simple>
+                </setBody>
+
+                <toD uri="https:${exchangeProperty.minioserver}/minio/webrpc"/>
+                <convertBodyTo type="String"/>
+                <log message="response: ${body}"/>
+
+                <unmarshal>
+                    <json/>
+                </unmarshal>
+
+                <setBody>
+                    <simple>https://${body.get(result).get(url)}</simple>
+                </setBody>
+
+                <log message="URL: ${body}"/>
+
+                <setProperty name="transcripturl">
+                    <joor>java.net.URLEncoder.encode(message.getBody(String.class))</joor>
+                </setProperty>
+                <setProperty name="transcripturl-raw">
+                    <simple>${body}</simple>
+                </setProperty>
+                <log message="transcripturl: ${exchangeProperty.transcripturl}"/>
+            </route>
+
+
+            <route id="recycle-context">
+                <from uri="direct:recycle-context"/>
+
+                <unmarshal>
+                    <json/>
+                </unmarshal>
+
+                <setProperty name="source">
+                    <simple>${body.get(source).get(uname)}</simple>
+                </setProperty>
+
+                <choice>
+                    <when>
+                        <simple>${exchangeProperty.source} == 'rocketchat'</simple>
+                        <to uri="language:simple:${body.replace(text, '[PDF transcript](${exchangeProperty.transcripturl-raw})')}?transform=false"/>
+                    </when>
+                    <otherwise>
+                        <to uri="language:simple:${body.replace(text, 'PDF transcript' )}?transform=false"/>
+                        <to uri="language:simple:${body.put(pdf, '${exchangeProperty.transcripturl-raw}' )}?transform=false"/>
+                    </otherwise>
+                </choice>
+
+                <marshal>
+                    <json/>
+                </marshal>
+
+            </route>
+
+
+        </routes>
+      name: transcript-support.xml
+    - content: |
+        // camel-k: language=java
+
+        import javax.jms.ConnectionFactory;
+        import org.apache.camel.PropertyInject;
+        import org.apache.camel.builder.RouteBuilder;
+        import org.apache.qpid.jms.JmsConnectionFactory;
+        import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+
+        public class CamelJmsConnectionFactory extends RouteBuilder {
+            
+            private static final Logger LOGGER = LoggerFactory.getLogger(CamelJmsConnectionFactory.class);
+
+            @PropertyInject("broker.amqp.uri")
+            private static String uri;
+
+            @PropertyInject("broker.amqp.connections")
+            private static int maxConnections;
+
+            @Override
+            public void configure() {
+                JmsPoolConnectionFactory myFactory = createConnectionFactory();
+                getContext().getRegistry().bind("myFactory", myFactory);
+            }
+
+            private JmsPoolConnectionFactory createConnectionFactory() {
+                
+                ConnectionFactory factory = new JmsConnectionFactory(uri);
+                JmsPoolConnectionFactory pool = new JmsPoolConnectionFactory();
+
+                try {
+                    pool.setConnectionFactory(factory);
+
+                    // Set the max connections per user to a higher value
+                    pool.setMaxConnections(maxConnections);
+
+                } catch (Exception e) {
+                    LOGGER.error("Exception creating JMS Connection Factory", e);
+                }
+
+                return pool;
+            }
+        }
+      name: CamelJmsConnectionFactory.java
+    - content: |
+        // camel-k: language=java
+
+        //Camel API
+        import org.apache.camel.AggregationStrategy;
+        import org.apache.camel.BindToRegistry;
+        import org.apache.camel.Exchange;
+        import org.apache.camel.Processor;
+        import org.apache.camel.PropertyInject;
+        import org.apache.camel.builder.RouteBuilder;
+
+        //Java API
+        import java.io.ByteArrayInputStream;
+        import java.io.ByteArrayOutputStream;
+        import java.util.ArrayList;
+        import java.util.HashMap;
+        import java.util.Map;
+
+
+        public class Aggregation extends RouteBuilder {
+            
+            //dummy
+            @Override
+            public void configure() throws Exception {}
+
+
+            @BindToRegistry
+            public static AggregationStrategy myStrategy(){
+
+                return new AggregationStrategy() {
+                    public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
+
+                        if (oldExchange == null) {
+                            return newExchange;
+                        }
+
+                        oldExchange.setProperty("continue", newExchange.getProperty("continue"));
+
+                        //ignore last message (body is 'done')
+                        if (newExchange.getProperty("continue").equals("false")) {
+                        
+                            oldExchange.setProperty("context", newExchange.getIn().getHeader("context"));
+                            oldExchange.setProperty("source",  newExchange.getIn().getHeader("source" ));
+                            return oldExchange;
+                        }
+
+                        String oldBody = oldExchange.getIn().getBody(String.class);
+                        String newBody = newExchange.getIn().getBody(String.class);
+                        oldExchange.getIn().setBody(oldBody + "\n" + newBody);
+
+                        return oldExchange;
+                    }
+                };
+            }
+
+        }
+      name: Aggregation.java
+    - content: |
+        // camel-k: language=java
+
+        import org.apache.camel.builder.RouteBuilder;
+
+        public class KafkaListener extends RouteBuilder {
+
+            @Override
+            public void configure() throws Exception {
+
+                String instanceId = System.getenv("NAMESPACE");
+                String kafkaUri   = "kafka:support." + instanceId + ".closed";
+
+                // Write your routes here, for example:
+                from(kafkaUri)
+                .routeId("kafka-consumer")
+                .to("direct:process");
+            }
+        }
+      name: KafkaListener.java
+  traits:
+    camel:
+      properties:
+        - broker.amqp.connections = 5
+        - broker.amqp.topic.clients.slack = support.slack.client.
+        - broker.amqp.topic.clients.globex = support.globex.client.
+        - broker.amqp.topic.agents = support.
+        - camel.component.aws2-s3.region = us-east-1
+        - 'camel.component.aws2-s3.uriEndpointOverride = http://{{ .Values.minio.service }}:9000'
+        - camel.component.aws2-s3.overrideEndpoint = true
+        - camel.component.aws2-s3.useDefaultCredentialsProvider = false
+        - camel.component.aws2-s3.autoCreateBucket = true
+    mount:
+      configs:
+        {{- toYaml .Values.secrets | nindent 10 }}
+{{- end }}
