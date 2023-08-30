@@ -1,0 +1,8 @@
+networkpolicy: 
+  namespace:
+
+globex-db:
+  namespace: 
+
+skupper:
+  deploy: true
