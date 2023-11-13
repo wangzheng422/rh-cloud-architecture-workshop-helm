@@ -1,4 +1,4 @@
-version: 3.3.1
+version: 3.5.0
 replicas: 0
 topicPrefix: globex-cdc
 keyConverter: org.apache.kafka.connect.json.JsonConverter
