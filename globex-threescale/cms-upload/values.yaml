@@ -41,7 +41,7 @@ git:
   ref: main
 
 cms:
-  image: ghcr.io/fwmotion/3scale-cms:latest
+  image: ghcr.io/fwmotion/3scale-cms:1.0.3
   contextDir: ./dev_portal
   command: "upload -u"
 
