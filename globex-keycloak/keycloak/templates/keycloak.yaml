@@ -4,7 +4,7 @@ metadata:
   name: {{ include "keycloak.name" . }}
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
-    app: keycloak
+    app: {{ include "keycloak.name" . }}
   annotations:
     {{- include "keycloak.argocd-syncwave" . | nindent 4 }}
 spec:
@@ -19,8 +19,10 @@ spec:
       key: database-password
   instances: 1
   ingress: 
-    enabled: {{ .Values.database.ingress }}
+    enabled: {{ .Values.ingress.enabled }}
   http:
     httpEnabled: true
   hostname:
     hostname: {{ include "keycloak.hostname" . }}
+    strict: false
+    adminUrl: https://{{ include "keycloak.hostname" . }}

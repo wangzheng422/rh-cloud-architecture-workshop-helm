@@ -5,11 +5,12 @@ metadata:
   name: {{ include "keycloak.name" . }}
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}    
-    app: keycloak
   annotations:
     {{- include "keycloak.argocd-syncwave" . | nindent 4 }}
 spec:
-  host: {{ include "keycloak.hostname" . }}
+  {{ if .Values.route.host }}
+  host: {{ .Values.route.host }}
+  {{ end }}
   to:
     kind: Service
     name: {{ include "keycloak.name" . }}-service

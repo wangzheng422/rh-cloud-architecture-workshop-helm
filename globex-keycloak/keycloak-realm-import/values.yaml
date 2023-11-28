@@ -3,11 +3,13 @@ keycloak:
 
 realm:
   name: globex
-  # Ids that are referenced multiple times in the template. Expected format: random ascii string, lenght 15
-  globexWebGatewayContainerId:
-  clientRealmManagementContainerId:
-  clientBrokerContainerId:
-  accountContainerId:
+
+client:
+  gateway: globex-web-gateway
+
+loop:
+  prefix: user
+  count: 1
 
 hook:
   image:

@@ -66,4 +66,4 @@ persistence:
 
 argocd:
   enabled: true
-  syncwave: "-2"
+  syncwave: "-3"
