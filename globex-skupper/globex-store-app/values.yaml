@@ -73,4 +73,4 @@ serviceAccount:
 globexDb:
   name: globex-db
   secret:
-    name: globex-db
+    name: globex-db-secret
