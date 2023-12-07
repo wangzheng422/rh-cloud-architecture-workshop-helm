@@ -1,6 +1,0 @@
-apiVersion: image.openshift.io/v1
-kind: ImageStream
-metadata:
-  name: {{ include "kafka-connect.build.imageStream" . }}
-  annotations:
-    {{- include "kafka-connect.argocd-syncwave" . | nindent 4 }}

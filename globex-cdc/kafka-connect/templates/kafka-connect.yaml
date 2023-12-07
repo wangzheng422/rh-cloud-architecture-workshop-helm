@@ -6,6 +6,7 @@ metadata:
     {{- include "kafka-connect.annotations" . | nindent 4 }}    
 spec:
   version: {{ .Values.version }}
+  image: {{ .Values.image }}
   replicas: {{ .Values.replicas }}
   bootstrapServers: {{ include "kafka.bootstrap-server" . }}
   config:
@@ -42,9 +43,3 @@ spec:
     {{- toYaml .Values.readinessProbe | nindent 4 }}
   jvmOptions:
     gcLoggingEnabled: false
-  build:
-    output:
-      type: imagestream
-      image: {{ include "kafka-connect.build.imageStream" . }}:latest
-    plugins:
-      {{- toYaml .Values.build.plugins | nindent 6 }}
