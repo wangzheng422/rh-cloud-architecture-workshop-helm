@@ -456,7 +456,7 @@ spec:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
         clientRoles:
-          globex-web-gateway:
+          {{ $.Values.client.gateway }}:
             - uma_protection
         notBefore: 0
         groups: []
@@ -478,7 +478,7 @@ spec:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
         clientRoles:
-          globex-web-gateway:
+          {{ $.Values.client.gateway }}:
             - uma_protection
         notBefore: 0
         groups: []
@@ -500,7 +500,7 @@ spec:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
         clientRoles:
-          globex-web-gateway:
+          {{ $.Values.client.gateway }}:
             - uma_protection
         notBefore: 0
         groups: []
@@ -522,7 +522,7 @@ spec:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
         clientRoles:
-          globex-web-gateway:
+          {{ $.Values.client.gateway }}:
             - uma_protection
         notBefore: 0
         groups: []
@@ -544,7 +544,7 @@ spec:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
         clientRoles:
-          globex-web-gateway:
+          {{ $.Values.client.gateway }}:
             - uma_protection
         notBefore: 0
         groups: []
@@ -709,7 +709,7 @@ spec:
           - offline_access
           - microprofile-jwt
       - id: {{ uuidv4 }} 
-        clientId: globex-web-gateway
+        clientId: {{ $.Values.client.gateway }}
         surrogateAuthRequired: false
         enabled: true
         alwaysDisplayInConsole: false
