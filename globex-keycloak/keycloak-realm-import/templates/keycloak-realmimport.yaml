@@ -455,6 +455,9 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
+        clientRoles:
+          globex-web-gateway:
+            - uma_protection
         notBefore: 0
         groups: []
       - username: mmiller
@@ -474,6 +477,9 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
+        clientRoles:
+          globex-web-gateway:
+            - uma_protection
         notBefore: 0
         groups: []
       - username: asanders
@@ -493,6 +499,9 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
+        clientRoles:
+          globex-web-gateway:
+            - uma_protection
         notBefore: 0
         groups: []
       - username: cjones
@@ -512,6 +521,9 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
+        clientRoles:
+          globex-web-gateway:
+            - uma_protection
         notBefore: 0
         groups: []
       - username: pwong
@@ -531,6 +543,9 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
+        clientRoles:
+          globex-web-gateway:
+            - uma_protection
         notBefore: 0
         groups: []
     clientScopeMappings:
