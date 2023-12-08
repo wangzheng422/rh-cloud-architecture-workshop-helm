@@ -34,7 +34,7 @@ hook:
           - ALL
     argocd:
       enabled: true
-      syncwave: "0"
+      syncwave: "1"
 
 git:
   repo: https://github.com/rh-cloud-architecture-workshop/globex-3scale-devportal-template.git
