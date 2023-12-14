@@ -77,7 +77,15 @@ spec:
         - id: {{ uuidv4 }}
           name: default-roles-{{ $.Values.realm.name }}
           description: "${role_default-roles}"
-          composite: false
+          composite: true
+          composites:
+            realm:
+                - offline_access
+                - uma_authorization
+            client:
+              account:
+                - view-profile
+                - manage-account
           clientRole: false
           containerId: {{ $.Values.realm.name }}-{{ $loop }}
           attributes: {}
@@ -455,9 +463,6 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
-        clientRoles:
-          {{ $.Values.client.gateway }}:
-            - uma_protection
         notBefore: 0
         groups: []
       - username: mmiller
@@ -477,9 +482,6 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
-        clientRoles:
-          {{ $.Values.client.gateway }}:
-            - uma_protection
         notBefore: 0
         groups: []
       - username: asanders
@@ -499,9 +501,6 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
-        clientRoles:
-          {{ $.Values.client.gateway }}:
-            - uma_protection
         notBefore: 0
         groups: []
       - username: cjones
@@ -521,9 +520,6 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
-        clientRoles:
-          {{ $.Values.client.gateway }}:
-            - uma_protection
         notBefore: 0
         groups: []
       - username: pwong
@@ -543,9 +539,6 @@ spec:
         realmRoles:
           - default-roles-{{ $.Values.realm.name }}
           - web-user
-        clientRoles:
-          {{ $.Values.client.gateway }}:
-            - uma_protection
         notBefore: 0
         groups: []
     clientScopeMappings:
