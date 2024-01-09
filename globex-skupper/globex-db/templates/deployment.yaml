@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "globex-db.name" . }}
-  namespace: {{ .Values.namespace }}
   labels:
     {{- include "globex-db.labels" . | nindent 4 }}
     app.openshift.io/runtime: postgresql

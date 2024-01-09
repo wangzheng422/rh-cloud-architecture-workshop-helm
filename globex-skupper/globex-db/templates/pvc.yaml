@@ -3,7 +3,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "globex-db.name" . }}
-  namespace: {{ .Values.namespace }}
   labels:
     {{- include "globex-db.labels" . | nindent 4 }}
   annotations:
