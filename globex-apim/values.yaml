@@ -1,0 +1,2 @@
+serviceRegistry:
+  deploy: true
