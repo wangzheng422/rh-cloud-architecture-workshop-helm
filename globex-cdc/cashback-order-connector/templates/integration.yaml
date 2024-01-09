@@ -1,0 +1,42 @@
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  name: {{ include "cashback-order-connector.name" . }}
+  labels:
+    {{- include "cashback-order-connector.labels" . | nindent 4 }}
+spec:
+  dependencies:
+    - 'camel:http'
+  flows:
+    - route:
+        from:
+          steps:
+            - log:
+                logging-level: INFO
+                message: 'Order event received: ${body}'
+            - setHeader:
+                expression:
+                  constant: POST
+                name: Exchange.HTTP_METHOD
+            - setHeader:
+                expression:
+                  constant: application/json
+                name: Exchange.CONTENT_TYPE
+            - to: '{{`{{cashback-service.url}}`}}'
+          uri: >-
+            kafka:{{`{{kafka.order.topic.name}}`}}?groupId={{`{{kafka.order.consumer.group}}`}}&autoOffsetReset=earliest
+  traits:
+    camel:
+      properties:
+        - kafka.order.topic.name = globex.order-aggregated
+        - kafka.order.consumer.group = order-cashback-connector
+        - 'cashback-service.url = http://cashback-service:8080/expense'
+        - 'camel.component.kafka.brokers = {{`{{bootstrapServer}}`}}'
+        - 'camel.component.kafka.securityprotocol = {{`{{securityProtocol}}`}}'
+        - 'camel.component.kafka.saslmechanism = {{`{{saslMechanism}}`}}'
+        - 'camel.component.kafka.sasljaasconfig = {{`{{saslJaasConfig}}`}} '
+    container:
+      limitMemory: 250Mi
+    mount:
+      configs:
+        - 'secret:kafka-client-secret'

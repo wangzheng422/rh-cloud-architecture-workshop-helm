@@ -1,8 +1,8 @@
 debezium:
   deploy: true
-cashback-connector:
+cashbackConnector:
   deploy: true
-integration-platform:
+integrationPlatform:
   deploy: false
 
 hook:
