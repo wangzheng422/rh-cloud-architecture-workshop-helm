@@ -70,3 +70,6 @@ persistence:
 argocd:
   enabled: true
   syncwave: "-2"
+
+db:
+  deploy: true

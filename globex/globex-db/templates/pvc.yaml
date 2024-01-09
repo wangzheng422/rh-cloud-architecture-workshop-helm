@@ -1,4 +1,4 @@
-{{- if eq .Values.persistence.mode "persistent" -}}
+{{- if and (.Values.db.deploy) (eq .Values.persistence.mode "persistent") -}}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
