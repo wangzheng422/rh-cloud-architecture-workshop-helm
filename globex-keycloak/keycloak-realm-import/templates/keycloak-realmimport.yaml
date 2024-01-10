@@ -251,24 +251,24 @@ spec:
             composites:
               client:
                 realm-management:
-                - manage-identity-providers
-                - query-clients
-                - view-users
-                - view-identity-providers
-                - view-events
-                - view-clients
-                - manage-events
-                - query-realms
-                - manage-clients
-                - view-authorization
-                - query-groups
-                - query-users
-                - manage-authorization
-                - manage-users
-                - manage-realm
-                - create-client
-                - view-realm
-                - impersonation
+                  - manage-identity-providers
+                  - query-clients
+                  - view-users
+                  - view-identity-providers
+                  - view-events
+                  - view-clients
+                  - manage-events
+                  - query-realms
+                  - manage-clients
+                  - view-authorization
+                  - query-groups
+                  - query-users
+                  - manage-authorization
+                  - manage-users
+                  - manage-realm
+                  - create-client
+                  - view-realm
+                  - impersonation
             clientRole: true
             containerId: {{ $clientRealmManagementContainerId }}
             attributes: {}
@@ -421,6 +421,20 @@ spec:
           account:
             - view-profile
             - manage-account
+        notBefore: 0
+        groups: []
+      - username: service-account-client-manager
+        enabled: true
+        totp: false
+        emailVerified: false
+        serviceAccountClientId: client-manager
+        disableableCredentialTypes: []
+        requiredActions: []
+        realmRoles:
+          - default-roles-globex
+        clientRoles:
+          realm-management:
+            - manage-clients
         notBefore: 0
         groups: []
       - username: {{ $loop }}
@@ -693,6 +707,86 @@ spec:
         nodeReRegistrationTimeout: 0
         defaultClientScopes:
           - web-origins
+          - roles
+          - profile
+          - email
+        optionalClientScopes:
+          - address
+          - phone
+          - offline_access
+          - microprofile-jwt
+      - id: {{ uuidv4 }}
+        clientId: client-manager
+        name: ''
+        description: ''
+        rootUrl: ''
+        adminUrl: ''
+        baseUrl: ''
+        surrogateAuthRequired: false
+        enabled: true
+        alwaysDisplayInConsole: false
+        clientAuthenticatorType: client-secret
+        secret: 9JRzL6le4K47JJkcSs6kjd9j2Mmfh1Jc
+        redirectUris:
+          - "/*"
+        webOrigins:
+          - "/*"
+        notBefore: 0
+        bearerOnly: false
+        consentRequired: false
+        standardFlowEnabled: true
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: false
+        serviceAccountsEnabled: true
+        publicClient: false
+        frontchannelLogout: true
+        protocol: openid-connect
+        attributes:
+          oidc.ciba.grant.enabled: 'false'
+          oauth2.device.authorization.grant.enabled: 'false'
+          client.secret.creation.time: '1704822257'
+          backchannel.logout.session.required: 'true'
+          backchannel.logout.revoke.offline.tokens: 'false'
+        authenticationFlowBindingOverrides: {}
+        fullScopeAllowed: true
+        nodeReRegistrationTimeout: -1
+        protocolMappers:
+          - id: ac42e39e-3358-4b7d-a0db-8e2def4cb222
+            name: Client ID
+            protocol: openid-connect
+            protocolMapper: oidc-usersessionmodel-note-mapper
+            consentRequired: false
+            config:
+              user.session.note: client_id
+              id.token.claim: 'true'
+              access.token.claim: 'true'
+              claim.name: client_id
+              jsonType.label: String
+          - id: 70f6bc71-2dc6-435b-a1a6-34efcd5f7d82
+            name: Client Host
+            protocol: openid-connect
+            protocolMapper: oidc-usersessionmodel-note-mapper
+            consentRequired: false
+            config:
+              user.session.note: clientHost
+              id.token.claim: 'true'
+              access.token.claim: 'true'
+              claim.name: clientHost
+              jsonType.label: String
+          - id: 2fb80492-9c2a-4fa8-80b8-ee42eb953d78
+            name: Client IP Address
+            protocol: openid-connect
+            protocolMapper: oidc-usersessionmodel-note-mapper
+            consentRequired: false
+            config:
+              user.session.note: clientAddress
+              id.token.claim: 'true'
+              access.token.claim: 'true'
+              claim.name: clientAddress
+              jsonType.label: String
+        defaultClientScopes:
+          - web-origins
+          - acr
           - roles
           - profile
           - email
