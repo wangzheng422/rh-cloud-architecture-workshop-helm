@@ -15,10 +15,6 @@ spec:
     processors: {}
     resources:
       {{- toYaml .Values.controller.resources | nindent 6 }}
-  dex:
-    openShiftOAuth: true
-    resources:
-      {{- toYaml .Values.dex.resources | nindent 6 }}
   initialSSHKnownHosts: {}
   rbac:
     defaultPolicy: role:readonly
@@ -50,5 +46,11 @@ spec:
         termination: reencrypt
     service:
       type: ""
+  sso:
+    dex:
+      openShiftOAuth: true
+      resources:
+        {{- toYaml .Values.dex.resources | nindent 8 }}
+    provider: dex    
   tls:
     ca: {}
