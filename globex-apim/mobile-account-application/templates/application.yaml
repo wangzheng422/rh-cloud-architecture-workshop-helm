@@ -1,0 +1,14 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Application
+metadata:
+  name: {{ include "mobile-account-application.name" . }}
+  annotations:
+    {{- include "mobile-account-application.argocd-syncwave" . | nindent 4 }}
+spec:
+  accountCR:
+    name: mobile-developeraccount
+  applicationPlanName: basic
+  description: Basic Mobile Plan
+  name: mobile-basic-plan
+  productCR:
+    name: {{ .Values.productCR.name }}

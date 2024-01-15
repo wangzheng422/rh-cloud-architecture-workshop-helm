@@ -33,3 +33,6 @@ dependencies:
   - name: mobile-dev-account
     version: 0.1.0
     repository: file://mobile-dev-account
+  - name: mobile-account-application
+    version: 0.1.0
+    repository: file://mobile-account-application
