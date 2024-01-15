@@ -1,0 +1,9 @@
+argocd:
+  enabled: true
+  syncwave: "2"
+
+product:
+  name: "Globex Mobile Gateway Product"
+  systemName: globex-mobile-gateway-product
+  issuerEndpoint: ""
+

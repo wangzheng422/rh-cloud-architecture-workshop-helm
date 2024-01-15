@@ -1,0 +1,37 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Product
+metadata:
+  name: {{ include "mobile-gateway-product.name" . }}
+  annotations:
+    {{- include "mobile-gateway-product.argocd-syncwave" . | nindent 4 }}
+spec:
+  name: {{ .Values.product.name }}
+  systemName: {{ .Values.product.systemName }}
+  providerAccountRef:
+    name: 3scale-tenant-secret
+  deployment:
+    apicastHosted:
+      authentication:
+        oidc:
+          issuerType: "keycloak"
+          issuerEndpoint: {{ .Values.product.issuerEndpoint }}
+          authenticationFlow:
+            standardFlowEnabled: true
+            implicitFlowEnabled: true
+            serviceAccountsEnabled: true
+            directAccessGrantsEnabled: false
+          jwtClaimWithClientID: "azp"
+          jwtClaimWithClientIDType: "plain"
+          credentials: "headers"
+  applicationPlans:
+    basic:
+      name: "Globex Basic Mobile Plan"
+      setupFee: "0"
+      published: true
+    premium:
+      name: "Globex Basic Premium Plan"
+      setupFee: "100"
+      published: true
+  backendUsages:
+    globex-mobile-gateway-backend:
+      path: /

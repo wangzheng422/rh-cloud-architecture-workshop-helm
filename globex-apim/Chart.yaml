@@ -27,3 +27,6 @@ dependencies:
   - name: mobile-gateway-backend
     version: 0.1.0
     repository: file://mobile-gateway-backend
+  - name: mobile-gateway-product
+    version: 0.1.0
+    repository: file://mobile-gateway-product
