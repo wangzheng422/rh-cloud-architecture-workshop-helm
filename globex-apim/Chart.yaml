@@ -24,3 +24,6 @@ dependencies:
     version: 0.1.0
     repository: file://../service-registry
     condition: serviceRegistry.deploy
+  - name: mobile-gateway-backend
+    version: 0.1.0
+    repository: file://mobile-gateway-backend

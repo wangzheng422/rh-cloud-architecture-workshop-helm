@@ -1,0 +1,22 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Backend
+metadata:
+  name: {{ include "mobile-gateway-backend.name" . }}
+  annotations:
+    {{- include "mobile-gateway-backend.argocd-syncwave" . | nindent 4 }}
+spec:
+  name: {{ .Values.backend.name }}
+  systemName: {{ .Values.backend.systemName }}
+  privateBaseURL:  {{ .Values.backend.privateBaseURL }}
+  providerAccountRef:
+    name: 3scale-tenant-secret
+  metrics:
+    hits:
+      description: Number of API hits
+      friendlyName: Hits
+      unit: "hit"
+  mappingRules:
+    - httpMethod: GET
+      pattern: "/"
+      increment: 1
+      metricMethodRef: hits
