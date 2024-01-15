@@ -30,3 +30,6 @@ dependencies:
   - name: mobile-gateway-product
     version: 0.1.0
     repository: file://mobile-gateway-product
+  - name: mobile-dev-account
+    version: 0.1.0
+    repository: file://mobile-dev-account

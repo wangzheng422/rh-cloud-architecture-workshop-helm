@@ -1,0 +1,14 @@
+secret:
+  argocd:
+    enabled: true
+    syncwave: "0"
+
+developeraccount:
+  argocd:
+    enabled: true
+    syncwave: "1"
+
+developeruser:
+  argocd:
+    enabled: true
+    syncwave: "2"

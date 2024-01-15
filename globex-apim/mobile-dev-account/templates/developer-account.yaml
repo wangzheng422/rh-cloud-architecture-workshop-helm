@@ -1,0 +1,10 @@
+apiVersion: capabilities.3scale.net/v1beta1
+kind: DeveloperAccount
+metadata:
+  name: mobile-developeraccount
+  annotations:
+    {{- include "mobile-dev-account.developeraccount.argocd-syncwave" . | nindent 4 }}
+spec:
+  orgName: GlobexMobile
+  providerAccountRef:
+    name: 3scale-tenant-secret
