@@ -38,7 +38,7 @@ hook:
 
 git:
   repo: https://github.com/rh-cloud-architecture-workshop/globex-3scale-devportal-template.git
-  ref: main
+  ref: rh1demo
 
 cms:
   image: ghcr.io/fwmotion/3scale-cms:1.0.3
