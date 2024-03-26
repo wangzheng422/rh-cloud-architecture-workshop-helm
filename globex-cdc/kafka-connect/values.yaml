@@ -1,4 +1,4 @@
-version: 3.5.0
+version: 3.6.0
 image: quay.io/cloud-architecture-workshop/kafka-connect-image:debezium-postgres-2.1.1.Final
 replicas: 0
 topicPrefix: globex-cdc
