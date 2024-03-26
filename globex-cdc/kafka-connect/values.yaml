@@ -1,5 +1,5 @@
 version: 3.6.0
-image: quay.io/cloud-architecture-workshop/kafka-connect-image:debezium-postgres-2.1.1.Final
+image: quay.io/cloud-architecture-workshop/kafka-connect-image:kafka-3.6-debezium-postgres-2.5.3.Final
 replicas: 0
 topicPrefix: globex-cdc
 keyConverter: org.apache.kafka.connect.json.JsonConverter
