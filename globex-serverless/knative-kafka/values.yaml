@@ -1,0 +1,7 @@
+nameOverride: "knative-kafka"
+
+namespace: knative-eventing
+
+argocd:
+  enabled: true
+  syncwave: "-3"

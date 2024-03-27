@@ -1,0 +1,18 @@
+{{- if .Values.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "reviews-db.name" . }}
+  labels:
+    {{- include "reviews-db.labels" . | nindent 4 }}
+  annotations:
+    {{- include "reviews-db.argocd-syncwave" . | nindent 4 }}
+spec:
+  ports:
+    - name: {{ .Values.service.portName }}
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.containerPort }}
+  selector:
+    {{- include "reviews-db.selectorLabels" . | nindent 4 }}
+{{ end }}

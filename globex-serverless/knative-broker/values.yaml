@@ -1,0 +1,5 @@
+nameOverride: "globex-broker"
+
+argocd:
+  enabled: true
+  syncwave: "-1"

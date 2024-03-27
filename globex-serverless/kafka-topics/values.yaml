@@ -1,0 +1,22 @@
+
+
+kafka:
+  cluster: kafka
+  replicationFactor: 2
+  topics:
+    - name: globex.reviews
+      partitions: 1
+      retention: -1
+    - name: reviews.moderated
+      partitions: 1
+      retention: -1
+    - name: reviews.denied
+      partitions: 1
+      retention: -1
+    - name: reviews.sentiment
+      partitions: 1
+      retention: -1
+  namespace: 
+argocd:
+  enabled: true
+  syncwave: "-2"

@@ -1,0 +1,28 @@
+image:
+  repository: quay.io/globex-sentiment-analysis/abusive-language-analysis-model-cloudevents
+  pullPolicy: IfNotPresent
+  tag: latest
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations:
+  autoscaling.knative.dev/min-scale: '1'
+
+resources:
+  limits:
+    memory: 6000Mi
+  requests:
+    memory: 4000Mi
+
+gunicorn:
+  threads: "4"
+  timeout: "180"
+
+cloudEvents:
+  source: review-moderated
+  type: review-moderated-event
+
+kafkaSink:
+  moderated: ""
+  denied: ""

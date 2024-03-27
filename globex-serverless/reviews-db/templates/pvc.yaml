@@ -1,0 +1,16 @@
+{{- if eq .Values.persistence.mode "persistent" -}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "reviews-db.name" . }}
+  labels:
+    {{- include "reviews-db.labels" . | nindent 4 }}
+  annotations:
+    {{- include "reviews-db.argocd-syncwave" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.capacity }}
+{{- end }}

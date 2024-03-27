@@ -1,0 +1,20 @@
+{{- range .Values.kafkasink }}
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: KafkaSink
+metadata:
+  name: {{ .name }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    {{- include "knative-kafkasink.argocd-syncwave" $ | nindent 4 }}
+spec:
+  bootstrapServers:
+    - {{ $.Values.kafka.bootstrapServer }}
+  topic: {{ .topic }}
+  numPartitions: {{ .partitions }}
+  contentMode: {{ .contentMode }}
+  auth:
+     secret:
+       ref:
+         name: {{ include "knative-kafkasink.name" $ }}-secret
+{{- end }}

@@ -1,0 +1,24 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: {{ include "aiml-sentiment-reviews.name" . }}
+  labels:
+    {{- include "aiml-sentiment-reviews.labels" . | nindent 4 }}
+    app.openshift.io/runtime: python
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+spec:
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      containers:
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          envFrom:
+            - secretRef:
+                name: {{ include "aiml-sentiment-reviews.name" . }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}             

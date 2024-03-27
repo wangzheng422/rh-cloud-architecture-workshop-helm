@@ -1,0 +1,35 @@
+nameOverride: "kafka-sink"
+
+secret:
+  argocd:
+    enabled: true
+    syncwave: "-2"
+
+kafkasink:
+ - name: reviews-sink
+   topic: globex.reviews
+   partitions: 1
+   contentMode: binary
+ - name: moderated-reviews-sink
+   topic: reviews.moderated
+   partitions: 1
+   contentMode: binary
+ - name: denied-reviews-sink
+   topic: reviews.denied
+   partitions: 1
+   contentMode: binary
+ - name: reviews-sentiment-sink
+   topic: reviews.sentiment
+   partitions: 1
+   contentMode: binary
+  
+kafka:
+  bootstrapServer: 
+  clientId: ""
+  clientSecret: ""
+  securityProtocol: ""
+  saslMechanism: ""
+
+argocd:
+  enabled: true
+  syncwave: "-1"

@@ -1,0 +1,25 @@
+broker: &broker globex-broker
+
+triggers:
+  - name: persist-reviews-trigger
+    broker: *broker
+    filter:
+      source: review-moderated
+      type: review-moderated-event
+    service: persist-reviews
+    uri: /review/submit
+  - name: moderate-reviews-trigger
+    broker: *broker
+    filter:
+      source: submit-review
+      type: submit-review-event
+    service: aiml-moderate-reviews
+    uri: /analyze
+  - name: sentiment-reviews-trigger
+    broker: *broker
+    filter:
+      source: submit-review
+      type: submit-review-event
+    service: aiml-sentiment-reviews
+    uri: /analyze
+

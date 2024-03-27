@@ -1,0 +1,25 @@
+nameOverride: "kafka-source"
+
+secret:
+  argocd:
+    enabled: true
+    syncwave: "-1"
+
+kafka:
+  bootstrapServer: 
+  clientId: ""
+  clientSecret: ""
+  securityProtocol: ""
+  saslMechanism: ""
+
+topics:
+  - globex.reviews
+  - reviews.moderated
+  - reviews.denied
+  - reviews.sentiment
+
+broker: globex-broker
+
+argocd:
+  enabled: true
+  syncwave: "-1"

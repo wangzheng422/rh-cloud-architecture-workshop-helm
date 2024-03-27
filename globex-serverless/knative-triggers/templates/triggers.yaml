@@ -1,0 +1,19 @@
+{{- range .Values.triggers }}
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: {{ .name }}
+spec:
+  broker: {{ .broker }}
+  filter:
+    attributes:
+      source: {{ .filter.source }}
+      type: {{ .filter.type }}
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: {{ .service }}
+    uri: {{ .uri }}
+{{- end }}

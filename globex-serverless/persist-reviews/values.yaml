@@ -1,0 +1,17 @@
+image:
+  repository: quay.io/globex-sentiment-analysis/persist-reviews
+  pullPolicy: IfNotPresent
+  tag: latest
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations:
+  autoscaling.knative.dev/min-scale: '1'
+
+reviewsDb:
+  database: reviews
+  user: globex
+  password: globex
+  service: reviews-db
+
