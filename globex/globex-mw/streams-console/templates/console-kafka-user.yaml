@@ -20,7 +20,7 @@ spec:
     acls:
       - operations:
           - Read
-          - List
+          - All
           - Describe
           - DescribeConfigs
         resource:
