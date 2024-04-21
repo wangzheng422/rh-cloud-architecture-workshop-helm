@@ -15,4 +15,5 @@ spec:
   name: {{ .Values.prometheus.subscription.name }}
   source: {{ .Values.prometheus.subscription.source }}
   sourceNamespace: {{ .Values.prometheus.subscription.sourceNamespace }}
+  startingCSV: {{ .Values.prometheus.subscription.startingCSV | default "rhods-prometheus-operator.4.10.0" }}
 {{- end }}

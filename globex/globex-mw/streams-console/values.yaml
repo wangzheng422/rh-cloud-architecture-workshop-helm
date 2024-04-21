@@ -63,6 +63,7 @@ prometheus:
     name: rhods-prometheus-operator
     source: redhat-operators
     sourceNamespace: openshift-marketplace
+    startingCSV: "rhods-prometheus-operator.4.10.0"
     argocd:
       enabled: true
       syncwave: "-1"

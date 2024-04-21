@@ -19,6 +19,7 @@ spec:
     type: simple  
     acls:
       - operations:
+          - Read
           - Describe
           - DescribeConfigs
         resource:
