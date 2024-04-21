@@ -26,6 +26,10 @@ spec:
         resource:
           type: cluster
       - operations:
+          - All
+        resource:
+          type: kafkas
+      - operations:
           - Read
           - Describe
           - DescribeConfigs
