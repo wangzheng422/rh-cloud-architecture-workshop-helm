@@ -33,6 +33,7 @@ spec:
           name: '*'
           patternType: literal
           type: topic
+        host: "*"
       - operations:
           - Read
           - Describe
@@ -40,6 +41,7 @@ spec:
           name: '*'
           patternType: literal
           type: group
+        host: "*"
   {{- end }}
 {{- end }}
 {{- end }}
